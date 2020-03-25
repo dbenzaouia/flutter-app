@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flutter_app/models/stepsModel.dart';
+import 'models/stepsModel.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -24,17 +24,22 @@ class DBProvider {
     _database = await initDB();
     return _database;
   }
+  
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB.db");
+    String path = join(documentsDirectory.path, "TestDB9111222.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE Steps ("
+      /*await db.execute("CREATE TABLE Steps ("
           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
           "numberSteps INTEGER,"
           "theTime TEXT,"
-          ")");
+          ")"); */
+          await db.execute('''CREATE TABLE Steps (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+         numberSteps INTEGER,
+         theTime TEXT)''');
+          
           print('database created!');
     });
     
@@ -58,7 +63,7 @@ class DBProvider {
     return raw;
   }
 
-  getSteps(int id) async {
+   getSteps(int id) async {
     final db = await database;
     var res = await db.query("Steps", where: "id = ?", whereArgs: [id]);
     return res.isNotEmpty ? Steps.fromMap(res.first) : null;
