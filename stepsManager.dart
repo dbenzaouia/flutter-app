@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter_app/models/stepsModel.dart';
-import 'package:flutter_app/database.dart';
+import 'models/stepsModel.dart';
+import 'database.dart';
 
 class StepsManager{
   
@@ -13,8 +13,8 @@ class StepsManager{
     return dbProvider.addNewSteps(steps); 
   }
   
-  Future<int>getIdSteps(int id) async{
-    return dbProvider.getStepsid(id);
-  }
+  /*Future<List>getSteps() async{
+    return dbProvider.getSteps();
+  }*/
 
 }
