@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/models/stepsModel.dart';
 import 'package:flutter_app/data/database.dart';
-import 'package:flutter_app/stepsManager.dart';
+import 'package:flutter_app/data/stepsManager.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_app/widget/list_widget.dart';
 //import 'package:flutter_app/widget/pedometer_widget.dart';
