@@ -2,7 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/sleepTracker.dart';
 import 'pedometre.dart';
+import 'luxvalues.dart';
+import 'accelerometre.dart';
+import 'sleepTime.dart';
+import 'hometime.dart';
 
 
 
@@ -37,10 +42,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   _MyHomePageState({Key key});
-
+  String values;
   @override
-
-
   Widget build(BuildContext context) {
         return Scaffold(
       resizeToAvoidBottomPadding: false ,
@@ -52,7 +55,9 @@ class _MyHomePageState extends State<MyHomePage> {
        child : new Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[ 
-              new Pedo(),
+              //new Pedo(),
+             //new MytestPage(),
+             new HT(),
           ],
           
       ),

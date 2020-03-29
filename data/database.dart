@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:flutter_app/models/sleepModel.dart';
 import 'package:flutter_app/models/stepsModel.dart';
+import 'package:flutter_app/models/hometimesModel.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -28,16 +30,15 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB9111222.db");
+    String path = join(documentsDirectory.path, "TestDB44.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
-      /*await db.execute("CREATE TABLE Steps ("
-          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-          "numberSteps INTEGER,"
-          "theTime TEXT,"
-          ")"); */
           await db.execute('''CREATE TABLE Steps (id INTEGER PRIMARY KEY AUTOINCREMENT, 
          numberSteps INTEGER,
+         theTime TEXT)''');
+          await db.execute('''CREATE TABLE Sleep (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+         duration TEXT)''');
+         await db.execute('''CREATE TABLE HomeTime (id INTEGER PRIMARY KEY AUTOINCREMENT, 
          theTime TEXT)''');
           
           print('database created!');
@@ -49,15 +50,7 @@ class DBProvider {
     print('adding new data...');
 
     final db = await database;
-    //get the biggest id in the table
-    //var table = await db.rawQuery("SELECT MAX(id)+1 as id FROM Steps");
-    //int id = table.first["id"];
-    //insert to the table using the new id
-   /* var raw = await db.rawInsert(
-        "INSERT Into Steps (numberSteps,theTime)"
-        " VALUES (?,?)",
-        [ newSteps.numberSteps , newSteps.theTime]);*/
-        var raw = db.insert( 'Steps', newSteps.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
+    var raw = db.insert( 'Steps', newSteps.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
 
     print('data added !');
     return raw;
@@ -90,4 +83,44 @@ class DBProvider {
     }
     return [];
   }
+
+  Future<int> addNewSleepTime(SleepTime newSleepTime) async {
+    print('adding new sleep data...');
+
+    final db = await database;
+    var raw = db.insert( 'Sleep', newSleepTime.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
+
+    print('data sleep added !');
+    return raw;
+  }
+    Future<List<SleepTime>> fetchSleepAll() async {
+    var sleep = await database;
+    var res = await sleep.query('sleep');
+
+    if (res.isNotEmpty) {
+      var thesleep = res.map((stepMap) => SleepTime.fromMap(stepMap)).toList();
+      return thesleep;
+    }
+    return [];
+  }
+   Future<int> addNewHomeTimes(HomeTimes newHomeTimes) async {
+    print('adding new data hometimes...');
+
+    final db = await database;
+    var raw = db.insert( 'HomeTime', newHomeTimes.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
+
+    print('data Hometime added !');
+    return raw;
+  }
+   Future<List<HomeTimes>> fetchAlltimes() async {
+    var hometimes = await database;
+    var res = await hometimes.query('HomeTime');
+
+    if (res.isNotEmpty) {
+      var thehometime = res.map((hometimeMap) => HomeTimes.fromMap(hometimeMap)).toList();
+      return thehometime;
+    }
+    return [];
+  }
+
   }
