@@ -5,28 +5,28 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/data/database.dart';
-import 'package:flutter_app/data/hometimesManager.dart';
-import 'package:flutter_app/models/hometimesModel.dart';
+import 'package:app/data/database.dart';
+import 'package:app/data/hometimesManager.dart';
+import 'package:app/models/hometimesModel.dart';
 import 'widget/list_widget.dart';
+import 'package:intl/intl.dart';
+
 
 class HT extends StatefulWidget {
-  //HT({Key key, this.wifi}) : super(key: key);
 
-  //final String wifi;
   State createState() => new HTState();
   
  
 }
 
 class HTState extends State<HT> {
-  //HTState({Key key, this.wifi});
-  final String wifi="inconnu";
-  //final _controller = TextEditingController();
+  final String wifi="10.214.209.206";
+  final String wifiname="SmartCampus";
 
   String _connectionStatus = 'Unknown';
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  
   
   
   List<StreamSubscription<dynamic>> _streamSubscriptions =
@@ -38,15 +38,65 @@ class HTState extends State<HT> {
   String timeToDisplay = "00:00:00";
   var swatch = Stopwatch();
   final dur = Duration(seconds: 1);
-  var now = DateTime.now();
-  int _count=0;
-  bool _changed;
+  String day="";
+  String months="";
+  String year="";
+  String hours="";
+  String min="";
+  String part="";
+  
+
 
 
    String _monrouteur= "inconnu";
+   String _mawifi="inconnu";
 
     
   @override
+  String todayDay() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('dd');
+    String formattedDate = formatter.format(now);
+    print(formattedDate);
+    return formattedDate;
+  }
+  String todayMonths() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('MM');
+    String formattedDate = formatter.format(now);
+    print(formattedDate);
+    return formattedDate;
+
+  }
+  String todayYear() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy');
+    String formattedDate = formatter.format(now);
+    print(formattedDate);
+    return formattedDate;
+
+  }
+  String todayHours() {
+    var now = new DateTime.now();
+    String formattedTime = DateFormat('kk').format(now);
+    print(formattedTime);
+    return formattedTime;
+  }
+  String todayMin() {
+    var now = new DateTime.now();
+    String formattedTime = DateFormat('mm').format(now);
+    print(formattedTime);
+    return formattedTime;
+
+  }
+  String today() {
+    var now = new DateTime.now();
+    String formattedTime = DateFormat('a').format(now);
+    print(formattedTime);
+    return formattedTime;
+
+
+  }
   void starttimer(){
     Timer(dur, keeprunning);
   }
@@ -69,17 +119,25 @@ class HTState extends State<HT> {
     timeToDisplay = "00:00:00";
   }
   void test() {
-    if(_count==1 ){
+    
+    if( _monrouteur==wifi || _mawifi==wifiname){
       swatch.start();
        starttimer();
       keeprunning();
-      _count=0;
     }
-    else if (_count==0) {
+    else if ( (_monrouteur!=wifi || _mawifi != wifiname) && timeToDisplay != "00:00:00" ) {
       print(timeToDisplay);
-     countTheHomeTimes;
-    resetTimeCounter();
-          _count=1;
+     day=todayDay();
+     months=todayMonths();
+     year=todayYear();
+     hours=todayHours();
+     min=todayMin();
+     part=today();
+    countTheHomeTimes;
+
+
+    resetTimeCounter;
+          
 
     }
   }
@@ -89,6 +147,12 @@ class HTState extends State<HT> {
    var hometime = new HomeTimes(
         id: null,
         theTime: timeToDisplay,
+        theDay : day,
+        theMonths : months,
+        theYear : year,
+        theHours : hours,
+        theMin : min,
+        thePart : part,
       );
               HometimesManager(dbProvider).addNewHometimes(hometime); 
       
@@ -98,8 +162,6 @@ class HTState extends State<HT> {
 }
   void initState() {
     super.initState();
-    _changed = true;
-   // _controller.addListener(_print);
     initConnectivity();
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
@@ -108,7 +170,6 @@ class HTState extends State<HT> {
   }
 
   void dispose() {
-    //_controller.dispose();
 
     _connectivitySubscription.cancel();
     super.dispose();
@@ -116,9 +177,7 @@ class HTState extends State<HT> {
       subscription.cancel();
     }
   }
-  _print(){
-    print(wifi);
-  }
+  
    void setupList() async{
     var _hometimes = await dataBase.fetchAlltimes();
     print(_hometimes);
@@ -166,7 +225,6 @@ class HTState extends State<HT> {
  
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-    test();
     switch (result) {
       case ConnectivityResult.wifi:
         String wifiName, wifiBSSID, wifiIP;
@@ -229,15 +287,44 @@ class HTState extends State<HT> {
               'Wifi BSSID: $wifiBSSID\n'
               'Wifi IP: $wifiIP\n';
               _monrouteur=wifiIP;
+              _mawifi=wifiName;
+              test();
+
 
         });
         break;
       case ConnectivityResult.mobile:
+      setState(() {
+        _connectionStatus = '$result\n'
+              'Wifi Name: ""\n'
+              'Wifi BSSID: ""\n'
+              'Wifi IP: ""\n';
+              _monrouteur="";
+              _mawifi="";
+        });
+
+        test();
+        break;
+
+
       case ConnectivityResult.none:
-        setState(() => _connectionStatus = result.toString());
+        setState(() { _connectionStatus = result.toString();
+          _monrouteur="";
+          _mawifi="";
+
+         } );
+        test();
         break;
       default:
-        setState(() => _connectionStatus = 'Failed to get connectivity.');
+        setState(() { 
+          _connectionStatus = 'Failed to get connectivity.';
+          _monrouteur="";
+          _mawifi="";
+
+
+        });
+
+        test();
         break;
     }
   }

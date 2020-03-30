@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/sleepTracker.dart';
+//import 'package:app/widget/sleepTracker.dart';
 import 'pedometre.dart';
-import 'luxvalues.dart';
-import 'accelerometre.dart';
 import 'sleepTime.dart';
 import 'hometime.dart';
 
@@ -58,6 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
               //new Pedo(),
              //new MytestPage(),
              new HT(),
+             new Pedo(),
+             new MytestPage(),
           ],
           
       ),

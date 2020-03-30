@@ -14,11 +14,29 @@ String sleepTimeToJson(SleepTime data) {
 class SleepTime{
   int id;
   String duration;
+   String theDay;
+  String theMonths;
+  String theYear;
+  String theHours;
+  String theMin;
+  String thePart;
+   
 
-  SleepTime({this.id,this.duration});
+  SleepTime({this.id,this.duration,this.theDay,
+    this.theMonths,
+    this.theYear,
+    this.theHours,
+    this.theMin,
+    this.thePart,});
   factory SleepTime.fromMap(Map<String, dynamic> json) => new SleepTime(
         id: json["id"],
         duration: json["duration"],
+        theDay: json["theDay"],
+        theMonths: json["theMonths"],
+        theYear: json["theYear"],
+        theHours: json["theHours"],
+        theMin: json["theMin"],
+        thePart: json["thePart"]
         
       );
 
@@ -26,6 +44,12 @@ class SleepTime{
     var map = Map<String, dynamic>();
     map['id'] = id;
     map['duration'] = duration;
+    map['theDay'] = theDay;
+    map['theMonths'] = theMonths;
+    map['theYear'] = theYear;
+    map['theHours'] = theHours;
+    map['theMin'] = theMin;
+    map['thePart'] = thePart;
     return map;
     }
 }

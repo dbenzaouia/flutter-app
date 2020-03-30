@@ -16,17 +16,35 @@ class Steps {
   int id;
   int numberSteps;
   String theTime;
+   String theDay;
+  String theMonths;
+  String theYear;
+  String theHours;
+  String theMin;
+  String thePart;
 
   Steps({
     this.id,
     this.theTime,
     this.numberSteps,
+     this.theDay,
+    this.theMonths,
+    this.theYear,
+    this.theHours,
+    this.theMin,
+    this.thePart,
   });
 
   factory Steps.fromMap(Map<String, dynamic> json) => new Steps(
         id: json["id"],
         numberSteps: json["numberSteps"],
         theTime: json["theTime"],
+        theDay: json["theDay"],
+        theMonths: json["theMonths"],
+        theYear: json["theYear"],
+        theHours: json["theHours"],
+        theMin: json["theMin"],
+        thePart: json["thePart"]
         
       );
 
@@ -35,6 +53,12 @@ class Steps {
     map['id'] = id;
     map['numberSteps'] = numberSteps;
     map['theTime'] = theTime;
+    map['theDay'] = theDay;
+    map['theMonths'] = theMonths;
+    map['theYear'] = theYear;
+    map['theHours'] = theHours;
+    map['theMin'] = theMin;
+    map['thePart'] = thePart;
     return map;
     }
 }

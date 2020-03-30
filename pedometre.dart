@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_app/models/stepsModel.dart';
-import 'package:flutter_app/data/database.dart';
-import 'package:flutter_app/data/stepsManager.dart';
+import 'package:app/models/stepsModel.dart';
+import 'package:app/data/database.dart';
+import 'package:app/data/stepsManager.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:flutter_app/widget/list_widget.dart';
+import 'package:app/widget/list_widget.dart';
+import 'package:intl/intl.dart';
+
 //import 'package:flutter_app/widget/pedometer_widget.dart';
 
 
@@ -26,6 +28,12 @@ class PedoState extends State<Pedo> {
   int value = 0;
   bool _changed;
   List<Steps> steps = [];
+    String day="";
+  String months="";
+  String year="";
+  String hours="";
+  String min="";
+  String part="";
 
 
   bool resetCounterPressed = false;
@@ -38,6 +46,50 @@ class PedoState extends State<Pedo> {
 
 
   @override
+  String todayDay() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('dd');
+    String formattedDate = formatter.format(now);
+    print(formattedDate);
+    return formattedDate;
+  }
+  String todayMonths() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('MM');
+    String formattedDate = formatter.format(now);
+    print(formattedDate);
+    return formattedDate;
+
+  }
+  String todayYear() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy');
+    String formattedDate = formatter.format(now);
+    print(formattedDate);
+    return formattedDate;
+
+  }
+  String todayHours() {
+    var now = new DateTime.now();
+    String formattedTime = DateFormat('kk').format(now);
+    print(formattedTime);
+    return formattedTime;
+  }
+  String todayMin() {
+    var now = new DateTime.now();
+    String formattedTime = DateFormat('mm').format(now);
+    print(formattedTime);
+    return formattedTime;
+
+  }
+  String today() {
+    var now = new DateTime.now();
+    String formattedTime = DateFormat('a').format(now);
+    print(formattedTime);
+    return formattedTime;
+
+
+  }
 
    void starttimer(){
     Timer(dur, keeprunning);
@@ -75,10 +127,22 @@ class PedoState extends State<Pedo> {
  int get countTheSteps { 
    _save();
    if ((swatch.elapsed.inSeconds%60)%10==0 && (swatch.elapsed.inSeconds%60)!=0){
+     day=todayDay();
+     months=todayMonths();
+     year=todayYear();
+     hours=todayHours();
+     min=todayMin();
+     part=today();
    var step = new Steps(
         id: null,
         numberSteps: int.parse('$_stepCountValue')-value,
         theTime: timeToDisplay,
+        theDay : day,
+        theMonths : months,
+        theYear : year,
+        theHours : hours,
+        theMin : min,
+        thePart : part,
       );
       if(step.numberSteps != 0){
               StepsManager(dbProvider).addNewSteps(step); 

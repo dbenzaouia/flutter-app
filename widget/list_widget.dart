@@ -35,6 +35,54 @@ import 'package:flutter/material.dart';
                   ],
                 ),
               ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Day'),
+                    Text(steps[index].theDay),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Months'),
+                    Text(steps[index].theMonths),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Year'),
+                    Text(steps[index].theYear),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Hours'),
+                    Text(steps[index].theHours),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Min'),
+                    Text(steps[index].theMin),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Part'),
+                    Text(steps[index].thePart),
+                  ],
+                ),
+              ),
             ],
           );
         },
@@ -64,6 +112,54 @@ import 'package:flutter/material.dart';
                   children: <Widget>[
                     Text('time'),
                     Text(hometimes[index].theTime),
+                  ],
+                ),
+              ),
+               Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Day'),
+                    Text(hometimes[index].theDay),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Months'),
+                    Text(hometimes[index].theMonths),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Year'),
+                    Text(hometimes[index].theYear),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Hours'),
+                    Text(hometimes[index].theHours),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Min'),
+                    Text(hometimes[index].theMin),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Part'),
+                    Text(hometimes[index].thePart),
                   ],
                 ),
               ),
@@ -99,6 +195,54 @@ import 'package:flutter/material.dart';
                   children: <Widget>[
                     Text('time'),
                     Text(sleepTime[index].duration),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Day'),
+                    Text(sleepTime[index].theDay),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Months'),
+                    Text(sleepTime[index].theMonths),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Year'),
+                    Text(sleepTime[index].theYear),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Hours'),
+                    Text(sleepTime[index].theHours),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Min'),
+                    Text(sleepTime[index].theMin),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Part'),
+                    Text(sleepTime[index].thePart),
                   ],
                 ),
               ),

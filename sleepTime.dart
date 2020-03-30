@@ -5,13 +5,15 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/models/sleepModel.dart';
+import 'package:app/models/sleepModel.dart';
 import 'package:sensors/sensors.dart';
 import 'package:light/light.dart';
 import 'widget/sleepTrack_widget.dart';
 import 'data/database.dart';
 import 'data/sleepTimeManager.dart';
 import 'widget/list_widget.dart';
+import 'package:intl/intl.dart';
+
 
 
 
@@ -44,6 +46,12 @@ class _MytestPageState extends State<MytestPage> {
   DateTime startTime;
   DBProvider dbProvider = DBProvider.db;
   final dataBase = DBProvider();
+    String day="";
+  String months="";
+  String year="";
+  String hours="";
+  String min="";
+  String part="";
 
   String _luxString = 'Unknown';
   Light _light;
@@ -56,6 +64,50 @@ class _MytestPageState extends State<MytestPage> {
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
+String todayDay() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('dd');
+    String formattedDate = formatter.format(now);
+    print(formattedDate);
+    return formattedDate;
+  }
+  String todayMonths() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('MM');
+    String formattedDate = formatter.format(now);
+    print(formattedDate);
+    return formattedDate;
+
+  }
+  String todayYear() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy');
+    String formattedDate = formatter.format(now);
+    print(formattedDate);
+    return formattedDate;
+
+  }
+  String todayHours() {
+    var now = new DateTime.now();
+    String formattedTime = DateFormat('kk').format(now);
+    print(formattedTime);
+    return formattedTime;
+  }
+  String todayMin() {
+    var now = new DateTime.now();
+    String formattedTime = DateFormat('mm').format(now);
+    print(formattedTime);
+    return formattedTime;
+
+  }
+  String today() {
+    var now = new DateTime.now();
+    String formattedTime = DateFormat('a').format(now);
+    print(formattedTime);
+    return formattedTime;
+
+
+  }
    void starttimer(){
     Timer(dur, keeprunning);
   }
@@ -149,6 +201,12 @@ class _MytestPageState extends State<MytestPage> {
        (_gyroscopeValues[0]+_gyroscopeValues[1]+_gyroscopeValues[2])>0.1 || 
        (_gyroscopeValues[0]+_gyroscopeValues[1]+_gyroscopeValues[2])<(-0.1)){
       _count=0;
+    day=todayDay();
+     months=todayMonths();
+     year=todayYear();
+     hours=todayHours();
+     min=todayMin();
+     part=today();
       sleepTimer;
       print('nooo');
       stopChrono();
@@ -160,6 +218,12 @@ class _MytestPageState extends State<MytestPage> {
      var sleepTime = new SleepTime(
         id: null,
         duration: timeToDisplay,
+        theDay : day,
+        theMonths : months,
+        theYear : year,
+        theHours : hours,
+        theMin : min,
+        thePart : part,
       );
       print('i saved id!!');
       SleepTimeManager(dbProvider).addNewSleepTime(sleepTime); 

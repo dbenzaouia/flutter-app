@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/sleepModel.dart';
-import 'package:flutter_app/widget/list_widget.dart';
+import 'package:app/models/sleepModel.dart';
+import 'package:app/widget/list_widget.dart';
 
 
 

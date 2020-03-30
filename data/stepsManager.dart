@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_app/models/stepsModel.dart';
+import 'package:app/models/stepsModel.dart';
 import 'database.dart';
 
 class StepsManager{

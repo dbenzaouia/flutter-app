@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:flutter_app/models/sleepModel.dart';
-import 'package:flutter_app/models/stepsModel.dart';
-import 'package:flutter_app/models/hometimesModel.dart';
+import 'package:app/models/sleepModel.dart';
+import 'package:app/models/stepsModel.dart';
+import 'package:app/models/hometimesModel.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,16 +30,16 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB44.db");
+    String path = join(documentsDirectory.path, "TestDB442321.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
           await db.execute('''CREATE TABLE Steps (id INTEGER PRIMARY KEY AUTOINCREMENT, 
          numberSteps INTEGER,
-         theTime TEXT)''');
+         theTime TEXT,theDay TEXT,theMonths TEXT,theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
           await db.execute('''CREATE TABLE Sleep (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-         duration TEXT)''');
+         duration TEXT,theDay TEXT,theMonths TEXT,theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
          await db.execute('''CREATE TABLE HomeTime (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-         theTime TEXT)''');
+         theTime TEXT,theDay TEXT,theMonths TEXT,theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
           
           print('database created!');
     });
