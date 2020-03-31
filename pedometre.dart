@@ -22,7 +22,7 @@ class Pedo extends StatefulWidget {
 class PedoState extends State<Pedo> {
    Pedometer _pedometer;
   StreamSubscription<int> _subscription;
-  String _stepCountValue = 'unknown';
+  String _stepCountValue = '0';
   DBProvider dbProvider = DBProvider.db;
   final dataBase = DBProvider();
   int value = 0;
