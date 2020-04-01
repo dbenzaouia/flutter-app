@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:flutter_ap_v1/Config.dart';
+import 'package:app/Config.dart';
 
 import 'package:app/models/sleepModel.dart';
 import 'package:app/models/stepsModel.dart';
 import 'package:app/models/hometimesModel.dart';
-import 'package:app/data/database.dart';
+import 'package:app./data/database.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -135,6 +135,15 @@ class DBProvider {
     var raw = db.insert( 'Config', newConfig.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
 
     print('config added !');
+    return raw;
+  }
+
+   Future<int> updateConfig(Config config) async {
+    print('updating config...');
+
+    final db = await database;
+    var raw = db.update("Config", config.toMap(), where: "id = 1");
+    print('config updated !');
     return raw;
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Config.dart';
+import 'package:app/Config.dart';
 import 'package:app/data/configManager.dart';
 import 'package:app/data/database.dart';
 
@@ -43,9 +43,13 @@ class ConfigState extends State<Configuration> {
 
   @override
   Widget build(BuildContext context) {
+
+    Config configIni = Config(id: 1, wifiname: '', wifiIP: '', hometime: 0, sleeptime: 0, pedometre: 0,);
+    ConfigManager(dbProvider).addNewConfig(configIni);
+
     if (_configurationDone){
-    Config config = Config(wifiname: _wifiname, wifiIP: _wifiIP, hometime: _hometime, sleeptime: _sleeptime, pedometre: _pedometre,);
-    ConfigManager(dbProvider).addNewConfig(config);
+    Config config = Config(id: 1,wifiname: _wifiname, wifiIP: _wifiIP, hometime: _hometime, sleeptime: _sleeptime, pedometre: _pedometre,);
+    ConfigManager(dbProvider).updateConfig(config);
     }
     // Build a Form widget using the _formKey created above.
     return Form(

@@ -12,7 +12,10 @@ class ConfigManager{
   Future<void>addNewConfig(Config config) async{
     return dbProvider.addNewConfig(config); 
   }
-  
+
+  Future<void> updateConfig(Config config) async {
+    return dbProvider.updateConfig(config); 
+  }
   /*Future<List>getSteps() async{
     return dbProvider.getSteps();
   }*/
