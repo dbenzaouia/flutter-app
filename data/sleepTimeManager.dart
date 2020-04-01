@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/models/sleepModel.dart';
+import '../models/sleepModel.dart';
 import 'database.dart';
 
 class SleepTimeManager{

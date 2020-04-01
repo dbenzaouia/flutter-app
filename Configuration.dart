@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Config.dart';
+import 'package:app/data/configManager.dart';
 import 'package:app/data/database.dart';
 
 class Configuration extends StatefulWidget {
@@ -14,6 +15,9 @@ class ConfigState extends State<Configuration> {
   // Note: This is a GlobalKey<FormState>,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+
+  DBProvider dbProvider = DBProvider.db;
+  final dataBase = DBProvider();
 
   bool _configurationDone;
   int _hometime;
@@ -41,12 +45,8 @@ class ConfigState extends State<Configuration> {
   Widget build(BuildContext context) {
     if (_configurationDone){
     Config config = Config(wifiname: _wifiname, wifiIP: _wifiIP, hometime: _hometime, sleeptime: _sleeptime, pedometre: _pedometre,);
-    //addNewConfig(config);
-    return new Container(
-              child: new Text(config.wifiname)
-            );
-            }
-            else{
+    ConfigManager(dbProvider).addNewConfig(config);
+    }
     // Build a Form widget using the _formKey created above.
     return Form(
       key: _formKey,
@@ -137,5 +137,4 @@ class ConfigState extends State<Configuration> {
       ),
     );
   }
-}
 }
