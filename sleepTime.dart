@@ -5,13 +5,15 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:app/models/sleepModel.dart';
+import 'package:projet_geo/models/sleepModel.dart';
 import 'package:sensors/sensors.dart';
 import 'package:light/light.dart';
 import 'widget/sleepTrack_widget.dart';
 import 'data/database.dart';
 import 'data/sleepTimeManager.dart';
 import 'widget/list_widget.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+
 import 'package:intl/intl.dart';
 
 
@@ -352,14 +354,17 @@ Future<void> initConnectivity() async {
 
     return _updateConnectionStatus(result);
   }
+
     @override
   Widget build(BuildContext context) {
     final List<String> accelerometer =
         _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
     final List<String> gyroscope =
         _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
-    return new Column(
-        children: <Widget>[
+    List<charts.Series<SleepTime, String>> data = withSampleData();
+    return new Container(
+      child: Column(
+            children: <Widget>[
            new TextField(
                   controller: _controller,
                   decoration: InputDecoration(
@@ -379,15 +384,35 @@ Future<void> initConnectivity() async {
                 child: BuildSleepList().buildSleepList(sleep),
                ),
               ),
+               new RepaintBoundary(
+                child: new SizedBox(
+                height: 192.0,
+                child: charts.BarChart(data, animate: true),
+               ),
+              ),
            WidgetLight(accelerometer,gyroscope,_luxString,_count,timeToDisplay,sleep).buildmywid()
 
         ],
+      ),
     );
+  }
+
+  withSampleData() {
+    return (
+      _createSampleData()
+    );
+  }
+
+  List<charts.Series<SleepTime, String>> _createSampleData() {
+
+    return [
+      new charts.Series<SleepTime, String>(
+          id: 'wifi',
+          data: sleep,
+          domainFn: (SleepTime sleepTime, _) => sleepTime.duration,
+          measureFn: (SleepTime sleepTime, _) => sleepTime.id,
+      )
+    ];
   }
 }
 
-
-
-
-
- 

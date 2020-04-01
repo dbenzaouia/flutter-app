@@ -5,12 +5,12 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:app/data/database.dart';
-import 'package:app/data/hometimesManager.dart';
-import 'package:app/models/hometimesModel.dart';
-import 'widget/list_widget.dart';
 import 'package:intl/intl.dart';
-
+import 'package:projet_geo/data/database.dart';
+import 'package:projet_geo/data/hometimesManager.dart';
+import 'package:projet_geo/models/hometimesModel.dart';
+import 'widget/list_widget.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class HT extends StatefulWidget {
 
@@ -94,8 +94,6 @@ class HTState extends State<HT> {
     String formattedTime = DateFormat('a').format(now);
     print(formattedTime);
     return formattedTime;
-
-
   }
   void starttimer(){
     Timer(dur, keeprunning);
@@ -204,6 +202,7 @@ class HTState extends State<HT> {
   @override
   Widget build(BuildContext context) {
     
+    List<charts.Series<HomeTimes, String>> data = withSampleData();
     return new Container(
       child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -214,6 +213,15 @@ class HTState extends State<HT> {
                 child: BuildtimesList().buildList(hometimes),
                ),
               ),  
+              Text(
+                          "Temps passé au domicile",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                         ),
+                        Container(
+                          width: 300,
+                          height: 200,
+                          child: charts.PieChart(data, animate: true, behaviors: [new charts.DatumLegend()]),
+                        ),  
                ]
                   
         ),
@@ -221,6 +229,25 @@ class HTState extends State<HT> {
         
       );
     
+  }
+
+  withSampleData() {
+    return (
+      _createSampleData()
+    );
+  }
+
+  List<charts.Series<HomeTimes, String>> _createSampleData() {
+
+    return [
+      new charts.Series<HomeTimes, String>(
+          id: 'wifi',
+          data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
+          data: hometimes,
+          domainFn: (HomeTimes hometimes, _) => hometimes.theTime,
+          measureFn: (HomeTimes hometimes, _) => hometimes.id,
+      )
+    ];
   }
  
 
@@ -230,7 +257,7 @@ class HTState extends State<HT> {
         String wifiName, wifiBSSID, wifiIP;
         
 
-        try {
+        try { 
           if (Platform.isIOS) {
             LocationAuthorizationStatus status =
                 await _connectivity.getLocationServiceAuthorization();
