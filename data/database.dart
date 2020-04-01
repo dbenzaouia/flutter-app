@@ -1,7 +1,10 @@
 import 'dart:io';
+import 'package:flutter_ap_v1/Config.dart';
+
 import 'package:app/models/sleepModel.dart';
 import 'package:app/models/stepsModel.dart';
 import 'package:app/models/hometimesModel.dart';
+import 'package:app/data/database.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -40,6 +43,8 @@ class DBProvider {
          duration TEXT,theDay TEXT,theMonths TEXT,theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
          await db.execute('''CREATE TABLE HomeTime (id INTEGER PRIMARY KEY AUTOINCREMENT, 
          theTime TEXT,theDay TEXT,theMonths TEXT,theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
+         await db.execute('''CREATE TABLE Config (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+         wifiname TEXT,wifiIP TEXT,hometime INTEGER,sleeptime INTEGER,pedometre INTEGER)''');
           
           print('database created!');
     });
@@ -119,6 +124,44 @@ class DBProvider {
     if (res.isNotEmpty) {
       var thehometime = res.map((hometimeMap) => HomeTimes.fromMap(hometimeMap)).toList();
       return thehometime;
+    }
+    return [];
+  }
+
+  Future<int> addNewConfig(Config newConfig) async {
+    print('adding new config...');
+
+    final db = await database;
+    var raw = db.insert( 'Config', newConfig.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
+
+    print('config added !');
+    return raw;
+  }
+
+   getConfig(int id) async {
+    final db = await database;
+    var res = await db.query("Config", where: "id = ?", whereArgs: [id]);
+    return res.isNotEmpty ? Config.fromMap(res.first) : null;
+  }
+
+  Future<int> getConfigsid(int id) async {
+    final db = await database;
+    var results = await db.rawQuery('SELECT id FROM Config WHERE id = $id');
+
+    if (results.length > 0) {
+      return new Config.fromMap(results.first).id;
+    }
+
+    return null;
+  }
+
+  Future<List<Config>> fetchAllConfig() async {
+    var config = await database;
+    var res = await config.query('Config');
+
+    if (res.isNotEmpty) {
+      var theconfigs = res.map((stepMap) => Config.fromMap(stepMap)).toList();
+      return theconfigs;
     }
     return [];
   }

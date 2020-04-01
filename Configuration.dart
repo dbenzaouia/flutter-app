@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Config.dart';
+import 'package:app/data/database.dart';
 
 class Configuration extends StatefulWidget {
   ConfigState createState() => new ConfigState();
@@ -15,9 +16,9 @@ class ConfigState extends State<Configuration> {
   final _formKey = GlobalKey<FormState>();
 
   bool _configurationDone;
-  bool _hometime;
-  bool _sleeptime;
-  bool _pedometre;
+  int _hometime;
+  int _sleeptime;
+  int _pedometre;
   String _wifiname;
   String _wifiIP;
   String _sentence1;
@@ -27,9 +28,9 @@ class ConfigState extends State<Configuration> {
   @override
   void initState() {
     _configurationDone = false;
-    _hometime = false;
-    _sleeptime = false;
-    _pedometre = false;
+    _hometime = 0;
+    _sleeptime = 0;
+    _pedometre = 0;
     _sentence1 = 'Hometime disabled';
     _sentence2 = 'Sleeptime disabled';
     _sentence3 = 'Pedometre disabled';
@@ -39,7 +40,8 @@ class ConfigState extends State<Configuration> {
   @override
   Widget build(BuildContext context) {
     if (_configurationDone){
-    Config config = Config(hometime: _hometime, sleeptime: _sleeptime, pedometre: _pedometre, wifiname: _wifiname, wifiIP: _wifiIP);
+    Config config = Config(wifiname: _wifiname, wifiIP: _wifiIP, hometime: _hometime, sleeptime: _sleeptime, pedometre: _pedometre,);
+    //addNewConfig(config);
     return new Container(
               child: new Text(config.wifiname)
             );
@@ -76,11 +78,11 @@ class ConfigState extends State<Configuration> {
             ),
             new Container(
               child: new RaisedButton(
-                  color: _hometime ? Colors.green[200] : Colors.white,
+                  color: _hometime==1 ? Colors.green[200] : Colors.white,
                   child: new Text(_sentence1),
                   onPressed: () {
                     setState(() {
-                      _hometime ? _hometime = false : _hometime = true;
+                      _hometime==1  ? _hometime = 0: _hometime = 1;
                       _sentence1 == 'Hometime enabled'
                           ? _sentence1 = 'Hometime disabled'
                           : _sentence1 = 'Hometime enabled';
@@ -90,11 +92,11 @@ class ConfigState extends State<Configuration> {
             ),
             new Container(
               child: new RaisedButton(
-                  color: _sleeptime ? Colors.green[200] : Colors.white,
+                  color: _sleeptime==1 ? Colors.green[200] : Colors.white,
                   child: new Text(_sentence2),
                   onPressed: () {
                     setState(() {
-                      _sleeptime ? _sleeptime = false : _sleeptime = true;
+                      _sleeptime==1 ? _sleeptime = 0 : _sleeptime = 1;
                       _sentence2 == 'Sleeptime enabled'
                           ? _sentence2 = 'Sleeptime disabled'
                           : _sentence2 = 'Sleeptime enabled';
@@ -104,11 +106,11 @@ class ConfigState extends State<Configuration> {
             ),
             new Container(
               child: new RaisedButton(
-                  color: _pedometre ? Colors.green[200] : Colors.white,
+                  color: _pedometre==1 ? Colors.green[200] : Colors.white,
                   child: new Text(_sentence3),
                   onPressed: () {
                     setState(() {
-                      _pedometre ? _pedometre = false : _pedometre = true;
+                      _pedometre==1 ? _pedometre = 0 : _pedometre = 1;
                       _sentence3 == 'Pedometre enabled'
                           ? _sentence3 = 'Pedometre disabled'
                           : _sentence3 = 'Pedometre enabled';
