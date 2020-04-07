@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/sleepModel.dart';
 import 'pedometre.dart';
 import 'Configuration.dart';
 import 'hometime.dart';
 import 'sleepTime.dart';
+import 'userLocation.dart';
 
 void main() {
   runApp(MyApp());
@@ -129,14 +131,14 @@ class _SecondState extends State<Second> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Hometime"),
+        title: Text("Locations"),
       ),
       body: SingleChildScrollView(
         //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new HT(),
+            new Locations(),
           ],
         ),
       ),
@@ -154,7 +156,7 @@ class _ThirdState extends State<Third> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SleepTime"),
+        title: Text("Sleep Time"),
       ),
       body: SingleChildScrollView(
         //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
@@ -193,3 +195,4 @@ class _FourthState extends State<Fourth> {
     );
   }
 }
+

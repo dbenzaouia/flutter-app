@@ -90,6 +90,7 @@ import 'package:flutter/material.dart';
     );
     }
   }
+
    class BuildtimesList{
       Widget buildList(hometimes) {
     return Container(
@@ -246,6 +247,48 @@ import 'package:flutter/material.dart';
                   ],
                 ),
               ),
+            ],
+          );
+        },
+      ),
+    );
+    }
+ }
+class BuildLocationList {
+    Widget buildLocationList(locations) {
+    return Container(
+      child: ListView.builder(
+        padding: EdgeInsets.all(5.0),
+        itemCount: locations.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Row(
+            children: <Widget>[
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Id'),
+                    Text(locations[index].id.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('address'),
+                    Text(locations[index].address),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('time'),
+                    Text(locations[index].elapsedTime.toString()),
+                  ],
+                ),
+              ),
+             
+
             ],
           );
         },

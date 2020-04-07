@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:app/widget/list_widget.dart';
-import 'package:app/pedometre.dart';
+import 'package:flutter_app/widget/list_widget.dart';
+import 'package:flutter_app/pedometre.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:app/models/stepsModel.dart';
+import 'package:flutter_app/models/stepsModel.dart';
 
 
 

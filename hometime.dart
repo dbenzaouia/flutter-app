@@ -6,13 +6,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:projet_geo/data/database.dart';
-import 'package:projet_geo/data/hometimesManager.dart';
-import 'package:projet_geo/models/hometimesModel.dart';
+import 'package:flutter_app/data/database.dart';
+import 'package:flutter_app/data/hometimesManager.dart';
+import 'package:flutter_app/models/hometimesModel.dart';
 import 'widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class HT extends StatefulWidget {
+/*class HT extends StatefulWidget {
 
   State createState() => new HTState();
   
@@ -356,4 +356,4 @@ class HTState extends State<HT> {
     }
   }
 
-}
+}*/
