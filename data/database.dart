@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:app/Config.dart';
+import '../Config.dart';
 
-import 'package:app/models/sleepModel.dart';
-import 'package:app/models/stepsModel.dart';
-import 'package:app/models/hometimesModel.dart';
-import 'package:app./data/database.dart';
+import '../models/sleepModel.dart';
+import '../models/stepsModel.dart';
+import '../models/hometimesModel.dart';
+import '../data/database.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -173,6 +173,25 @@ class DBProvider {
       return theconfigs;
     }
     return [];
+  }
+
+     Future<int> getHomeTimesByDay(String yyyy, String mm, String dd) async {
+    final db = await database;
+    var results = await db.rawQuery('SELECT id FROM HomeTime WHERE theYear = $yyyy AND theMonth = $mm AND theDay = $dd');
+
+    if (results.length > 0) {
+      return new HomeTimes.fromMap(results.first).id;
+    }
+
+    var timeHome = 0;
+    var theTime = 0;
+  
+    for (var i = 0; i < results.length; i++) {
+      theTime = results[i]["theTime"];
+      timeHome += theTime;
+    }
+
+    return timeHome;
   }
 
   }

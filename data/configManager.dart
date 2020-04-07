@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:app/Config.dart';
-import 'package:app/data/database.dart';
+import '../Config.dart';
+import 'database.dart';
 
 class ConfigManager{
   
