@@ -178,6 +178,15 @@ class DBProvider {
     return raw;
   }
 
+   Future<int> updateConfig(Config config) async {
+    print('updating config...');
+
+    final db = await database;
+    var raw = db.update("Config", config.toMap(), where: "id = 1");
+    print('config updated !');
+    return raw;
+  }
+
    getConfig(int id) async {
     final db = await database;
     var res = await db.query("Config", where: "id = ?", whereArgs: [id]);
