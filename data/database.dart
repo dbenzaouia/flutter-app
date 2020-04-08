@@ -1,8 +1,10 @@
 import 'dart:io';
-import 'package:flutter_app/models/sleepModel.dart';
-import 'package:flutter_app/models/stepsModel.dart';
-import 'package:flutter_app/models/hometimesModel.dart';
-import 'package:flutter_app/models/geoModel.dart';
+import 'package:app/models/sleepModel.dart';
+import 'package:app/models/stepsModel.dart';
+import 'package:app/models/blueModel.dart';
+
+import 'package:app/models/hometimesModel.dart';
+import 'package:app/models/geoModel.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -45,10 +47,14 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB9.db");
+    String path = join(documentsDirectory.path, "TestDB91231234.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
          await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT)''');
+        await db.execute('''CREATE TABLE Blue(id INTEGER PRIMARY KEY AUTOINCREMENT, 
+         name TEXT,
+         theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours INTEGER,theMin INTEGER,thePart TEXT)''');
+
          await db.execute('''CREATE TABLE Steps (id INTEGER PRIMARY KEY AUTOINCREMENT, 
          numberSteps INTEGER,
          theTime TEXT,theDay TEXT,theMonths TEXT,theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
@@ -58,12 +64,13 @@ class DBProvider {
          theTime TEXT,theDay TEXT,theMonths TEXT,theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
          await db.execute('''CREATE TABLE Config (id INTEGER PRIMARY KEY AUTOINCREMENT, 
          wifiname TEXT,wifiIP TEXT,hometime INTEGER,sleeptime INTEGER,pedometre INTEGER)''');
-         await db.insert('HomeTime', newValue(1, 3, '06'),  conflictAlgorithm: ConflictAlgorithm.replace);
+         /*await db.insert('HomeTime', newValue(1, 3, '06'),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('HomeTime', newValue(2, 60, '06'),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('HomeTime', newValue(3, 151, '06'),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('HomeTime', newValue(4, 34, '06'),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('HomeTime', newValue(5, 25, '06'),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('HomeTime', newValue(6, 13, '06'),  conflictAlgorithm: ConflictAlgorithm.replace);
+         */
           
           print('database created!');
               var yearData = "2020";
@@ -73,7 +80,7 @@ class DBProvider {
     var minData = "00";
     var nbJour = 31;
 
-    for (var i = 1; i <= nbJour; i++) {
+    /*for (var i = 1; i <= nbJour; i++) {
       var homeTimes = new HomeTimes(
       id: i,
       theTime: "02:50:00",
@@ -85,7 +92,7 @@ class DBProvider {
       thePart: "6",
     );
     addNewHomeTimes(homeTimes);
-    }
+    }*/
 
   });
 
@@ -98,6 +105,15 @@ class DBProvider {
     var raw = db.insert( 'Steps', newSteps.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
 
     print('data added !');
+    return raw;
+  }
+  Future<int> addNewBlue(Blue newblue) async {
+    print('adding new data blue...');
+
+    final db = await database;
+    var raw = db.insert( 'Blue', newblue.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
+
+    print('data added blue !');
     return raw;
   }
 
@@ -125,6 +141,16 @@ class DBProvider {
     if (res.isNotEmpty) {
       var thesteps = res.map((stepMap) => Steps.fromMap(stepMap)).toList();
       return thesteps;
+    }
+    return [];
+  }
+  Future<List<Blue>> fetchAllBlues() async {
+    var blue = await database;
+    var res = await blue.query('blue');
+
+    if (res.isNotEmpty) {
+      var theblue = res.map((stepMap) => Blue.fromMap(stepMap)).toList();
+      return theblue;
     }
     return [];
   }
