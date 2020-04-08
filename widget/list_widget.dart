@@ -172,6 +172,95 @@ import 'package:flutter/material.dart';
     );
     }
   }
+class BuildBlueList{
+      Widget buildList(blue) {
+    return Container(
+      child: ListView.builder(
+        padding: EdgeInsets.all(5.0),
+        itemCount: blue.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Row(
+            children: <Widget>[
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Id'),
+                    Text(blue[index].id.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('name'),
+                    Text(blue[index].name),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('time'),
+                    Text(blue[index].theTime.toString()),
+                  ],
+                ),
+              ),
+               Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Day'),
+                    Text(blue[index].theDay.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Months'),
+                    Text(blue[index].theMonths.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Year'),
+                    Text(blue[index].theYear.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Hours'),
+                    Text(blue[index].theHours.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Min'),
+                    Text(blue[index].theMin.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Part'),
+                    Text(blue[index].thePart),
+                  ],
+                ),
+              ),
+              
+            ],
+          );
+        },
+      ),
+    );
+    }
+  }
 
  class BuildSleepList {
 
