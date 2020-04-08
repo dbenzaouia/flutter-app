@@ -9,9 +9,9 @@ import 'package:flutter/widgets.dart';
 import 'package:new_geolocation/geolocation.dart';
 import 'package:geocoder/geocoder.dart' ;
 import 'data/database.dart';
-import 'package:app/models/geoModel.dart';
-import 'package:app/data/geolocManager.dart';
-import 'package:app/widget/list_widget.dart';
+import 'package:flutter_app/models/geoModel.dart';
+import 'package:flutter_app/data/geolocManager.dart';
+import 'package:flutter_app/widget/list_widget.dart';
 
 
 class Locations extends StatefulWidget {
@@ -25,6 +25,7 @@ class _LocationsState extends State<Locations> {
   StreamSubscription<LocationResult> _subscription;
   DateTime times;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+  String stringtimes;
   bool _isTracking = false;
   List<Geoloc> locations = [];
 
@@ -51,15 +52,17 @@ class _LocationsState extends State<Locations> {
         _isTracking = false;
       });
 
-    //  _subscription.cancel();
+      _subscription.cancel();
       _subscription = null;
       times = null;
+      stringtimes = null;
     } else {
       setState(() {
         _isTracking = true;
       });
 
       times = new DateTime.now();
+      stringtimes = dateFormat.format(DateTime.now());
       _subscription = Geolocation
           .locationUpdates(
         accuracy: LocationAccuracy.best,
@@ -76,10 +79,14 @@ class _LocationsState extends State<Locations> {
                   address: '${first.locality}+${first.addressLine}',
                   elapsedTime: dateFormat.format(times),
                 );
+            GeolocManager(dbProvider).addNewGeoloc(location);
+            Geoloc mylocation = await GeolocManager(dbProvider).getLastFetch();
+            print('hello ! ${mylocation.id} ${mylocation.elapsedTime}');
         
 
         setState(() {
-         GeolocManager(dbProvider).addNewGeoloc(location); 
+         locations.insert(locations.length, mylocation);
+         
         });
       });
 
@@ -94,21 +101,25 @@ class _LocationsState extends State<Locations> {
 
   @override
   Widget build(BuildContext context) {
-   return new Container(
-      child: Column(
-            children: <Widget>[
-          FlatButton(
-            color: Colors.blue,
-            onPressed: _onTogglePressed,
-            child: Text('start')),
-          new RepaintBoundary(
-                child: new SizedBox(
-                height: 192.0,
-                child: BuildLocationList().buildLocationList(locations),
-               ),
-              ),
-        ],
+   List<Widget> children = [
+      new _Header(
+        isRunning: _isTracking,
+        onTogglePressed: _onTogglePressed,
+      )
+    ];
+    children.addAll(ListTile.divideTiles(
+      context: context,
+      tiles: locations.map((location) => new _Item(data: location)).toList(),
+    ));
+    return new Container(
+      child: new Expanded(child: 
+      new ListView(
+        children: children,
       ),
+      ),
+      
+
+      
     );
   }
 
@@ -123,7 +134,7 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: new Center(
         child: new _HeaderButton(
           title: isRunning ? 'Stop' : 'Start',
@@ -177,7 +188,7 @@ class _Item extends StatelessWidget {
     String status;
     Color color;
       text =
-          'Lat: ${data.address}';
+          'id : ${data.id} ${data.address}';
       status = 'success';
       color = Colors.green;
     
@@ -191,13 +202,6 @@ class _Item extends StatelessWidget {
       ),
       new SizedBox(
         height: 3.0,
-      ),
-      new Text(
-        'Elapsed time: ${data.elapsedTime == 0 ? '< 1' : data
-            .elapsedTime}s',
-        style: const TextStyle(fontSize: 12.0, color: Colors.grey),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
       ),
     ];
 
