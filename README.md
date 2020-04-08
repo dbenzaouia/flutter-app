@@ -11,3 +11,6 @@ Add this dependency in pubspec.yaml :
   connectivity: ^0.4.8+2
   sensors: ^0.4.1+10
   light: ^0.1.1
+  flutter_bluetooth_serial: ^0.2.2
+  new_geolocation: ^1.0.0
+  geocoder: ^0.2.1
