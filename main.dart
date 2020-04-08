@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/sleepModel.dart';
+import 'package:app/models/sleepModel.dart';
 import 'pedometre.dart';
 import 'Configuration.dart';
 import 'hometime.dart';
 import 'sleepTime.dart';
 import 'userLocation.dart';
+import 'bluetoothmedia.dart';
 
 void main() {
   runApp(MyApp());
@@ -113,7 +114,7 @@ class _FirstState extends State<First> {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Pedo(),
+            new BM(),
           ],
         ),
       ),

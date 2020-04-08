@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'configModel.dart';
-import 'package:flutter_app/data/configManager.dart';
-import 'package:flutter_app/data/database.dart';
+import 'package:app/data/configManager.dart';
+import 'package:app/data/database.dart';
 
 class Configuration extends StatefulWidget {
   ConfigState createState() => new ConfigState();

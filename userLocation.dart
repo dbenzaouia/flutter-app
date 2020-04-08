@@ -9,9 +9,9 @@ import 'package:flutter/widgets.dart';
 import 'package:new_geolocation/geolocation.dart';
 import 'package:geocoder/geocoder.dart' ;
 import 'data/database.dart';
-import 'package:flutter_app/models/geoModel.dart';
-import 'package:flutter_app/data/geolocManager.dart';
-import 'package:flutter_app/widget/list_widget.dart';
+import 'package:app/models/geoModel.dart';
+import 'package:app/data/geolocManager.dart';
+import 'package:app/widget/list_widget.dart';
 
 
 class Locations extends StatefulWidget {
