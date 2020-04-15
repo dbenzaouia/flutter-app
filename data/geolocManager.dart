@@ -13,7 +13,15 @@ class GeolocManager{
    // print(geoloc.address);
     return dbProvider.addNewGeoloc(geoloc); 
   }
-  
+  Future<Geoloc> getLastFetch() async{
+    return dbProvider.getLastFetch();
+  }
+  Future<List> getLocalisations() async{
+    return dbProvider.getLocalisations();
+  }
+  Future<int> updateGeoloc(Geoloc newCar) async{
+     return dbProvider.updateGeoloc(newCar);
+  }
   /*Future<List>getSteps() async{
     return dbProvider.getSteps();
   }*/
