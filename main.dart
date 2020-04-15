@@ -114,7 +114,7 @@ class _FirstState extends State<First> {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new BM(),
+            new Pedo(),
           ],
         ),
       ),
