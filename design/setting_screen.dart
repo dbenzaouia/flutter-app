@@ -1,7 +1,7 @@
-import 'package:design/design/app_theme.dart';
+import './app_theme.dart';
 import 'package:flutter/material.dart';
 import 'second_app_theme.dart';
-import 'package:design/Configuration.dart';
+import '../Configuration.dart';
 
 
 class ConfigScreen extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:design/main.dart';
+import '../../main.dart';
 import 'package:flutter/material.dart';
 
 import '../second_app_theme.dart';

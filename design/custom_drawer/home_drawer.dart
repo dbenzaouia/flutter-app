@@ -1,5 +1,5 @@
-import 'package:design/design/second_app_theme.dart';
-import 'package:design/design/app_theme.dart';
+import '../second_app_theme.dart';
+import '../app_theme.dart';
 import 'package:flutter/material.dart';
 
 class HomeDrawer extends StatefulWidget {

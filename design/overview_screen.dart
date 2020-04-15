@@ -1,11 +1,11 @@
-import 'package:design/design/ui_view/glass_view.dart';
-import 'package:design/design/ui_view/hometime_view.dart';
-import 'package:design/design/ui_view/title_view.dart';
-import 'package:design/design/second_app_theme.dart';
-import 'package:design/design/widget_list.dart';
-import 'package:design/main.dart';
-import 'package:design/design/ui_view/running_view.dart';
-import 'package:design/design/ui_view/workout_view.dart';
+import './ui_view/glass_view.dart';
+import './ui_view/hometime_view.dart';
+import './ui_view/title_view.dart';
+import './second_app_theme.dart';
+import './widget_list.dart';
+import '../main.dart';
+import './ui_view/running_view.dart';
+import './ui_view/workout_view.dart';
 import 'package:flutter/material.dart';
 
 class MyDiaryScreen extends StatefulWidget {

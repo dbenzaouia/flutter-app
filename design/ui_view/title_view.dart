@@ -1,4 +1,4 @@
-import 'package:design/design/second_app_theme.dart';
+import '../second_app_theme.dart';
 import 'package:flutter/material.dart';
 
 class TitleView extends StatelessWidget {

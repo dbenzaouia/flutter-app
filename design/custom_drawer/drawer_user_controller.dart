@@ -1,6 +1,6 @@
-import 'package:design/design/second_app_theme.dart';
-import 'package:design/design/app_theme.dart';
-import 'package:design/design/custom_drawer/home_drawer.dart';
+import '../second_app_theme.dart';
+import '../app_theme.dart';
+import '../custom_drawer/home_drawer.dart';
 import 'package:flutter/material.dart';
 
 class DrawerUserController extends StatefulWidget {

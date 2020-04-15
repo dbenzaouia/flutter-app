@@ -1,8 +1,8 @@
-import 'package:design/design/app_theme.dart';
+import './app_theme.dart';
 import './custom_drawer/drawer_user_controller.dart';
 import './custom_drawer/home_drawer.dart';
-import 'package:design/design/setting_screen.dart';
-import 'package:design/design/home_screen.dart';
+import './setting_screen.dart';
+import './home_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
