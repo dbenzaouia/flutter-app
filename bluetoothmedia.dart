@@ -151,11 +151,11 @@ class BMState extends State<BM> {
   
   void resetStepCounter() {
     setState(() {
-      resetCounterPressed = false;
+      resetCounterPressed = true;
+      swatch.reset();
+      timeToDisplay = 0;
 
     });
-    swatch.reset();
-    timeToDisplay = 0;
   }
   
    
@@ -182,7 +182,8 @@ class BMState extends State<BM> {
       if(blue.theTime != 0){
               BlueManager(dbProvider).addNewBlue(blue); 
       }
-   
+    resetStepCounter();
+
     return blue.theTime;
  
 }
@@ -288,6 +289,7 @@ void liste() async{
         print("i");
         print(i);
         for (var j = 0; j < object.length; j++) {
+          print(timeToDisplay);
           if(devices[i].device.isConnected && devices[i].device.name ==object[j].name && timeToDisplay==0){
             print("je suis connecte aec ");
             print(devices[i].device.name);
@@ -297,7 +299,7 @@ void liste() async{
             _save(devices[i].device.name);
             swatch.start();
             starttimer();
-            keeprunning();
+            //keeprunning();
             val=1;
             }
           }
@@ -311,18 +313,19 @@ void liste() async{
         print(devices[i].device.isConnected);
         print("i");
         print(i);
+        print(value);
+        print(devices[i].device.name);
+        print(!devices[i].device.isConnected);
           if(!devices[i].device.isConnected && devices[i].device.name ==value){
             print("value iscon");
             print(!devices[i].device.isConnected && devices[i].device.name ==value);
-                  countTheTimeBlue;
+            countTheTimeBlue;
             print(timeToDisplay);
-      print(value);
-      resetStepCounter();
-            print("je suis pas connecte aec ");
-            print(devices[i].device.name);
-            print("je suis la je arrete le");
+            print(value);
+            resetStepCounter();
             print(devices[i].device.name);
             _save("unkown");
+            swatch.stop();
             
             
           }
@@ -332,11 +335,16 @@ void liste() async{
       print("aucune connections et pas d app dispo");
       if(timeToDisplay>0 && value!="unkown"){
          countTheTimeBlue;
-            print(timeToDisplay);
+        print(timeToDisplay);
       print(value);
       resetStepCounter();
+      _save("unkown");
+      swatch.stop();
+
+
 
       }
+      
       print(timeToDisplay);
     }
   
