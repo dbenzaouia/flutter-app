@@ -1,19 +1,15 @@
 import 'dart:io';
-import 'package:app/models/sleepModel.dart';
-import 'package:app/models/stepsModel.dart';
-import 'package:app/models/blueModel.dart';
-
-import 'package:app/models/hometimesModel.dart';
-import 'package:app/models/geoModel.dart';
+import 'dart:math';
+import 'package:projet_geo/models/sleepModel.dart';
+import 'package:projet_geo/models/stepsModel.dart';
+import 'package:projet_geo/models/hometimesModel.dart';
+import 'package:projet_geo/models/blueModel.dart';
+import 'package:projet_geo/models/geoModel.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-
 import '../configModel.dart';
-
-//import 'package:flutter_app/models/activityModel.dart';
-
 
 
 class DBProvider {
@@ -28,14 +24,17 @@ class DBProvider {
 
   Future<Database> get database async {
     if (_database != null){
+              print('je ne suis pas null');
     return _database;
+
     }
     // if _database is null we instantiate it
     _database = await initDB();
+    print('initialisation db ');
     return _database;
   }
-  
- newValue(int id, int steps, int day,int months,int year,int hours,int min ) {
+
+  newValue(int id, int steps, int day,int months,int year,int hours,int min ) {
    var map = Map<String, dynamic>();
     map['id'] = id;
     map['numberSteps']=steps;
@@ -51,25 +50,26 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB21.db");
-    //await deleteDatabase(path); //supprimer une table apres les tests
+    String path = join(documentsDirectory.path, "TestDB118912123123.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
-         await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
-         diffDuration INTEGER, distance INTEGER, coordinates TEXT, vitesse INTEGER, pas INTEGER)''');
-         await db.execute('''CREATE TABLE Steps (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-         numberSteps INTEGER,
-         theTime TEXT,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours INTEGER,theMin INTEGER,thePart TEXT)''');
-         await db.execute('''CREATE TABLE Sleep (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-         duration TEXT,theDay TEXT,theMonths TEXT,theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
-         await db.execute('''CREATE TABLE HomeTime (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-         theTime TEXT,theDay TEXT,theMonths TEXT,theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
-         await db.execute('''CREATE TABLE Config (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-         wifiname TEXT,wifiIP TEXT,hometime INTEGER,sleeptime INTEGER,pedometre INTEGER)''');
-         await db.execute('''CREATE TABLE Blue(id INTEGER PRIMARY KEY AUTOINCREMENT, 
-         name TEXT,
-         theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours INTEGER,theMin INTEGER,thePart TEXT)''');
-
+          await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
+                          diffDuration INTEGER, distance INTEGER, coordinates TEXT, vitesse INTEGER, pas INTEGER)''');
+          await db.execute('''CREATE TABLE Steps (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                          numberSteps INTEGER, theTime TEXT,theDay TEXT,theMonths TEXT,
+                          theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
+          await db.execute('''CREATE TABLE Sleep (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                          duration INTEGER,theDay INTEGER,theMonths INTERGER,theYear INTEGER,
+                          theHours TEXT,theMin TEXT,thePart INTEGER)''');
+          await db.execute('''CREATE TABLE HomeTime (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                          theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,
+                          theHours TEXT,theMin TEXT,thePart INTEGER)''');
+          await db.execute('''CREATE TABLE Config (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                          wifiname TEXT,wifiIP TEXT,hometime INTEGER,sleeptime INTEGER,
+                          pedometre INTEGER)''');
+          await db.execute('''CREATE TABLE Blue(id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                          name TEXT, theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours INTEGER,theMin INTEGER,thePart TEXT)''');
+         
          await db.insert('Steps', newValue(1,220, 16,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(2,440, 16,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(3,330, 15, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
@@ -101,34 +101,74 @@ class DBProvider {
          await db.insert('Steps', newValue(29,110, 11,10,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(30,50, 10,11,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(31,68, 19,12,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         
-          
           print('database created!');
-             /* var yearData = "2020";
-    var monthData = "03";
-    var dayData = 1;
-    var hourData = "00";
-    var minData = "00";
-    var nbJour = 31;
+
+    var nbJour = 30;
     for (var i = 1; i <= nbJour; i++) {
       var homeTimes = new HomeTimes(
       id: i,
-      theTime: "02:50:00",
-      theDay: dayData.toString(),
-      theMonths: monthData,
-      theYear: yearData,
-      theHours: hourData,
-      theMin: minData,
-      thePart: "6",
+      theTime: 16 + Random().nextInt(9), //valeur entre 16 et 24 
+      theDay: i,
+      theMonths: 4,
+      theYear: 2020,
+      theHours: "20:00",
+      theMin: "20:00",
+      thePart: 0,
+    );
+    var sleepTimes = new SleepTime(
+      id: i,
+      duration: 4 + Random().nextInt(9), //valeur entre 4 et 12
+      theDay: i,
+      theMonths: 4,
+      theYear: 2020,
+      theHours: "20:00",
+      theMin: "20:00",
+      thePart: 0,
     );
     addNewHomeTimes(homeTimes);
+    addNewSleepTime(sleepTimes);
+    }
+    /*for (var i = 1; i <= nbJour; i) {
+      for (var j = 0; j<= 24; j++){
+      var nb = 0;
+      if(j<=6){
+        nb = 0;
+      }
+      else if(j==7 || j==10 || j==11 || j==14 || j==15 || j==16){
+        nb = 20 + Random().nextInt(21);
+      }
+      else if (j==8 || j==9 || j==12 || j==13 || j==17 || j==18 || j==19){
+        nb = 300 + Random().nextInt(201);
+      }
+      else if(j==20 || j==21){
+        nb = 100 + Random().nextInt(51);
+      }
+      else {
+        nb = 50 + Random().nextInt(21);
+      }
+      var newSteps = new Steps(
+      id: 1+i*j,
+      numberSteps: nb,
+      theTime: j,
+      theDay: i,
+      theMonths: json["theMonths"],
+      theYear: json["theYear"],
+      theHours: json["theHours"],
+      theMin: json["theMin"],
+      thePart: json["thePart"]
+      duration: 16 + Random().nextInt(8), //valeur entre 16 et 24 
+      theDay: i,
+      theMonths: 4,
+      theYear: 2020,
+      theHours: "20:00",
+      theMin: "20:00",
+      thePart: 0,
+      );
+      addNewSteps(newSteps);
+      }
     }*/
-
   });
-
 }
-
-
 
 Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
     final db = await database;
@@ -257,9 +297,6 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
           return res;
 
     }
-  
-  
-  
 
   Future<int> addNewSteps(Steps newSteps) async {
     print('adding new data...');
@@ -330,7 +367,6 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
    Future<List<HomeTimes>> fetchAlltimes() async {
     var hometimes = await database;
     var res = await hometimes.query('HomeTime');
-
     if (res.isNotEmpty) {
       var thehometime = res.map((hometimeMap) => HomeTimes.fromMap(hometimeMap)).toList();
       return thehometime;
@@ -376,34 +412,340 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
     return [];
   }
 
-   Future<int> getHomeTimesByDay(String yyyy, String mm, String dd) async {
+   Future<int> getHomeTimesByDay(int yyyy, int mm, int dd) async {
     print('debut getHomeTimesByDay');
-    print(yyyy+','+ mm+',' +dd);
+    print('$yyyy, $mm, $dd');
     final db = await database;
-    print('apres db');
-    var t = await db.rawQuery('SELECT SUM(theTime) FROM HomeTime WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $dd');
-    var results = await db.rawQuery('SELECT id FROM HomeTime WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $dd');
-    print(results);
+    print("result");
+    var results = await db.rawQuery('SELECT theTime FROM HomeTime WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $dd');
+    print("pas de result");
+    print(results.length);
     if (results.length > 0) {
-      print(HomeTimes.fromMap(results.first).id);
+      //print(HomeTimes.fromMap(results.first).id);
+      var timeHome = 0;
+      var theTime = 0;
+      for (var i = 0; i < results.length; i++) {
+        print("i");
+        print(i);
+        theTime = results[i]["theTime"];
+        timeHome += theTime;
+        print("timehome $timeHome");
+        i++;
+      }
+      print("ici 2");
+      return timeHome; 
     }
-    var timeHome = 0;
-    var theTime = 0;
-    print('apres la requette');
-  
-    for (var i = 0; i < results.length; i++) {
-      theTime = results[i]["theTime"];
-      timeHome += theTime;
-    }
-    print('timehome : ');
-    print(timeHome);
-    print('sum');
-    print(t);
+    print("ici");
 
-    return timeHome;
+    return 0;
   }
 
-  Future<int> addNewGeoloc(Geoloc geoloc) async {
+Future<int> getSleepByDay(int yyyy, int mm, int dd) async {
+    final db = await database;
+    var results = await db.rawQuery('SELECT duration FROM Sleep WHERE theYear = $yyyy AND theMonth = $mm AND theDay = $dd');
+    if (results.length > 0) {
+      return new SleepTime.fromMap(results.first).id;
+    }
+    var sleepTime = 0;
+    var theTime = 0;
+    for (var i = 0; i < results.length; i++) {
+      theTime = results[i]["duration"];
+      sleepTime += theTime;
+    }
+    return sleepTime;
+  }
+
+  Future<int> getHometimesByDay(int yyyy, int mm, int dd) async {
+    final db = await database;
+    var results = await db.rawQuery('SELECT theTime FROM Hometime WHERE theYear = $yyyy AND theMonth = $mm AND theDay = $dd');
+    if (results.length > 0) {
+      return new HomeTimes.fromMap(results.first).id;
+    }
+    var homeTime = 0;
+    var time = 0;
+    for (var i = 0; i < results.length; i++) {
+      time = results[i]["theTime"];
+      homeTime += time;
+    }
+    return homeTime;
+  }
+
+    Future<int> getStepsByDay(int yyyy, int mm, int dd) async {
+    final db = await database;
+    var results = await db.rawQuery('SELECT theTime FROM Steps WHERE theYear = $yyyy AND theMonth = $mm AND theDay = $dd');
+
+    if (results.length > 0) {
+      return new Steps.fromMap(results.first).id;
+    }
+
+    var steps = 0;
+    var theTime = 0;
+  
+    for (var i = 0; i < results.length; i++) {
+      theTime = results[i]["numberSteps"];
+      steps += theTime;
+    }
+
+    return steps;
+  }
+
+Future<int> getSleepbyWeek(int yyyy, int mm, int dd) async {
+    int nbDaysByWeek = 7;
+    int nbSleep = 0;
+
+    if (dd < nbDaysByWeek) {
+      for (var i = 1; i <= dd; i++) {
+        nbSleep += await getSleepByDay(yyyy, mm, i);
+      }
+      if (mm == 1) {
+        int nbDaysDecember = 31;
+        for (var j = nbDaysDecember; j > nbDaysDecember - nbDaysByWeek + dd; j--) {
+          nbSleep += await getSleepByDay(yyyy - 1, mm, j);
+        }
+      }
+      else if (mm == 2 || mm == 4 || mm == 6 || mm == 8 || mm == 9 || mm == 11) {
+        int nbDaysBefore = 31;
+        for (var j = nbDaysBefore; j > nbDaysBefore - nbDaysByWeek + dd; j--) {
+          nbSleep += await getSleepByDay(yyyy, mm, j);
+        }
+      }
+      else if (mm == 3) {
+        int nbDaysBefore = 28;
+        for (var j = nbDaysBefore; j > nbDaysBefore - nbDaysByWeek + dd; j--) {
+          nbSleep += await getSleepByDay(yyyy, mm, j);
+        }
+      }
+      else {
+        int nbDaysBefore = 30;
+        for (var j = nbDaysBefore; j > nbDaysBefore - nbDaysByWeek + dd; j--) {
+          nbSleep += await getSleepByDay(yyyy, mm, j);
+        }
+      }
+    }
+    else {
+      for (var k = dd; k > dd - 7; k--) {
+        nbSleep += await getSleepByDay(yyyy, mm, k);
+      }
+    }
+    return nbSleep;
+  }
+
+  Future<int> getHomeTimesbyWeek(int yyyy, int mm, int dd) async {
+    int nbDaysByWeek = 7;
+    int hometime = 0;
+
+    if (dd < nbDaysByWeek) {
+      for (var i = 1; i <= dd; i++) {
+        hometime += await getHomeTimesByDay(yyyy, mm, i);
+      }
+      if (mm == 1) {
+        int nbDaysDecember = 31;
+        for (var j = nbDaysDecember; j > nbDaysDecember - nbDaysByWeek + dd; j--) {
+          hometime += await getHometimesByDay(yyyy - 1, mm, j);
+        }
+      }
+      else if (mm == 2 || mm == 4 || mm == 6 || mm == 8 || mm == 9 || mm == 11) {
+        int nbDaysBefore = 31;
+        for (var j = nbDaysBefore; j > nbDaysBefore - nbDaysByWeek + dd; j--) {
+          hometime += await getHometimesByDay(yyyy, mm, j);
+        }
+      }
+      else if (mm == 3) {
+        int nbDaysBefore = 28;
+        for (var j = nbDaysBefore; j > nbDaysBefore - nbDaysByWeek + dd; j--) {
+          hometime += await getHometimesByDay(yyyy, mm, j);
+        }
+      }
+      else {
+        int nbDaysBefore = 30;
+        for (var j = nbDaysBefore; j > nbDaysBefore - nbDaysByWeek + dd; j--) {
+          hometime += await getHometimesByDay(yyyy, mm, j);
+        }
+      }
+    }
+    else {
+      for (var k = dd; k > dd - 7; k--) {
+        hometime += await getHometimesByDay(yyyy, mm, k);
+      }
+    }
+    return hometime;
+  }
+
+  List<int> getDateLastDay(int yyyy, int mm, int dd) {
+    var res = [0, 0, 0];
+    if (dd == 1) {
+      if (mm == 1) {
+        int nbDaysDecember = 31;
+        res = [yyyy - 1, 12, nbDaysDecember];
+      }
+      else if (mm == 2 || mm == 4 || mm == 6 || mm == 8 || mm == 9 || mm == 11) {
+        int nbDaysBefore = 31;
+        res = [yyyy, mm - 1, nbDaysBefore - 1];
+      }
+      else if (mm == 3) {
+        int nbDaysBefore = 28;
+        res = [yyyy, mm - 1, nbDaysBefore - 1];
+      }
+      else {
+        int nbDaysBefore = 30;
+        res = [yyyy, mm - 1, nbDaysBefore - 1];
+      }
+    }
+    else {
+      res = [yyyy, mm, dd - 1];
+    }
+    return res;
+  }
+
+  Future<int> getSleepTimesMean(int yyyy, int mm, int dd, int sampleSize) async {
+    int sleepTime = 0;
+    var tmp;
+
+    for (var i = 0; i < sampleSize; i++) {
+      sleepTime += await getSleepByDay(yyyy, mm, dd);
+      tmp = getDateLastDay(yyyy, mm, dd);
+      yyyy = tmp[0];
+      mm = tmp[1];
+      dd = tmp[2];
+    }
+    return (sleepTime ~/ sampleSize);
+  }
+
+  Future<int> getHomeTimesMean(int yyyy, int mm, int dd, int sampleSize) async {
+    int homeTime = 0;
+    var tmp;
+
+    for (var i = 0; i < sampleSize; i++) {
+      homeTime += await getHometimesByDay(yyyy, mm, dd);
+      tmp = getDateLastDay(yyyy, mm, dd);
+      yyyy = tmp[0];
+      mm = tmp[1];
+      dd = tmp[2];
+    }
+    return (homeTime ~/ sampleSize);
+  }
+
+  List<int> getDateLastWeek(int yyyy, int mm, int dd) {
+    int nbDaysByWeek = 7;
+    var res = [0,0,0];
+
+    if (dd < nbDaysByWeek) {
+      if (mm == 1) {
+        int nbDaysDecember = 31;
+        res = [yyyy - 1, 12, nbDaysDecember - nbDaysByWeek + dd];
+      }
+      else if (mm == 2 || mm == 4 || mm == 6 || mm == 8 || mm == 9 || mm == 11) {
+        int nbDaysBefore = 31;
+        res = [yyyy, mm - 1, nbDaysBefore - nbDaysByWeek + dd];
+      }
+      else if (mm == 3) {
+        int nbDaysBefore = 28;
+        res = [yyyy, mm - 1, nbDaysBefore - nbDaysByWeek + dd];
+      }
+      else {
+        int nbDaysBefore = 30;
+        res = [yyyy, mm - 1, nbDaysBefore - nbDaysByWeek + dd];
+      }
+    }
+    else {
+      res = [yyyy, mm, dd - 7];
+    }
+    return res;
+  }
+
+  Future<int> getStepsByMonth(int yyyy, int mm, int dd) async {
+    int nbSteps = 0;
+    List<int> d2, d3, d4;
+
+    nbSteps += await getSleepbyWeek(yyyy, mm, dd);
+    
+    d2 = getDateLastWeek(yyyy, mm, dd);
+    nbSteps += await getSleepbyWeek(d2[0], d2[1], d2[2]);
+
+    d3 = getDateLastWeek(d2[0], d2[1], d2[2]);
+    nbSteps += await getSleepbyWeek(d3[0], d3[1], d3[2]);
+
+    d4 = getDateLastWeek(d3[0], d3[1], d3[2]);
+    nbSteps += await getSleepbyWeek(d4[0], d4[1], d4[2]);
+
+    return nbSteps;
+  }
+
+Future<List<int>> getStepsInDay(int yyyy, int mm, int dd) async {
+    final db = await database;
+    var results = await db.rawQuery('SELECT numberSteps FROM Steps WHERE theYear = $yyyy AND theMonth = $mm AND theDay = $dd');
+    List<int> res = [];
+
+    // if (results.length > 0) {
+    //   return new Steps.fromMap(results.first).id;
+    // }
+
+    int theTime = 0;
+  
+    for (var i = 0; i < results.length; i++) {
+      theTime = results[i]["numberSteps"];
+      res.add(theTime);
+    }
+
+    return res;
+  }
+
+ /*Future<int> getHomeTimesByWeek(int yyyy, int mm, int dd) async {
+    print('debut getHomeTimesByWeek');
+    print('$yyyy, $mm, $dd');
+    final db = await database;
+    int timeHome =0;
+    var m = mm%2;
+    int jour = 0;
+    if (mm==1 || mm==2){
+      if (m==2) jour = 28;
+      else jour = 30;
+    }else jour = 31;
+    int count=0;
+    if (dd < 8){
+      if (mm>1){
+        for (var day = 0; day < dd ; day++){
+          timeHome += await getHomeTimesByDay(yyyy, mm, day);
+        }
+        for (var day = 0;day<1 ;day++)
+      if(mm==1){
+
+      }
+    }else{
+      for (var day = dd; day < dd-7 ; day++){
+        var results += await db.rawQuery('SELECT id FROM HomeTime WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $day');
+
+      }
+    }
+    
+    var results = await db.rawQuery('SELECT id FROM HomeTime WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $dd');
+        if (results.length > 0) {
+      print(HomeTimes.fromMap(results.first).id);
+          }
+      for (var i = 0; i < results.length; i++) {
+      }
+      return timeHome; 
+    }
+    return 0;
+ }*/
+
+ /*Future<int> getHomeTimesByMonth(String yyyy, String mm) async {
+    print('debut getHomeTimesByMonth');
+    print('$yyyy, $mm');
+    final db = await database;
+    var results = await db.rawQuery('SELECT id FROM HomeTime WHERE theYear = $yyyy AND theMonths = $mm');
+    if (results.length > 0) {
+      var timeHome = 0;
+      var theTime = 0;
+      for (var i = 0; i < results.length; i++) {
+        theTime = results[i]["theTime"];
+        timeHome += theTime;
+      }
+      return timeHome; 
+    }
+    return 0;
+ }*/
+ Future<int> addNewGeoloc(Geoloc geoloc) async {
     print('adding new Geoloc data...');
 
     final db = await database;
@@ -460,8 +802,8 @@ Future<int> updateGeoloc(Geoloc newGeoloc) async {
     }
     return [];
   }
+}
 
-  }
   class StepsDay{
     int numberSteps;
     String theHour;
@@ -478,13 +820,3 @@ Future<int> updateGeoloc(Geoloc newGeoloc) async {
     String theDate;
   }
  
-
-
-
-
-  
-  
- 
-
-  
-

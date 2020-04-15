@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../models/sleepModel.dart';
+import 'package:projet_geo/models/sleepModel.dart';
 import 'database.dart';
 
 class SleepTimeManager{

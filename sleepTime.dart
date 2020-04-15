@@ -5,7 +5,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:app/models/sleepModel.dart';
+import 'package:projet_geo/models/sleepModel.dart';
 import 'package:sensors/sensors.dart';
 import 'package:light/light.dart';
 import 'widget/sleepTrack_widget.dart';
@@ -13,9 +13,8 @@ import 'data/database.dart';
 import 'data/sleepTimeManager.dart';
 import 'widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-
+import 'hometime.dart';
 import 'package:intl/intl.dart';
-
 
 
 
@@ -40,7 +39,7 @@ class _MytestPageState extends State<MytestPage> {
   List<double> _accelerometerValues;
   List<double> _gyroscopeValues;
   List<StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
-  String timeToDisplay = "00:00:00";
+  int timeToDisplay = 0;
   final dur = Duration(seconds: 1);
   var swatch = Stopwatch();
   var now = new DateTime.now();
@@ -48,12 +47,12 @@ class _MytestPageState extends State<MytestPage> {
   DateTime startTime;
   DBProvider dbProvider = DBProvider.db;
   final dataBase = DBProvider();
-    String day="";
-  String months="";
-  String year="";
+  int day=0;
+  int months=0;
+  int year=0;
   String hours="";
   String min="";
-  String part="";
+  int part=0;
 
   String _luxString = 'Unknown';
   Light _light;
@@ -66,27 +65,30 @@ class _MytestPageState extends State<MytestPage> {
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
-String todayDay() {
+static int todayDay() {
     var now = new DateTime.now();
     var formatter = new DateFormat('dd');
     String formattedDate = formatter.format(now);
+    int a = int.parse(formattedDate);
     print(formattedDate);
-    return formattedDate;
+    return a;
   }
-  String todayMonths() {
+  static int todayMonths() {
     var now = new DateTime.now();
     var formatter = new DateFormat('MM');
     String formattedDate = formatter.format(now);
+    int a = int.parse(formattedDate);
     print(formattedDate);
-    return formattedDate;
+    return a;
 
   }
-  String todayYear() {
+  static int todayYear() {
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy');
     String formattedDate = formatter.format(now);
+    int a = int.parse(formattedDate);
     print(formattedDate);
-    return formattedDate;
+    return a;
 
   }
   String todayHours() {
@@ -102,11 +104,12 @@ String todayDay() {
     return formattedTime;
 
   }
-  String today() {
+  static int today() {
     var now = new DateTime.now();
     String formattedTime = DateFormat('a').format(now);
+    int a = int.parse(formattedTime);
     print(formattedTime);
-    return formattedTime;
+    return a;
 
 
   }
@@ -118,9 +121,7 @@ String todayDay() {
       starttimer();
     }
     setState(() {
-      timeToDisplay = swatch.elapsed.inHours.toString().padLeft(2,"0") + ":"
-                      + (swatch.elapsed.inMinutes%60).toString().padLeft(2,"0") + ":"
-                      + (swatch.elapsed.inSeconds%60).toString().padLeft(2,"0");
+      timeToDisplay = (swatch.elapsed.inSeconds);
     });
   }
 
@@ -216,7 +217,7 @@ String todayDay() {
     }
     
   }
-  String get sleepTimer{
+  int get sleepTimer{
      var sleepTime = new SleepTime(
         id: null,
         duration: timeToDisplay,
@@ -357,11 +358,11 @@ Future<void> initConnectivity() async {
 
     @override
   Widget build(BuildContext context) {
+    List<charts.Series<DataDay, String>> data;
     final List<String> accelerometer =
         _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
     final List<String> gyroscope =
         _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
-    List<charts.Series<SleepTime, String>> data = withSampleData();
     return new Container(
       child: Column(
             children: <Widget>[
@@ -387,32 +388,117 @@ Future<void> initConnectivity() async {
                new RepaintBoundary(
                 child: new SizedBox(
                 height: 192.0,
-                child: charts.BarChart(data, animate: true),
+                child: FutureBuilder<List<charts.Series<DataDay, String>>>(
+                  future: withDataDay(),
+                  builder: (context, snapshot) {
+                     if (snapshot.hasData) {
+                       data = snapshot.data;
+                       return charts.PieChart(data);
+                    } else if (snapshot.hasError) {
+                        return Text(
+                    'Error:\n\n${snapshot.error}',
+                    textAlign: TextAlign.center,
+                  );
+        } else {
+          return Text('Il n\'y a pas de données');
+        }
+                   }
+                )
                ),
               ),
-           WidgetLight(accelerometer,gyroscope,_luxString,_count,timeToDisplay,sleep).buildmywid()
+           //WidgetLight(accelerometer,gyroscope,_luxString,_count,timeToDisplay,sleep).buildmywid()
 
         ],
       ),
     );
   }
 
-  withSampleData() {
+  static Future<List<charts.Series<DataDay, String>>> withDataDay() async {
     return (
-      _createSampleData()
+    await  _createDataDay()
+    );
+  }
+  static Future<List<charts.Series<DataDay, String>>> withDataWeek() async {
+    return (
+    await  _createDataWeek()
+    );
+  }
+  static Future<List<charts.Series<DataDay, String>>> withDataMonth() async {
+    return (
+    await  _createDataMonth()
     );
   }
 
-  List<charts.Series<SleepTime, String>> _createSampleData() {
-
+  static Future <List<charts.Series<DataDay, String>>>_createDataDay() async {
+    int d = todayDay();
+    int m = todayMonths();
+    int y = todayYear();
+    DBProvider().initDB();
+    var time = await DBProvider().getSleepByDay(y,m,d);
+    var hour = 24-time;
+    final data = [
+      new DataDay(time, 'home'),
+      new DataDay(hour,'outside'),
+    ];
     return [
-      new charts.Series<SleepTime, String>(
+      new charts.Series<DataDay, String>(
           id: 'wifi',
-          data: sleep,
-          domainFn: (SleepTime sleepTime, _) => sleepTime.duration,
-          measureFn: (SleepTime sleepTime, _) => sleepTime.id,
+         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
+          data: data,
+          domainFn: (DataDay sleeptime, _) => sleeptime.hour,
+          measureFn: (DataDay sleeptime, _) => sleeptime.time,
+      )
+    ];
+  }
+
+  static Future <List<charts.Series<DataDay, String>>>_createDataWeek() async {
+    int d = todayDay();
+    int m = todayMonths();
+    int y = todayYear();
+    DBProvider().initDB();
+    var time = await DBProvider().getSleepTimesMean(y,m,d,7);
+    var hour = 24-time;
+    final data = [
+      new DataDay(time, 'home'),
+      new DataDay(hour,'outside'),
+    ];
+    return [
+      new charts.Series<DataDay, String>(
+          id: 'wifi',
+         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
+          data: data,
+          domainFn: (DataDay sleeptime, _) => sleeptime.hour,
+          measureFn: (DataDay sleeptime, _) => sleeptime.time,
+      )
+    ];
+  }
+
+static Future <List<charts.Series<DataDay, String>>>_createDataMonth() async {
+    int d = todayDay();
+    int m = todayMonths();
+    int y = todayYear();
+    DBProvider().initDB();
+    var time = await DBProvider().getSleepTimesMean(y,m,d,30);
+    var hour = 24-time;
+    final data = [
+      new DataDay(time, 'home'),
+      new DataDay(hour,'outside'),
+    ];
+    return [
+      new charts.Series<DataDay, String>(
+          id: 'wifi',
+         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
+          data: data,
+          domainFn: (DataDay sleeptime, _) => sleeptime.hour,
+          measureFn: (DataDay sleeptime, _) => sleeptime.time,
       )
     ];
   }
 }
 
+class DataDay {
+  final int time;
+  final String hour;
+
+  DataDay(this.time, this.hour);
+}

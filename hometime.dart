@@ -6,13 +6,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:app/data/database.dart';
-import 'package:app/data/hometimesManager.dart';
-import 'package:app/models/hometimesModel.dart';
+import 'package:projet_geo/data/database.dart';
+import 'package:projet_geo/data/hometimesManager.dart';
+import 'package:projet_geo/models/hometimesModel.dart';
 import 'widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-/*class HT extends StatefulWidget {
+
+class HT extends StatefulWidget {
 
   State createState() => new HTState();
   
@@ -20,8 +21,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 }
 
 class HTState extends State<HT> {
-  final String wifi="10.214.209.206";
-  final String wifiname="SmartCampus";
+  final String wifi="192.168.1.16";
+  final String wifiname="Livebox-581E";
 
   String _connectionStatus = 'Unknown';
   final Connectivity _connectivity = Connectivity();
@@ -35,15 +36,16 @@ class HTState extends State<HT> {
   final dataBase = DBProvider();
   List<HomeTimes> hometimes = [];
   bool resetCounterPressed = false;
-  String timeToDisplay = "00:00:00";
+  int timeToDisplay = 0;
   var swatch = Stopwatch();
   final dur = Duration(seconds: 1);
-  String day="";
-  String months="";
-  String year="";
+  int day= 0;
+  int months=0;
+  int year=0 ;
   String hours="";
   String min="";
-  String part="";
+  int part=0;
+  bool _changed;
   
 
 
@@ -51,49 +53,51 @@ class HTState extends State<HT> {
    String _monrouteur= "inconnu";
    String _mawifi="inconnu";
 
-    
-  @override
-  String todayDay() {
+  static int todayDay() {
     var now = new DateTime.now();
     var formatter = new DateFormat('dd');
     String formattedDate = formatter.format(now);
-    print(formattedDate);
-    return formattedDate;
+    int day = int.parse(formattedDate);
+    print('day : ' +formattedDate);
+    return day;
   }
-  String todayMonths() {
+
+  static int todayMonths() {
     var now = new DateTime.now();
     var formatter = new DateFormat('MM');
     String formattedDate = formatter.format(now);
-    print(formattedDate);
-    return formattedDate;
+    int month = int.parse(formattedDate);
+    print('month : ' + formattedDate);
+    return month;
 
   }
-  String todayYear() {
+  static int todayYear() {
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy');
     String formattedDate = formatter.format(now);
-    print(formattedDate);
-    return formattedDate;
-
+    int year = int.parse(formattedDate);
+    print('Year : ' + formattedDate);
+    return year;
   }
   String todayHours() {
     var now = new DateTime.now();
     String formattedTime = DateFormat('kk').format(now);
-    print(formattedTime);
+    print('Hours : ' + formattedTime);
     return formattedTime;
   }
   String todayMin() {
     var now = new DateTime.now();
     String formattedTime = DateFormat('mm').format(now);
-    print(formattedTime);
+    print('min : ' + formattedTime);
     return formattedTime;
 
   }
-  String today() {
+  int today() {
     var now = new DateTime.now();
     String formattedTime = DateFormat('a').format(now);
+    int a = int.parse(formattedTime);
     print(formattedTime);
-    return formattedTime;
+    return a;
   }
   void starttimer(){
     Timer(dur, keeprunning);
@@ -103,18 +107,15 @@ class HTState extends State<HT> {
       starttimer();
     }
     setState(() {
-      timeToDisplay = swatch.elapsed.inHours.toString().padLeft(2,"0") + ":"
-                      + (swatch.elapsed.inMinutes%60).toString().padLeft(2,"0") + ":"
-                      + (swatch.elapsed.inSeconds%60).toString().padLeft(2,"0");
-    });
-  }
+      timeToDisplay = (swatch.elapsed.inSeconds);
+    });  }
     void resetTimeCounter() {
     setState(() {
       resetCounterPressed = false;
 
     });
     swatch.reset();
-    timeToDisplay = "00:00:00";
+    timeToDisplay = 0;
   }
   void test() {
     
@@ -123,7 +124,7 @@ class HTState extends State<HT> {
        starttimer();
       keeprunning();
     }
-    else if ( (_monrouteur!=wifi || _mawifi != wifiname) && timeToDisplay != "00:00:00" ) {
+    else if ( (_monrouteur!=wifi || _mawifi != wifiname) && timeToDisplay != 0 ) {
       print(timeToDisplay);
      day=todayDay();
      months=todayMonths();
@@ -131,7 +132,7 @@ class HTState extends State<HT> {
      hours=todayHours();
      min=todayMin();
      part=today();
-    countTheHomeTimes;
+    //countTheHomeTimes;
 
 
     resetTimeCounter;
@@ -139,9 +140,8 @@ class HTState extends State<HT> {
 
     }
   }
-  String get countTheHomeTimes {
-   
-   
+
+  /*int get countTheHomeTimes {
    var hometime = new HomeTimes(
         id: null,
         theTime: timeToDisplay,
@@ -153,12 +153,11 @@ class HTState extends State<HT> {
         thePart : part,
       );
               HometimesManager(dbProvider).addNewHometimes(hometime); 
-      
-   
     return timeToDisplay;
- 
-}
+}*/
+
   void initState() {
+    _changed = true;
     super.initState();
     initConnectivity();
     _connectivitySubscription =
@@ -199,53 +198,225 @@ class HTState extends State<HT> {
     return _updateConnectionStatus(result);
   }
 
+  grapheDay(){
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    
-    List<charts.Series<HomeTimes, String>> data = withSampleData();
+    List<charts.Series<DataDay, String>> data;
+    _changed = false;
+    if(_changed)
     return new Container(
       child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-       new RepaintBoundary(
-                child: new SizedBox(
-                height: 192.0,
-                child: BuildtimesList().buildList(hometimes),
-               ),
-              ),  
-              Text(
-                          "Temps passé au domicile",
+               Center(
+                heightFactor: 20,
+                child: Text(
+                  'Acquisition en cours',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ), 
+              Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(Icons.home),
+                Padding(
+                  padding: EdgeInsets.only(left: 8.0, top: 20),
+                  child:
+                     Text('Home time: NULL'),
+                ),
+              ],),
+            
+              RaisedButton(
+                onPressed: () {
+                  setupList();
+                  setState(() {
+                    _changed ? _changed = false : _changed = true;
+                  });
+                },
+                child: Text(
+                  'Graphique',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+    else{
+      return new Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+         //color: Colors.red[300],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+              Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: <Widget>[
+                         RaisedButton(
+                onPressed: () {
+                  setState(() {
+                    _changed ? _changed = false : _changed = true;
+                  });
+                },
+
+   
+                child: 
+                  
+                Text(
+                  'Acquisition',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+                        Text(
+                          "Home Time",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
+                         new RepaintBoundary(
+                child: new SizedBox(
+                height: 192.0,
+                child:  BuildtimesList().buildList(hometimes),
+               ),
+              ), 
                         Container(
                           width: 300,
                           height: 200,
-                          child: charts.PieChart(data, animate: true, behaviors: [new charts.DatumLegend()]),
-                        ),  
-               ]
-                  
+                          child: FutureBuilder<List<charts.Series<DataDay, String>>>(
+                  future: withDataDay(), // a previously-obtained Future<String> or null
+                  builder: (context, snapshot) {
+                     if (snapshot.hasData) {
+                       data = snapshot.data;
+                       return charts.PieChart(data,behaviors: [
+        new charts.DatumLegend(
+          position: charts.BehaviorPosition.end,
+          horizontalFirst: false,
+          cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
+          showMeasures: true,
+          legendDefaultMeasure: charts.LegendDefaultMeasure.firstValue,
+          measureFormatter: (num value) {
+            return value == null ? '-' : '${value}H';},
         ),
-       
-        
+      ],
       );
-    
+                    } else if (snapshot.hasError) {
+                        return Text(
+                    'Error:\n\n${snapshot.error}',
+                    textAlign: TextAlign.center,
+                  );
+        } else {
+          return Text('Il n\'y a pas de données');
+        }
+                   } )
+                        )
+                          
+                      ],
+                    
+                  ),
+                ),
+              ), 
+                
+               ]        
+        ),        
+      ); 
+    }
   }
 
-  withSampleData() {
-    return (
-      _createSampleData()
+
+static Future<List<charts.Series<DataDay, String>>> withDataDay() async {
+      return (
+      await  _createDataDay()
     );
   }
+static Future<List<charts.Series<DataDay, String>>> withDataWeek() async {
+      return (
+      await  _createDataWeek()
+    );
+  }
+static Future<List<charts.Series<DataDay, String>>> withDataMonth() async {
+    return (
+    await  _createDataMonth()
+  );
+}
 
-  List<charts.Series<HomeTimes, String>> _createSampleData() {
-
+  static Future <List<charts.Series<DataDay, String>>> _createDataDay() async {
+    int d = todayDay();
+    int m = todayMonths();
+    int y = todayYear();
+    DBProvider().initDB();
+    var time = await DBProvider().getHomeTimesByDay(y,m,d);
+    var timeInHour = time%360;
+    var hour = 24-timeInHour;
+    final data = [
+      new DataDay(time, 'home'),
+      new DataDay(hour,'outside'),
+    ];
     return [
-      new charts.Series<HomeTimes, String>(
+      new charts.Series<DataDay, String>(
           id: 'wifi',
-          data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
-          data: hometimes,
-          domainFn: (HomeTimes hometimes, _) => hometimes.theTime,
-          measureFn: (HomeTimes hometimes, _) => hometimes.id,
+         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
+          data: data,
+          domainFn: (DataDay hometimes, _) => hometimes.location,
+          measureFn: (DataDay hometimes, _) => hometimes.time,
+      )
+    ];
+  }
+
+  static Future <List<charts.Series<DataDay, String>>> _createDataWeek() async {
+    int d = todayDay();
+    int m = todayMonths();
+    int y = todayYear();
+    DBProvider().initDB();
+    var time = await DBProvider().getHomeTimesMean(y,m,d,7);
+    var timeInHour = time%360;
+    var hour = 24-timeInHour;
+    final data = [
+      new DataDay(time, 'home'),
+      new DataDay(hour,'outside'),
+    ];
+    return [
+      new charts.Series<DataDay, String>(
+          id: 'wifi',
+         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
+          data: data,
+          domainFn: (DataDay hometimes, _) => hometimes.location,
+          measureFn: (DataDay hometimes, _) => hometimes.time,
+      )
+    ];
+  }
+
+  static Future <List<charts.Series<DataDay, String>>> _createDataMonth() async {
+    int d = todayDay();
+    int m = todayMonths();
+    int y = todayYear();
+    DBProvider().initDB();
+    var time = await DBProvider().getHomeTimesMean(y,m,d,30);
+    var timeInHour = time%360;
+    var hour = 24-timeInHour;
+    final data = [
+      new DataDay(time, 'home'),
+      new DataDay(hour,'outside'),
+    ];
+    return [
+      new charts.Series<DataDay, String>(
+          id: 'wifi',
+         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
+          data: data,
+          domainFn: (DataDay hometimes, _) => hometimes.location,
+          measureFn: (DataDay hometimes, _) => hometimes.time,
       )
     ];
   }
@@ -356,4 +527,12 @@ class HTState extends State<HT> {
     }
   }
 
-}*/
+}
+
+
+class DataDay {
+  final int time;
+  final String location;
+
+  DataDay(this.time, this.location);
+}

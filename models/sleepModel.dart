@@ -13,13 +13,13 @@ String sleepTimeToJson(SleepTime data) {
 
 class SleepTime{
   int id;
-  String duration;
-   String theDay;
-  String theMonths;
-  String theYear;
+  int duration;
+  int theDay;
+  int theMonths;
+  int theYear;
   String theHours;
   String theMin;
-  String thePart;
+  int thePart;
    
 
   SleepTime({this.id,this.duration,this.theDay,
