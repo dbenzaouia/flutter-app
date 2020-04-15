@@ -38,6 +38,12 @@ class _DeviceWithAvailability extends BluetoothDevice {
 
   _DeviceWithAvailability(this.device, this.availability, [this.rssi]);
 }
+class BlueObjet{
+  String name;
+  String fonction;
+
+ 
+}
 
 class BMState extends State<BM> {
   List<_DeviceWithAvailability> devices = List<_DeviceWithAvailability>();
@@ -51,6 +57,10 @@ class BMState extends State<BM> {
   DBProvider dbProvider = DBProvider.db;
   final dataBase = DBProvider();
   List<Blue> blues = [];
+  static BlueObjet bal=make("X8","media");
+  static BlueObjet ball=make("DESKTOP-0C0N5KJ","ordi");
+
+  List<BlueObjet> object=[bal,ball];
 
 
    bool resetCounterPressed = false;
@@ -59,7 +69,7 @@ class BMState extends State<BM> {
 
   final dur = Duration(seconds: 1);
   var now = DateTime.now();
-  String media_name="X8";
+  String media_name="DESKTOP-0C0N5KJ";
   String value="unkown";
   int day;
   int months;
@@ -67,11 +77,18 @@ class BMState extends State<BM> {
   int hours;
   int min;
   String part;
+  int val=0;
 
 
   BMState();
 
   @override
+   static BlueObjet make(String name,String fonction){
+    BlueObjet blue=new BlueObjet();
+    blue.name=name;
+    blue.fonction=fonction;
+    return blue;
+  }
 
   int todayDay() {
     var now = new DateTime.now();
@@ -194,10 +211,7 @@ class BMState extends State<BM> {
       setState(() {
         _bluetoothState = state;
       
-        if((_bluetoothState.toString()=="BluetoothState.STATE_ON")){
-          count=1;
-
-        }
+        
       FlutterBluetoothSerial.instance
         .getBondedDevices()
         .then((List<BluetoothDevice> bondedDevices) {
@@ -265,64 +279,67 @@ void liste() async{
 }
   
   void chrono(){
+    count=0;
+    print("longueur");
     print(devices.length);
-    if(devices.length>0){
+    if(devices.length>0 && value=="unkown" ){
       for (var i = 0; i < devices.length; i++) {
         print(devices[i].device.isConnected);
         print("i");
         print(i);
-        if(devices[i].device.isConnected){
-          count++;
-        }
-        print("count");
-        print(count);
-      }
-      print("fin for");
-      if(count>0){
-        for (var i = 0; i < devices.length; i++) {
-          if(devices[i].device.name == media_name && devices[i].device.isConnected){
+        for (var j = 0; j < object.length; j++) {
+          if(devices[i].device.isConnected && devices[i].device.name ==object[j].name && timeToDisplay==0){
+            print("je suis connecte aec ");
+            print(devices[i].device.name);
+            count++;
+            print("je suis la je lance le");
             print(devices[i].device.name);
             _save(devices[i].device.name);
             swatch.start();
             starttimer();
             keeprunning();
-            count=0;
+            val=1;
+            }
           }
-    
-          else if(devices[i].device.name != media_name && devices[i].device.isConnected){
-            print(devices[i].device.name);
-            _save(devices[i].device.name);
-            swatch.start();
-            starttimer();
-            keeprunning();
-
-            print("connection avec un autre app");
-            count=0;
-
-          } 
         }
-      }
-
-    else{
-      print("aucune connections et un/des app dispo/couple");
-      countTheTimeBlue;
-      print(timeToDisplay);
+      
+      print("fin for");
+    }
+    else if(devices.length>0 && value!="unkown" ){
+      print("je rentre else if");
+      for (var i = 0; i < devices.length; i++) {
+        print(devices[i].device.isConnected);
+        print("i");
+        print(i);
+          if(!devices[i].device.isConnected && devices[i].device.name ==value){
+            print("value iscon");
+            print(!devices[i].device.isConnected && devices[i].device.name ==value);
+                  countTheTimeBlue;
+            print(timeToDisplay);
       print(value);
       resetStepCounter();
-      count=0;
-
-      }
+            print("je suis pas connecte aec ");
+            print(devices[i].device.name);
+            print("je suis la je arrete le");
+            print(devices[i].device.name);
+            _save("unkown");
+            
+            
+          }
+        }
     }
-  else if (timeToDisplay !=0 ){
-      countTheTimeBlue;
-      print(value);
-      print(timeToDisplay);
-      resetStepCounter();
-    }
-  else{
+  else if (devices.length==0){
       print("aucune connections et pas d app dispo");
+      if(timeToDisplay>0 && value!="unkown"){
+         countTheTimeBlue;
+            print(timeToDisplay);
+      print(value);
+      resetStepCounter();
+
+      }
       print(timeToDisplay);
     }
+  
   }
    _save(name) async{
     final prefs = await SharedPreferences.getInstance();

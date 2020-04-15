@@ -16,11 +16,11 @@ class Steps {
   int id;
   int numberSteps;
   String theTime;
-   String theDay;
-  String theMonths;
-  String theYear;
-  String theHours;
-  String theMin;
+  int theDay;
+  int theMonths;
+  int theYear;
+  int theHours;
+  int theMin;
   String thePart;
 
   Steps({

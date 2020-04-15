@@ -8,6 +8,7 @@ import 'package:app/data/stepsManager.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:app/widget/list_widget.dart';
 import 'package:intl/intl.dart';
+import 'widget/pedometer_widget.dart';
 
 //import 'package:flutter_app/widget/pedometer_widget.dart';
 
@@ -26,14 +27,28 @@ class PedoState extends State<Pedo> {
   DBProvider dbProvider = DBProvider.db;
   final dataBase = DBProvider();
   int value = 0;
-  bool _changed;
+  int _changed=0;
   List<Steps> steps = [];
-    String day="";
-  String months="";
-  String year="";
-  String hours="";
-  String min="";
+  List<StepsDay> stepsday = [];
+  List<StepsDays> stepsdays = [];
+
+  List<StepsMonths> stepsmonths =[];
+  List<StepsDays> stepsweek =[];
+
+
+  int day=0;
+  int months=0;
+  int year=0;
+  int hours=0;
+  int min=0;
   String part="";
+  PedometerWidget pd = new PedometerWidget();
+  PedometerWidgetAnnuel pda = new PedometerWidgetAnnuel();
+  PedometerWidgetMonths pdm = new PedometerWidgetMonths();
+  PedometerWidgetWeek pdw = new PedometerWidgetWeek();
+
+
+
 
 
   bool resetCounterPressed = false;
@@ -46,38 +61,38 @@ class PedoState extends State<Pedo> {
 
 
   @override
-  String todayDay() {
+  int todayDay() {
     var now = new DateTime.now();
     var formatter = new DateFormat('dd');
-    String formattedDate = formatter.format(now);
+    int formattedDate = int.parse(formatter.format(now));
     print(formattedDate);
     return formattedDate;
   }
-  String todayMonths() {
+  int todayMonths() {
     var now = new DateTime.now();
     var formatter = new DateFormat('MM');
-    String formattedDate = formatter.format(now);
+    int formattedDate = int.parse(formatter.format(now));
     print(formattedDate);
     return formattedDate;
 
   }
-  String todayYear() {
+  int todayYear() {
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy');
-    String formattedDate = formatter.format(now);
+    int formattedDate = int.parse(formatter.format(now));
     print(formattedDate);
     return formattedDate;
 
   }
-  String todayHours() {
+  int todayHours() {
     var now = new DateTime.now();
-    String formattedTime = DateFormat('kk').format(now);
+    int formattedTime = int.parse(DateFormat('kk').format(now));
     print(formattedTime);
     return formattedTime;
   }
-  String todayMin() {
+  int todayMin() {
     var now = new DateTime.now();
-    String formattedTime = DateFormat('mm').format(now);
+    int formattedTime = int.parse(DateFormat('mm').format(now));
     print(formattedTime);
     return formattedTime;
 
@@ -159,10 +174,14 @@ class PedoState extends State<Pedo> {
   }
   void initState() {
     //initPlatformState();
-    _changed = true;
+    //_changed = 0;
     super.initState();
     startListening();
     setupList();
+    setupListDay();
+    setupListMonths();
+    setupListDays();
+    setupListWeek();
   }
 
   Future<void> initPlatformState() async {
@@ -216,8 +235,16 @@ class PedoState extends State<Pedo> {
  
  
  Widget build(BuildContext context) {
-    List<charts.Series<Steps, String>> series = withSampleData();
-    if(_changed)
+    List<charts.Series<StepsDay, String>> series = withSampleData();
+    List<charts.Series<StepsMonths, String>> seriesmonths = withSampleDatamonths();
+    List<charts.Series<StepsDays, String>> seriesdays = withSampleDataDays();
+    List<charts.Series<StepsDays, String>> seriesweek = withSampleDataWeek();
+
+    
+
+    
+
+    if(_changed==0)
       return new Container(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -247,11 +274,53 @@ class PedoState extends State<Pedo> {
                 onPressed: () {
                   setupList();
                   setState(() {
-                    _changed ? _changed = false : _changed = true;
+                     _changed = 1;
                   });
                 },
                 child: Text(
-                  'Graphique',
+                  'Graphique journalier',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  setupList();
+                  setState(() {
+                     _changed = 4;
+                  });
+                },
+                child: Text(
+                  'Graphique hebdomadaire',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+               RaisedButton(
+                onPressed: () {
+                  setupList();
+                  setState(() {
+                     _changed = 3;
+                  });
+                },
+                child: Text(
+                  'Graphique mensuel',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  setupList();
+                  setState(() {
+                    _changed = 2;
+                  });
+                },
+                child: Text(
+                  'Graphique annuel',
                   style: TextStyle(
                     fontSize: 20,
                   ),
@@ -260,8 +329,22 @@ class PedoState extends State<Pedo> {
             ],
           ),
         );
-    else{
-        return new Container(
+    else if (_changed==1){
+        return pd.pedometerWidget(50, series,stepsday);
+    }
+    else if(_changed==2){
+        return pda.pedometerWidget(50, seriesmonths,stepsmonths);
+
+    }
+      else if(_changed==3){
+        return pdm.pedometerWidget(50, seriesdays,stepsdays);
+
+    }
+    else if(_changed==4){
+        return pdw.pedometerWidget(50, seriesweek,stepsweek);
+
+    }
+        /*(
         alignment: Alignment.center,
         decoration: BoxDecoration(
          //color: Colors.red[300],
@@ -313,26 +396,112 @@ class PedoState extends State<Pedo> {
         ),
        
         
-      );    }
+      );    }*/
+  }
+  void setupListDay() async{
+    var _stepsday = await dataBase.getStepsDay(todayYear(),todayMonths(),todayDay());
+    print(_stepsday);
+    setState(() {
+      stepsday = _stepsday;
+    });
+  }
+    void setupListMonths() async{
+    var _stepsmonths = await dataBase.getStepsMonths(todayYear());
+    print(_stepsmonths);
+    setState(() {
+      stepsmonths = _stepsmonths;
+    });
+  }
+    void setupListDays() async{
+    var _stepsdays = await dataBase.getStepsperDay(todayYear(),todayMonths());
+    print(_stepsdays);
+    setState(() {
+      stepsdays = _stepsdays;
+    });
+  }
+   void setupListWeek() async{
+    var _stepsweek = await dataBase.getStepsWeek(todayYear(),todayMonths(),todayDay());
+    print(_stepsweek);
+    setState(() {
+      stepsweek = _stepsweek;
+    });
   }
 
   withSampleData() {
+    
     return (
       _createSampleData()
     );
   }
-
-  List<charts.Series<Steps, String>> _createSampleData() {
+  withSampleDataDays(){
+    
+    return (
+      _createSampleDataDays()
+    );
+  }
+  withSampleDatamonths() {
+    
+    return (
+      _createSampleDatamonths()
+    );
+  }
+   withSampleDataWeek() {
+    
+    return (
+      _createSampleDataWeek()
+    );
+  }
+  List<charts.Series<StepsDays, String>>   _createSampleDataDays(){
 
     return [
-      new charts.Series<Steps, String>(
-          id: 'Steps',
-          domainFn: (Steps steps, _) => steps.theTime,
-          measureFn: (Steps steps, _) => steps.numberSteps,
-          data: steps,
+      new charts.Series<StepsDays, String>(
+          id: 'StepsDays',
+          domainFn: (StepsDays stepsdays, _) => stepsdays.theDay,
+          measureFn: (StepsDays stepsdays, _) => stepsdays.numberSteps,
+          data: stepsdays,
           // Set a label accessor to control the text of the bar label.
-          labelAccessorFn: (Steps steps, _) =>
-              '${steps.numberSteps.toString()} pas')
+          labelAccessorFn: (StepsDays stepsdays, _) =>
+          '${stepsdays.numberSteps.toString()} pas'),     
     ];
   } 
+   List<charts.Series<StepsDays, String>>   _createSampleDataWeek(){
+
+    return [
+      new charts.Series<StepsDays, String>(
+          id: 'StepsWeek',
+          domainFn: (StepsDays stepsweek, _) => stepsweek.theDay,
+          measureFn: (StepsDays stepsweek, _) => stepsweek.numberSteps,
+          data: stepsweek,
+          // Set a label accessor to control the text of the bar label.
+          labelAccessorFn: (StepsDays stepsweek, _) =>
+          '${stepsweek.numberSteps.toString()} pas'),     
+    ];
+  } 
+
+  List<charts.Series<StepsDay, String>> _createSampleData() {
+
+    return [
+      new charts.Series<StepsDay, String>(
+          id: 'StepsDay',
+          domainFn: (StepsDay stepsday, _) => stepsday.theHour,
+          measureFn: (StepsDay stepsday, _) => stepsday.numberSteps,
+          data: stepsday,
+          // Set a label accessor to control the text of the bar label.
+          labelAccessorFn: (StepsDay stepsday, _) =>
+          '${stepsday.numberSteps.toString()} pas'),     
+    ];
+  } 
+    List<charts.Series<StepsMonths, String>> _createSampleDatamonths() {
+
+    return [
+      new charts.Series<StepsMonths, String>(
+          id: 'StepsMonths',
+          domainFn: (StepsMonths stepsmonths, _) => stepsmonths.theMonths,
+          measureFn: (StepsMonths stepsmonths, _) => stepsmonths.numberSteps,
+          data: stepsmonths,
+          // Set a label accessor to control the text of the bar label.
+          labelAccessorFn: (StepsMonths stepsmonths, _) =>
+          '${stepsmonths.numberSteps.toString()} pas'),     
+    ];
+  }
 }

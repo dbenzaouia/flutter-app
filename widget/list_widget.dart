@@ -11,22 +11,7 @@ import 'package:flutter/material.dart';
         itemBuilder: (BuildContext context, int index) {
           return Row(
             children: <Widget>[
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Id'),
-                    Text(steps[index].id.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('time'),
-                    Text(steps[index].theTime),
-                  ],
-                ),
-              ),
+              
               Container(
                 child: Column(
                   children: <Widget>[
@@ -39,7 +24,58 @@ import 'package:flutter/material.dart';
                 child: Column(
                   children: <Widget>[
                     Text('Day'),
-                    Text(steps[index].theDay),
+                    Text(steps[index].theDate,
+
+                    //Text(steps[index].theDay.toString()
+                    ),
+                  ],
+                ),
+              ),
+              
+             
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Hours'),
+                    Text(steps[index].theHour,
+                    ),
+                  ],
+                ),
+              ),
+              
+            
+            ],
+          );
+        },
+      ),
+    );
+    }
+    Widget buildStepListMonths(steps) {
+    return Container(
+      child: ListView.builder(
+        padding: EdgeInsets.all(5.0),
+        itemCount: steps.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Row(
+            children: <Widget>[
+              
+              
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('nb of steps'),
+                    Text(steps[index].numberSteps.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Day'),
+                    Text(steps[index].theDate,
+
+                    //Text(steps[index].theDay.toString()
+                    ),
                   ],
                 ),
               ),
@@ -47,48 +83,92 @@ import 'package:flutter/material.dart';
                 child: Column(
                   children: <Widget>[
                     Text('Months'),
-                    Text(steps[index].theMonths),
+                    Text(steps[index].theMonths,
+                    ),
                   ],
                 ),
               ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Year'),
-                    Text(steps[index].theYear),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Hours'),
-                    Text(steps[index].theHours),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Min'),
-                    Text(steps[index].theMin),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Part'),
-                    Text(steps[index].thePart),
-                  ],
-                ),
-              ),
+              
             ],
           );
         },
       ),
     );
     }
+    Widget buildStepListDays(steps) {
+    return Container(
+      child: ListView.builder(
+        padding: EdgeInsets.all(5.0),
+        itemCount: steps.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Row(
+            children: <Widget>[
+              
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('nb of steps'),
+                    Text(steps[index].numberSteps.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Day'),
+                    Text(steps[index].theDate,
+
+                    //Text(steps[index].theDay.toString()
+                    ),
+                  ],
+                ),
+              ),
+              
+            ],
+          );
+        },
+      ),
+    );
+    }
+    Widget  buildStepListWeek(steps) {
+    return Container(
+      child: ListView.builder(
+        padding: EdgeInsets.all(5.0),
+        itemCount: steps.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Row(
+            children: <Widget>[
+              
+              
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('nb of steps'),
+                    Text(steps[index].numberSteps.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Day'),
+                    Text(steps[index].theDate,
+
+                    //Text(steps[index].theDay.toString()
+                    ),
+                  ],
+                ),
+              ),
+              
+              
+              
+            ],
+          );
+        },
+      ),
+    );
+    }
+    
   }
 
    class BuildtimesList{
