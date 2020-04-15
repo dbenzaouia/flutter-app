@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
                 child: Column(
                   children: <Widget>[
                     Text('Id'),
-                    Text(steps[index].id.toString()),
+                    //Text(steps[index].id.toString()),
                   ],
                 ),
               ),
@@ -23,7 +23,7 @@ import 'package:flutter/material.dart';
                 child: Column(
                   children: <Widget>[
                     Text('time'),
-                    Text(steps[index].theTime),
+                    //Text(steps[index].theTime),
                   ],
                 ),
               ),
@@ -39,7 +39,10 @@ import 'package:flutter/material.dart';
                 child: Column(
                   children: <Widget>[
                     Text('Day'),
-                    Text(steps[index].theDay),
+                    Text(steps[index].theDate,
+
+                    //Text(steps[index].theDay.toString()
+                    ),
                   ],
                 ),
               ),
@@ -47,7 +50,7 @@ import 'package:flutter/material.dart';
                 child: Column(
                   children: <Widget>[
                     Text('Months'),
-                    Text(steps[index].theMonths),
+                    //Text(steps[index].theMonths.toString()),
                   ],
                 ),
               ),
@@ -55,7 +58,7 @@ import 'package:flutter/material.dart';
                 child: Column(
                   children: <Widget>[
                     Text('Year'),
-                    Text(steps[index].theYear),
+                    //Text(steps[index].theYear.toString()),
                   ],
                 ),
               ),
@@ -63,7 +66,8 @@ import 'package:flutter/material.dart';
                 child: Column(
                   children: <Widget>[
                     Text('Hours'),
-                    Text(steps[index].theHours),
+                    Text(steps[index].theHour,
+                    ),
                   ],
                 ),
               ),
@@ -71,7 +75,7 @@ import 'package:flutter/material.dart';
                 child: Column(
                   children: <Widget>[
                     Text('Min'),
-                    Text(steps[index].theMin),
+                    //Text(steps[index].theMin.toString()),
                   ],
                 ),
               ),
@@ -79,7 +83,7 @@ import 'package:flutter/material.dart';
                 child: Column(
                   children: <Widget>[
                     Text('Part'),
-                    Text(steps[index].thePart),
+                    //Text(steps[index].thePart),
                   ],
                 ),
               ),
@@ -89,6 +93,280 @@ import 'package:flutter/material.dart';
       ),
     );
     }
+    Widget buildStepListMonths(steps) {
+    return Container(
+      child: ListView.builder(
+        padding: EdgeInsets.all(5.0),
+        itemCount: steps.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Row(
+            children: <Widget>[
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Id'),
+                    //Text(steps[index].id.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('time'),
+                    //Text(steps[index].theTime),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('nb of steps'),
+                    Text(steps[index].numberSteps.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Day'),
+                    Text(steps[index].theDate,
+
+                    //Text(steps[index].theDay.toString()
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Months'),
+                    Text(steps[index].theMonths,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Year'),
+                    //Text(steps[index].theYear.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Hours'),
+                    //Text(steps[index].theHour,
+                    //),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Min'),
+                    //Text(steps[index].theMin.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Part'),
+                    //Text(steps[index].thePart),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+    }
+    Widget buildStepListDays(steps) {
+    return Container(
+      child: ListView.builder(
+        padding: EdgeInsets.all(5.0),
+        itemCount: steps.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Row(
+            children: <Widget>[
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Id'),
+                    //Text(steps[index].id.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('time'),
+                    //Text(steps[index].theTime),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('nb of steps'),
+                    Text(steps[index].numberSteps.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Day'),
+                    Text(steps[index].theDate,
+
+                    //Text(steps[index].theDay.toString()
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Months'),
+                    //Text(steps[index].theMonths,
+                    //),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Year'),
+                    //Text(steps[index].theYear.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Hours'),
+                    //Text(steps[index].theHour,
+                    //),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Min'),
+                    //Text(steps[index].theMin.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Part'),
+                    //Text(steps[index].thePart),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+    }
+    Widget  buildStepListWeek(steps) {
+    return Container(
+      child: ListView.builder(
+        padding: EdgeInsets.all(5.0),
+        itemCount: steps.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Row(
+            children: <Widget>[
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Id'),
+                    //Text(steps[index].id.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('time'),
+                    //Text(steps[index].theTime),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('nb of steps'),
+                    Text(steps[index].numberSteps.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Day'),
+                    Text(steps[index].theDate,
+
+                    //Text(steps[index].theDay.toString()
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Months'),
+                    //Text(steps[index].theMonths,
+                    //),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Year'),
+                    //Text(steps[index].theYear.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Hours'),
+                    //Text(steps[index].theHour,
+                    //),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Min'),
+                    //Text(steps[index].theMin.toString()),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text('Part'),
+                    //Text(steps[index].thePart),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+    }
+    
   }
 
    class BuildtimesList{
