@@ -1,15 +1,19 @@
 import 'dart:io';
-import 'package:flutter_app/models/sleepModel.dart';
-import 'package:flutter_app/models/stepsModel.dart';
-import 'package:flutter_app/models/hometimesModel.dart';
-import 'package:flutter_app/models/geoModel.dart';
-import 'package:flutter_app/models/activityModel.dart';
+import 'package:app/models/sleepModel.dart';
+import 'package:app/models/stepsModel.dart';
+import 'package:app/models/blueModel.dart';
+
+import 'package:app/models/hometimesModel.dart';
+import 'package:app/models/geoModel.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../configModel.dart';
+
+//import 'package:flutter_app/models/activityModel.dart';
+
 
 
 class DBProvider {
@@ -62,6 +66,10 @@ class DBProvider {
          theTime TEXT,theDay TEXT,theMonths TEXT,theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
          await db.execute('''CREATE TABLE Config (id INTEGER PRIMARY KEY AUTOINCREMENT, 
          wifiname TEXT,wifiIP TEXT,hometime INTEGER,sleeptime INTEGER,pedometre INTEGER)''');
+         await db.execute('''CREATE TABLE Blue(id INTEGER PRIMARY KEY AUTOINCREMENT, 
+         name TEXT,
+         theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours INTEGER,theMin INTEGER,thePart TEXT)''');
+
          await db.insert('Steps', newValue(1,220, 16,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(2,440, 16,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(3,330, 15, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
@@ -102,7 +110,6 @@ class DBProvider {
     var hourData = "00";
     var minData = "00";
     var nbJour = 31;
-
     for (var i = 1; i <= nbJour; i++) {
       var homeTimes = new HomeTimes(
       id: i,
@@ -434,6 +441,25 @@ Future<int> updateGeoloc(Geoloc newGeoloc) async {
     return db.update('Geoloc', newGeoloc.toMap(),
         where: 'id = ?', whereArgs: [newGeoloc.id], conflictAlgorithm: ConflictAlgorithm.replace);
   }
+   Future<int> addNewBlue(Blue newblue) async {
+    print('adding new data blue...');
+
+    final db = await database;
+    var raw = db.insert( 'Blue', newblue.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
+
+    print('data added blue !');
+    return raw;
+  }
+    Future<List<Blue>> fetchAllBlues() async {
+    var blue = await database;
+    var res = await blue.query('blue');
+
+    if (res.isNotEmpty) {
+      var theblue = res.map((stepMap) => Blue.fromMap(stepMap)).toList();
+      return theblue;
+    }
+    return [];
+  }
 
   }
   class StepsDay{
@@ -452,3 +478,13 @@ Future<int> updateGeoloc(Geoloc newGeoloc) async {
     String theDate;
   }
  
+
+
+
+
+  
+  
+ 
+
+  
+
