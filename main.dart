@@ -1,28 +1,42 @@
 import 'dart:io';
-
-import 'package:flutter/foundation.dart';
+import './design/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:app/models/sleepModel.dart';
+import 'package:flutter/services.dart';
+import './design/navigation_home_screen.dart';
+import './design/second_app_theme.dart';
 import 'pedometre.dart';
-import 'Configuration.dart';
-import 'hometime.dart';
 import 'sleepTime.dart';
 import 'userLocation.dart';
-import 'bluetoothmedia.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]).then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness:
+          Platform.isAndroid ? Brightness.dark : Brightness.light,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarDividerColor: Colors.grey,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.indigo,
+        textTheme: AppTheme.textTheme,
+        platform: TargetPlatform.iOS,
       ),
-      home: MyHomePage(),
+      home: NavigationHomeScreen(),
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
@@ -32,68 +46,20 @@ class MyApp extends StatelessWidget {
         // When navigating to the "/third" route, build the ThirdScreen widget.
         '/second': (context) => Second(),
         '/third': (context) => Third(),
-        '/fourth': (context) => Fourth(),
       },
     );
   }
 }
 
+class HexColor extends Color {
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  _MyHomePageState({Key key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: const Text('Flutter app'),
-      ),
-      body: SingleChildScrollView(
-        //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            RaisedButton(
-              child: Text('Open Pedometre'),
-              onPressed: () {
-                // Navigate to the first screen using a named route.
-                Navigator.pushNamed(context, '/first');
-              },
-            ),
-            RaisedButton(
-              child: Text('Open Hometime'),
-              onPressed: () {
-                // Navigate to the second screen using a named route.
-                Navigator.pushNamed(context, '/second');
-              },
-            ),
-            RaisedButton(
-              child: Text('Open Sleeptime'),
-              onPressed: () {
-                // Navigate to the third screen using a named route.
-                Navigator.pushNamed(context, '/third');
-              },
-            ),
-            RaisedButton(
-              child: Text('Open Setting'),
-              onPressed: () {
-                // Navigate to the third screen using a named route.
-                Navigator.pushNamed(context, '/fourth');
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF' + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
   }
 }
 
@@ -132,7 +98,7 @@ class _SecondState extends State<Second> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Locations"),
+        title: Text("Localisation"),
       ),
       body: SingleChildScrollView(
         //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
@@ -157,7 +123,7 @@ class _ThirdState extends State<Third> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sleep Time"),
+        title: Text("SleepTime"),
       ),
       body: SingleChildScrollView(
         //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
@@ -171,29 +137,3 @@ class _ThirdState extends State<Third> {
     );
   }
 }
-
-class Fourth extends StatefulWidget {
-  @override
-  _FourthState createState() => _FourthState();
-}
-
-class _FourthState extends State<Fourth> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Configuration"),
-      ),
-      body: SingleChildScrollView(
-        //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            new Configuration(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
