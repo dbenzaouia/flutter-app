@@ -17,12 +17,7 @@ class PedometerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-              Icon(Icons.directions_walk),
-              Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Text('Real time step counter: $nbSteps'),
-               ),
+          children: <Widget>[              
               Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -68,11 +63,6 @@ class PedometerWidgetAnnuel {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-              Icon(Icons.directions_walk),
-              Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Text('Real time step counter: $nbSteps'),
-               ),
               Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -118,11 +108,6 @@ class PedometerWidgetMonths {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-              Icon(Icons.directions_walk),
-              Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Text('Real time step counter: $nbSteps'),
-               ),
               Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -168,11 +153,6 @@ class PedometerWidgetWeek {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-              Icon(Icons.directions_walk),
-              Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Text('Real time step counter: $nbSteps'),
-               ),
               Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

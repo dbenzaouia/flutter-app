@@ -11,22 +11,7 @@ import 'package:flutter/material.dart';
         itemBuilder: (BuildContext context, int index) {
           return Row(
             children: <Widget>[
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Id'),
-                    //Text(steps[index].id.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('time'),
-                    //Text(steps[index].theTime),
-                  ],
-                ),
-              ),
+              
               Container(
                 child: Column(
                   children: <Widget>[
@@ -46,22 +31,8 @@ import 'package:flutter/material.dart';
                   ],
                 ),
               ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Months'),
-                    //Text(steps[index].theMonths.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Year'),
-                    //Text(steps[index].theYear.toString()),
-                  ],
-                ),
-              ),
+              
+             
               Container(
                 child: Column(
                   children: <Widget>[
@@ -71,22 +42,8 @@ import 'package:flutter/material.dart';
                   ],
                 ),
               ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Min'),
-                    //Text(steps[index].theMin.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Part'),
-                    //Text(steps[index].thePart),
-                  ],
-                ),
-              ),
+              
+            
             ],
           );
         },
@@ -101,22 +58,8 @@ import 'package:flutter/material.dart';
         itemBuilder: (BuildContext context, int index) {
           return Row(
             children: <Widget>[
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Id'),
-                    //Text(steps[index].id.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('time'),
-                    //Text(steps[index].theTime),
-                  ],
-                ),
-              ),
+              
+              
               Container(
                 child: Column(
                   children: <Widget>[
@@ -145,39 +88,7 @@ import 'package:flutter/material.dart';
                   ],
                 ),
               ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Year'),
-                    //Text(steps[index].theYear.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Hours'),
-                    //Text(steps[index].theHour,
-                    //),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Min'),
-                    //Text(steps[index].theMin.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Part'),
-                    //Text(steps[index].thePart),
-                  ],
-                ),
-              ),
+              
             ],
           );
         },
@@ -192,22 +103,7 @@ import 'package:flutter/material.dart';
         itemBuilder: (BuildContext context, int index) {
           return Row(
             children: <Widget>[
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Id'),
-                    //Text(steps[index].id.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('time'),
-                    //Text(steps[index].theTime),
-                  ],
-                ),
-              ),
+              
               Container(
                 child: Column(
                   children: <Widget>[
@@ -227,48 +123,7 @@ import 'package:flutter/material.dart';
                   ],
                 ),
               ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Months'),
-                    //Text(steps[index].theMonths,
-                    //),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Year'),
-                    //Text(steps[index].theYear.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Hours'),
-                    //Text(steps[index].theHour,
-                    //),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Min'),
-                    //Text(steps[index].theMin.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Part'),
-                    //Text(steps[index].thePart),
-                  ],
-                ),
-              ),
+              
             ],
           );
         },
@@ -283,22 +138,8 @@ import 'package:flutter/material.dart';
         itemBuilder: (BuildContext context, int index) {
           return Row(
             children: <Widget>[
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Id'),
-                    //Text(steps[index].id.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('time'),
-                    //Text(steps[index].theTime),
-                  ],
-                ),
-              ),
+              
+              
               Container(
                 child: Column(
                   children: <Widget>[
@@ -318,48 +159,9 @@ import 'package:flutter/material.dart';
                   ],
                 ),
               ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Months'),
-                    //Text(steps[index].theMonths,
-                    //),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Year'),
-                    //Text(steps[index].theYear.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Hours'),
-                    //Text(steps[index].theHour,
-                    //),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Min'),
-                    //Text(steps[index].theMin.toString()),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Text('Part'),
-                    //Text(steps[index].thePart),
-                  ],
-                ),
-              ),
+              
+              
+              
             ],
           );
         },
