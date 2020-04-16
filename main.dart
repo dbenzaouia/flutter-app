@@ -1,43 +1,31 @@
 import 'dart:io';
-import './design/app_theme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import './design/navigation_home_screen.dart';
-import './design/second_app_theme.dart';
-import 'pedometre.dart';
-import 'sleepTime.dart';
-import 'homeTime.dart';
-import 'userLocation.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
-  ]).then((_) => runApp(MyApp()));
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_app/models/sleepModel.dart';
+import 'pedometre.dart';
+import 'Configuration.dart';
+import 'hometime.dart';
+import 'sleepTime.dart';
+import 'userLocation.dart';
+import 'bluetoothmedia.dart';
+import 'PedoGraph.dart';
+import 'package:flutter/services.dart';
+
+
+void main() {
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness:
-          Platform.isAndroid ? Brightness.dark : Brightness.light,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarDividerColor: Colors.grey,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
     return MaterialApp(
-      title: 'Flutter App',
-      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        textTheme: AppTheme.textTheme,
-        platform: TargetPlatform.iOS,
+        primarySwatch: Colors.green,
       ),
-      home: NavigationHomeScreen(),
+      home: MyHomePage(),
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
@@ -48,21 +36,82 @@ class MyApp extends StatelessWidget {
         '/second': (context) => Second(),
         '/third': (context) => Third(),
         '/fourth': (context) => Fourth(),
-        '/fifth': (context) => Fifth(),
       },
     );
   }
 }
 
-class HexColor extends Color {
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll('#', '');
-    if (hexColor.length == 6) {
-      hexColor = 'FF' + hexColor;
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  _MyHomePageState({Key key});
+
+  @override
+    void initState() {
+    super.initState();
+    startServiceInPlatform();
+
     }
-    return int.parse(hexColor, radix: 16);
+      void startServiceInPlatform() async {
+    if(Platform.isAndroid){
+      var methodChannel = MethodChannel("com.retroportalstudio.messages");
+      String data = await methodChannel.invokeMethod("startService");
+      debugPrint(data);
+    }
+  }
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        title: const Text('Flutter app'),
+      ),
+      body: SingleChildScrollView(
+        //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            new Pedo(),
+
+            RaisedButton(
+              child: Text('Open Graph Pedometre'),
+              onPressed: () {
+                // Navigate to the first screen using a named route.
+                Navigator.pushNamed(context, '/first');
+              },
+            ),
+            
+            RaisedButton(
+              child: Text('Open Hometime'),
+              onPressed: () {
+                // Navigate to the second screen using a named route.
+                Navigator.pushNamed(context, '/second');
+              },
+            ),
+            RaisedButton(
+              child: Text('Open Sleeptime'),
+              onPressed: () {
+                // Navigate to the third screen using a named route.
+                Navigator.pushNamed(context, '/third');
+              },
+            ),
+            RaisedButton(
+              child: Text('Open Setting'),
+              onPressed: () {
+                // Navigate to the third screen using a named route.
+                Navigator.pushNamed(context, '/fourth');
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -76,14 +125,14 @@ class _FirstState extends State<First> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Podometre"),
+        title: Text("Pedometre"),
       ),
       body: SingleChildScrollView(
         //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Pedo(),
+            new PedoGraph(),
           ],
         ),
       ),
@@ -101,14 +150,14 @@ class _SecondState extends State<Second> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("HomeTime"),
+        title: Text("Locations"),
       ),
       body: SingleChildScrollView(
         //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new HT(),
+            new Locations(),
           ],
         ),
       ),
@@ -126,7 +175,7 @@ class _ThirdState extends State<Third> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SleepTime"),
+        title: Text("Sleep Time"),
       ),
       body: SingleChildScrollView(
         //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
@@ -151,14 +200,14 @@ class _FourthState extends State<Fourth> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Location"),
+        title: Text("Configuration"),
       ),
       body: SingleChildScrollView(
         //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Locations(),
+            new Configuration(),
           ],
         ),
       ),
@@ -166,27 +215,3 @@ class _FourthState extends State<Fourth> {
   }
 }
 
-class Fifth extends StatefulWidget {
-  @override
-  _FifthState createState() => _FifthState();
-}
-
-class _FifthState extends State<Fifth> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Bluetooth"),
-      ),
-      body: SingleChildScrollView(
-        //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            new MytestPage(),
-          ],
-        ),
-      ),
-    );
-  }
-}

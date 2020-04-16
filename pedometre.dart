@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:app/models/stepsModel.dart';
-import 'package:app/data/database.dart';
-import 'package:app/data/stepsManager.dart';
+import 'package:flutter_app/models/stepsModel.dart';
+import 'package:flutter_app/data/database.dart';
+import 'package:flutter_app/data/stepsManager.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:app/widget/list_widget.dart';
+import 'package:flutter_app/widget/list_widget.dart';
 import 'package:intl/intl.dart';
 import 'widget/pedometer_widget.dart';
 
-//import 'package:flutter_app/widget/pedometer_widget.dart';
+import 'package:flutter_app/widget/pedometer_widget.dart';
 
 
 
@@ -171,7 +171,9 @@ class PedoState extends State<Pedo> {
     for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
       subscription.cancel();
     }
+    
   }
+
   void initState() {
     //initPlatformState();
     //_changed = 0;
@@ -232,9 +234,29 @@ class PedoState extends State<Pedo> {
       steps = _steps;
     });
   }
+  Widget build(BuildContext context) {
+     return new Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+               Center(
+                heightFactor: 20,
+                child: Text(
+                  'Podometre allumé avec nb = $countTheSteps',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ), 
+                
+            ],
+          ),
+        );
+
+  }
  
- 
- Widget build(BuildContext context) {
+ /*Widget build(BuildContext context) {
     List<charts.Series<StepsDay, String>> series = withSampleData();
     List<charts.Series<StepsMonths, String>> seriesmonths = withSampleDatamonths();
     List<charts.Series<StepsDays, String>> seriesdays = withSampleDataDays();
@@ -397,7 +419,7 @@ class PedoState extends State<Pedo> {
        
         
       );    }*/
-  }
+  }*/
   void setupListDay() async{
     var _stepsday = await dataBase.getStepsDay(todayYear(),todayMonths(),todayDay());
     print(_stepsday);
