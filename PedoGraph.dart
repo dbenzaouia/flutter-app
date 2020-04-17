@@ -488,6 +488,8 @@ class PedoGraphState extends State<PedoGraph> {
    void setupListWeek() async{
     DateTime datas=data[data.length-1];
     print(datas);
+    //var _stepsweek = await dataBase.getStepsWeek(2020,1,5);
+
     var _stepsweek = await dataBase.getStepsWeek(int.parse(todayYear()),int.parse(todayMonths()),int.parse(todayDay()));
     print(_stepsweek);
     setState(() {

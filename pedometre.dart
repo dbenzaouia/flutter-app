@@ -39,7 +39,7 @@ class PedoState extends State<Pedo> {
   int day=0;
   int months=0;
   int year=0;
-  int hours=0;
+  String hours="";
   int min=0;
   String part="";
   PedometerWidget pd = new PedometerWidget();
@@ -84,9 +84,9 @@ class PedoState extends State<Pedo> {
     return formattedDate;
 
   }
-  int todayHours() {
+  String todayHours() {
     var now = new DateTime.now();
-    int formattedTime = int.parse(DateFormat('kk').format(now));
+    String formattedTime = (DateFormat('kk').format(now));
     print(formattedTime);
     return formattedTime;
   }
@@ -145,7 +145,9 @@ class PedoState extends State<Pedo> {
      day=todayDay();
      months=todayMonths();
      year=todayYear();
-     hours=todayHours();
+     hours= (todayHours());
+     print(hours);
+     print("l heure ajout $hours");
      min=todayMin();
      part=today();
    var step = new Steps(
@@ -161,6 +163,7 @@ class PedoState extends State<Pedo> {
       );
       if(step.numberSteps != 0){
               StepsManager(dbProvider).addNewSteps(step); 
+              
       }
    }
     return int.parse('$_stepCountValue')-value;
