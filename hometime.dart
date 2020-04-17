@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:projet_geo/data/database.dart';
-import 'package:projet_geo/data/hometimesManager.dart';
-import 'package:projet_geo/models/hometimesModel.dart';
+import 'package:flutter_app/data/database.dart';
+import 'package:flutter_app/data/hometimesManager.dart';
+import 'package:flutter_app/models/hometimesModel.dart';
 import 'widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -21,8 +21,8 @@ class HT extends StatefulWidget {
 }
 
 class HTState extends State<HT> {
-  final String wifi="192.168.1.16";
-  final String wifiname="Livebox-581E";
+  final String wifi="10.214.209.206";
+  final String wifiname="SmartCampus";
 
   String _connectionStatus = 'Unknown';
   final Connectivity _connectivity = Connectivity();
@@ -44,7 +44,7 @@ class HTState extends State<HT> {
   int year=0 ;
   String hours="";
   String min="";
-  int part=0;
+  String part="";
   bool _changed;
   
 
@@ -92,12 +92,11 @@ class HTState extends State<HT> {
     return formattedTime;
 
   }
-  int today() {
+  String today() {
     var now = new DateTime.now();
     String formattedTime = DateFormat('a').format(now);
-    int a = int.parse(formattedTime);
     print(formattedTime);
-    return a;
+    return formattedTime;
   }
   void starttimer(){
     Timer(dur, keeprunning);

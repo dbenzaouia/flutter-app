@@ -5,7 +5,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:projet_geo/models/sleepModel.dart';
+import 'package:flutter_app/models/sleepModel.dart';
 import 'package:sensors/sensors.dart';
 import 'package:light/light.dart';
 import 'widget/sleepTrack_widget.dart';
@@ -52,7 +52,7 @@ class _MytestPageState extends State<MytestPage> {
   int year=0;
   String hours="";
   String min="";
-  int part=0;
+  String part="";
 
   String _luxString = 'Unknown';
   Light _light;
@@ -104,12 +104,11 @@ static int todayDay() {
     return formattedTime;
 
   }
-  static int today() {
+  static String today() {
     var now = new DateTime.now();
     String formattedTime = DateFormat('a').format(now);
-    int a = int.parse(formattedTime);
     print(formattedTime);
-    return a;
+    return formattedTime;
 
 
   }
@@ -434,11 +433,12 @@ Future<void> initConnectivity() async {
     int m = todayMonths();
     int y = todayYear();
     DBProvider().initDB();
-    var time = await DBProvider().getSleepByDay(y,m,d);
+     var time = await DBProvider().getSleepByDay(y,m,d);
+    print(time);
     var hour = 24-time;
     final data = [
-      new DataDay(time, 'home'),
-      new DataDay(hour,'outside'),
+      new DataDay(time, 'sleep'),
+      new DataDay(hour,'awake'),
     ];
     return [
       new charts.Series<DataDay, String>(
@@ -459,8 +459,8 @@ Future<void> initConnectivity() async {
     var time = await DBProvider().getSleepTimesMean(y,m,d,7);
     var hour = 24-time;
     final data = [
-      new DataDay(time, 'home'),
-      new DataDay(hour,'outside'),
+      new DataDay(time, 'sleep'),
+      new DataDay(hour,'awake'),
     ];
     return [
       new charts.Series<DataDay, String>(
@@ -481,8 +481,8 @@ static Future <List<charts.Series<DataDay, String>>>_createDataMonth() async {
     var time = await DBProvider().getSleepTimesMean(y,m,d,30);
     var hour = 24-time;
     final data = [
-      new DataDay(time, 'home'),
-      new DataDay(hour,'outside'),
+      new DataDay(time, 'sleep'),
+      new DataDay(hour,'awake'),
     ];
     return [
       new charts.Series<DataDay, String>(
