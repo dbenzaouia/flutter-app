@@ -15,3 +15,7 @@ Add this dependency in pubspec.yaml :
   new_geolocation: ^1.0.0
   geocoder: ^0.2.1
   geolocator: ^5.1.5
+
+
+modify the minsdkVersion to 21 in android/app/build.gradle (defaultconfig)
+add this line "<uses-sdk android:minSdkVersion="21"/>" in android/src/debug/AndroidManifest.xml
