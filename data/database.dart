@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:projet_geo/models/sleepModel.dart';
-import 'package:projet_geo/models/stepsModel.dart';
-import 'package:projet_geo/models/hometimesModel.dart';
-import 'package:projet_geo/models/blueModel.dart';
-import 'package:projet_geo/models/geoModel.dart';
+import 'package:flutter_app/models/sleepModel.dart';
+import 'package:flutter_app/models/stepsModel.dart';
+import 'package:flutter_app/models/hometimesModel.dart';
+import 'package:flutter_app/models/blueModel.dart';
+import 'package:flutter_app/models/geoModel.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -50,14 +50,14 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB118912123123.db");
+    String path = join(documentsDirectory.path, "TestDB118912123123129998888777123112244.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
           await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
                           diffDuration INTEGER, distance INTEGER, coordinates TEXT, vitesse INTEGER, pas INTEGER)''');
           await db.execute('''CREATE TABLE Steps (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                          numberSteps INTEGER, theTime TEXT,theDay TEXT,theMonths TEXT,
-                          theYear TEXT,theHours TEXT,theMin TEXT,thePart TEXT)''');
+                          numberSteps INTEGER, theTime INTEGER,theDay INTEGER,theMonths INTEGER,
+                          theYear INTEGER,theHours INTEGER,theMin INTEGER,thePart TEXT)''');
           await db.execute('''CREATE TABLE Sleep (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           duration INTEGER,theDay INTEGER,theMonths INTERGER,theYear INTEGER,
                           theHours TEXT,theMin TEXT,thePart INTEGER)''');
@@ -102,7 +102,7 @@ class DBProvider {
          await db.insert('Steps', newValue(30,50, 10,11,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(31,68, 19,12,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
           print('database created!');
-
+/*
     var nbJour = 30;
     for (var i = 1; i <= nbJour; i++) {
       var homeTimes = new HomeTimes(
@@ -127,7 +127,7 @@ class DBProvider {
     );
     addNewHomeTimes(homeTimes);
     addNewSleepTime(sleepTimes);
-    }
+    }*/
     /*for (var i = 1; i <= nbJour; i) {
       for (var j = 0; j<= 24; j++){
       var nb = 0;
@@ -417,7 +417,7 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
     print('$yyyy, $mm, $dd');
     final db = await database;
     print("result");
-    var results = await db.rawQuery('SELECT theTime FROM HomeTime WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $dd');
+    var results = await db.rawQuery('SELECT theTime FROM HomeTime WHERE theYear = $yyyy AND theMonth = $mm AND theDay = $dd');
     print("pas de result");
     print(results.length);
     if (results.length > 0) {
@@ -442,7 +442,7 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
 
 Future<int> getSleepByDay(int yyyy, int mm, int dd) async {
     final db = await database;
-    var results = await db.rawQuery('SELECT duration FROM Sleep WHERE theYear = $yyyy AND theMonth = $mm AND theDay = $dd');
+    var results = await db.rawQuery('SELECT duration FROM Sleep WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $dd');
     if (results.length > 0) {
       return new SleepTime.fromMap(results.first).id;
     }
