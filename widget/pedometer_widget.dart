@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:app/widget/list_widget.dart';
-import 'package:app/pedometre.dart';
+import 'package:flutter_app/widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:app/models/stepsModel.dart';
-import 'package:app/data/database.dart';
+import 'package:flutter_app/data/database.dart';
 
 
 
@@ -12,7 +10,6 @@ class PedometerWidget {
       return new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-         //color: Colors.red[300],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -24,7 +21,7 @@ class PedometerWidget {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Number of steps per day",
+                          "Daily:Number of steps per hour",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(
@@ -32,6 +29,7 @@ class PedometerWidget {
                           height: 300,
                           child: charts.BarChart(series, animate: true),
                         ),
+                        
                       ],
                     
                   ),
@@ -57,7 +55,6 @@ class PedometerWidgetAnnuel {
       return new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-         //color: Colors.red[300],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -69,7 +66,7 @@ class PedometerWidgetAnnuel {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Number of steps per months",
+                          "Annual:Number of steps per months",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(
@@ -88,11 +85,8 @@ class PedometerWidgetAnnuel {
                 child: BuildStepList().buildStepListMonths(steps),
                ),
               ),   
-               ]
-                  
+               ]       
         ),
-       
-        
       );
 
   }
@@ -102,7 +96,6 @@ class PedometerWidgetMonths {
       return new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-         //color: Colors.red[300],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -114,7 +107,7 @@ class PedometerWidgetMonths {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Number of steps per months",
+                          "Monthly:Number of steps per day",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(
@@ -136,8 +129,6 @@ class PedometerWidgetMonths {
                ]
                   
         ),
-       
-        
       );
 
   }
@@ -147,7 +138,6 @@ class PedometerWidgetWeek {
       return new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-         //color: Colors.red[300],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -159,7 +149,7 @@ class PedometerWidgetWeek {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Number of steps per week",
+                          "Weekly :Number of steps per day",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(
