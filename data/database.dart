@@ -33,6 +33,31 @@ class DBProvider {
     print('initialisation db ');
     return _database;
   }
+  newHometime(int id, int day,int months,int year,int time ) {
+   var map = Map<String, dynamic>();
+    map['id'] = id;
+    map['theTime'] = time;
+    map['theDay'] = day;
+    map['theMonths'] = months;
+    map['theYear'] = year;
+    map['theHours'] = 2;
+    map['theMin'] = 0;
+    map['thePart'] = 'AM';
+    return map;
+ } 
+
+   newSleep(int id, int day, int months,int year, int duration) {
+   var map = Map<String, dynamic>();
+    map['id'] = id;
+    map['duration'] = duration;
+    map['theDay'] = day;
+    map['theMonths'] = months;
+    map['theYear'] = year;
+    map['theHours'] = 12;
+    map['theMin'] = 0;
+    map['thePart'] = 'AM';
+    return map;
+ }
 
   newValue(int id, int steps, int day,int months,int year,int hours,int min ) {
    var map = Map<String, dynamic>();
@@ -50,7 +75,7 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB118912123123129998888777123112244.db");
+    String path = join(documentsDirectory.path, "TestDB11891212312312991199888087771231122414.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
           await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
@@ -60,10 +85,10 @@ class DBProvider {
                           theYear INTEGER,theHours INTEGER,theMin INTEGER,thePart TEXT)''');
           await db.execute('''CREATE TABLE Sleep (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           duration INTEGER,theDay INTEGER,theMonths INTERGER,theYear INTEGER,
-                          theHours TEXT,theMin TEXT,thePart INTEGER)''');
+                          theHours TEXT,theMin TEXT,thePart TEXT)''');
           await db.execute('''CREATE TABLE HomeTime (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,
-                          theHours TEXT,theMin TEXT,thePart INTEGER)''');
+                          theHours TEXT,theMin TEXT,thePart TEXT)''');
           await db.execute('''CREATE TABLE Config (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           wifiname TEXT,wifiIP TEXT,hometime INTEGER,sleeptime INTEGER,
                           pedometre INTEGER)''');
@@ -102,6 +127,13 @@ class DBProvider {
          await db.insert('Steps', newValue(30,50, 10,11,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(31,68, 19,12,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
           print('database created!');
+          var nbJour = 30;
+    for (var i = 1; i <= nbJour; i++) {
+      var theTime = 16 + Random().nextInt(9); //valeur entre 16 et 24 
+      var duration = 4 + Random().nextInt(9); //valeur entre 4 et 12
+      await db.insert('HomeTime', newHometime(i, i, 04,2020, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert('Sleep', newSleep(i, i, 04,2020, duration),  conflictAlgorithm: ConflictAlgorithm.replace);  
+    }
 /*
     var nbJour = 30;
     for (var i = 1; i <= nbJour; i++) {
@@ -113,7 +145,7 @@ class DBProvider {
       theYear: 2020,
       theHours: "20:00",
       theMin: "20:00",
-      thePart: 0,
+      thePart: "AM",
     );
     var sleepTimes = new SleepTime(
       id: i,
@@ -123,11 +155,12 @@ class DBProvider {
       theYear: 2020,
       theHours: "20:00",
       theMin: "20:00",
-      thePart: 0,
+      thePart: "AM",
     );
     addNewHomeTimes(homeTimes);
     addNewSleepTime(sleepTimes);
-    }*/
+    }
+    */
     /*for (var i = 1; i <= nbJour; i) {
       for (var j = 0; j<= 24; j++){
       var nb = 0;
@@ -168,6 +201,10 @@ class DBProvider {
       }
     }*/
   });
+}
+int NombreMois(int mois){
+  List<int> tab=[31,28,31,30,31,30,31,31,30,31,30,31];
+  return tab[mois];
 }
 
 Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
@@ -237,8 +274,8 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
      List<StepsDays> res =[];
     
 
-
-    for (var i = 1; i < 32; i++) {
+    int num=NombreMois(m);
+    for (var i = 1; i < num+1; i++) {
       StepsDays stepsdays=new StepsDays();
       stepsdays.theDate=i.toString()+'/'+m.toString()+'/'+y.toString();
       stepsdays.theDay=i.toString();
@@ -266,8 +303,15 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
   }
   Future<List<StepsDays>> getStepsWeek(int y, int m,int d) async {
      List<StepsDays> res =[];
-    
-
+     int num;
+     int change=0;
+    if(m>1){
+      num=NombreMois(m-1);
+    }
+    else{
+      num=12;
+      change=1;
+    }
     if(d>7){
       for (var i = d-7+1; i < d+1; i++) {
         StepsDays stepsdays=new StepsDays();
@@ -279,7 +323,7 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
       }
     else{
       int a=7-d;
-      for (var i = 31-a; i < 31; i++) {
+      for (var i = num-a; i < num; i++) {
         StepsDays stepsdays=new StepsDays();
         stepsdays.theDate=i.toString()+'/'+m.toString()+'/'+y.toString();
         stepsdays.theDay=i.toString();
@@ -443,9 +487,6 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
 Future<int> getSleepByDay(int yyyy, int mm, int dd) async {
     final db = await database;
     var results = await db.rawQuery('SELECT duration FROM Sleep WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $dd');
-    if (results.length > 0) {
-      return new SleepTime.fromMap(results.first).id;
-    }
     var sleepTime = 0;
     var theTime = 0;
     for (var i = 0; i < results.length; i++) {
