@@ -59,7 +59,7 @@ class DBProvider {
     return map;
  }
 
-  newValue(int id, int steps, int day,int months,int year,int hours,int min ) {
+  newValue(int id, int steps, int day,int months,int year,String hours,int min ) {
    var map = Map<String, dynamic>();
     map['id'] = id;
     map['numberSteps']=steps;
@@ -75,14 +75,14 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB11891212312312991199888087771231122414.db");
+    String path = join(documentsDirectory.path, "TestDB118912123112312129911998980808777123011221414.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
           await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
                           diffDuration INTEGER, distance INTEGER, coordinates TEXT, vitesse INTEGER, pas INTEGER)''');
           await db.execute('''CREATE TABLE Steps (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           numberSteps INTEGER, theTime INTEGER,theDay INTEGER,theMonths INTEGER,
-                          theYear INTEGER,theHours INTEGER,theMin INTEGER,thePart TEXT)''');
+                          theYear INTEGER,theHours TEXT,theMin INTEGER,thePart TEXT)''');
           await db.execute('''CREATE TABLE Sleep (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           duration INTEGER,theDay INTEGER,theMonths INTERGER,theYear INTEGER,
                           theHours TEXT,theMin TEXT,thePart TEXT)''');
@@ -95,15 +95,15 @@ class DBProvider {
           await db.execute('''CREATE TABLE Blue(id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           name TEXT, theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours INTEGER,theMin INTEGER,thePart TEXT)''');
          
-         await db.insert('Steps', newValue(1,220, 16,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(2,440, 16,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(3,330, 15, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(4,110, 15,4,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(5,50, 8,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(6,68, 9,4,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(7,220, 14,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(8,440, 13,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(9,330, 12, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(1,220, 17,4,2020,"11",40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(2,440, 17,4,2020,"8",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(3,330, 17, 4,2020,"9",9),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(4,110, 17,4,2020,"7",5),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(5,50, 17,4,2020,"5",8),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(6,68, 17,4,2020,"3",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(7,220, 17,4,2020,"1",40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(8,440, 17,4,2020,"0",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         /*await db.insert('Steps', newValue(9,330, 12, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(10,110, 11,4,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(11,50, 10,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(12,68, 19,4,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
@@ -114,11 +114,11 @@ class DBProvider {
          await db.insert('Steps', newValue(17,50, 3,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(18,68, 2,4,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(19,220, 1,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(20,440, 13,1,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(21,330, 12, 2,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(22,110, 11,3,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(23,50, 10,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(24,68, 19,5,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(20,440, 5,1,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(21,330, 4, 1,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(22,110, 3,1,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(23,50, 1,1,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(24,68, 30,12,2019,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(25,330, 12, 6,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(26,110, 11,7,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(27,50, 10,8,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
@@ -126,7 +126,7 @@ class DBProvider {
          await db.insert('Steps', newValue(29,110, 11,10,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(30,50, 10,11,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(31,68, 19,12,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-          print('database created!');
+          */print('database created!');
           var nbJour = 30;
     for (var i = 1; i <= nbJour; i++) {
       var theTime = 16 + Random().nextInt(9); //valeur entre 16 et 24 
@@ -204,19 +204,27 @@ class DBProvider {
 }
 int NombreMois(int mois){
   List<int> tab=[31,28,31,30,31,30,31,31,30,31,30,31];
-  return tab[mois];
+  return tab[mois-1];
 }
 
-Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
+Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
     final db = await database;
-    var results = await db.rawQuery('SELECT numberSteps FROM Steps WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $dd AND theHours = $h AND thePart = "$part" ' );
+    print("heure appel");
+    print(h);
+    var results = await db.rawQuery('SELECT * FROM Steps WHERE theYear = $yyyy AND theMonths = $mm AND theHours= "$h" ' );
     int res = 0;
 
-    int theTime = 0;
-  
+    int theTime;
+    print("length result");
+    print(results.length);
+    
     for (var i = 0; i < results.length; i++) {
       theTime = results[i]["numberSteps"];
       res=res+theTime;
+      print("heure");
+    print(results[i]["theHours"]);
+      print("res number steps");
+      print(res);
     }
 
     return res;
@@ -229,14 +237,10 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
     for (var i = 0; i < 24; i++) {
       StepsDay stepsday=new StepsDay();
     stepsday.theDate=d.toString()+'/'+m.toString()+'/'+y.toString();
-      if(i<12){
         stepsday.theHour=i.toString();
-        stepsday.numberSteps= await getStepsHour(y, m,d,i,'AM');
-      }
-      else{
-        stepsday.theHour=i.toString();
-        stepsday.numberSteps= await getStepsHour(y, m,d,i-12,'PM');
-      }
+        stepsday.numberSteps= await getStepsHour(y, m,d,i.toString());
+        print("number spes pour$i est ${stepsday.numberSteps}");
+     
       res.add(stepsday);
     }
     return res;
@@ -304,12 +308,19 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
   Future<List<StepsDays>> getStepsWeek(int y, int m,int d) async {
      List<StepsDays> res =[];
      int num;
+     int mois;
+     int year;
      int change=0;
     if(m>1){
       num=NombreMois(m-1);
+      mois=m-1;
+      year=y;
     }
     else{
-      num=12;
+      mois=12;
+      year=y-1;
+      num=NombreMois(mois);
+
       change=1;
     }
     if(d>7){
@@ -325,9 +336,16 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
       int a=7-d;
       for (var i = num-a; i < num; i++) {
         StepsDays stepsdays=new StepsDays();
-        stepsdays.theDate=i.toString()+'/'+m.toString()+'/'+y.toString();
+        if(change==1){
+        stepsdays.theDate=i.toString()+'/'+mois.toString()+'/'+(year).toString();
+        stepsdays.numberSteps= await getStepsDays(year, mois,i);
+
+        }
+        else{
+          stepsdays.theDate=i.toString()+'/'+mois.toString()+'/'+(y).toString();
+        stepsdays.numberSteps= await getStepsDays(y, mois,i);
+        }
         stepsdays.theDay=i.toString();
-        stepsdays.numberSteps= await getStepsDays(y, m,i);
         res.add(stepsdays);
       }
       for (var i = 1; i < d+1; i++) {
@@ -348,7 +366,7 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,int h,String part) async {
     final db = await database;
     var raw = db.insert( 'Steps', newSteps.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
 
-    print('data added !');
+    print('data steps added !');
     return raw;
   }
 
