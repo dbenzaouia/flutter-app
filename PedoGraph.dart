@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/models/stepsModel.dart';
 import 'package:flutter_app/data/database.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
 import 'widget/pedometer_widget.dart';
+import 'models/ObjectDisplay.dart';
 
 import 'package:flutter_app/widget/pedometer_widget.dart';
 
@@ -25,7 +24,7 @@ class PedoGraphState extends State<PedoGraph> {
   List<StepsDay> stepsday = [];
   List<StepsDays> stepsdays = [];
   List<StepsMonths> stepsmonths =[];
-  List<StepsDays> stepsweek =[];
+  List<StepsDays> stepsweek =[]; 
 
 
   int day=0;
