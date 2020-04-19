@@ -55,8 +55,10 @@ class BMState extends State<BM> {
   List<Blue> blues = [];
   static BlueObjet bal=make("X8","media");
   static BlueObjet ball=make("DESKTOP-0C0N5KJ","ordi");
+  static BlueObjet ball2=make("DESK2","ordi2");
 
-  List<BlueObjet> object=[bal,ball];
+
+  List<BlueObjet> object=[bal,ball,ball2];
 
 
    bool resetCounterPressed = false;

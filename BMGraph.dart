@@ -31,10 +31,20 @@ class BMGState extends State<BMG> {
   DBProvider dbProvider = DBProvider.db;
   final dataBase = DBProvider();
   List<Blue> blues = [];
-  static BlueObjet bal=make("X8","media");
-  static BlueObjet ball=make("DESKTOP-0C0N5KJ","ordi");
 
-  List<BlueObjet> object=[bal,ball];
+  List<BlueDay> bluedayfirst = [];
+
+  List<BlueDay> bluedaysecond = [];
+  List<BlueDay> bluedaythird = [];
+
+
+
+  static BlueObjet bal=make("X8","media");
+  static BlueObjet ball=make("Desk","ordi");
+  static BlueObjet ball2=make("Desk2","ordi2");
+
+
+  List<BlueObjet> object=[bal,ball,ball2];
 
   BMGState();
 
@@ -48,6 +58,10 @@ class BMGState extends State<BMG> {
     void initState() {
     super.initState();
     setupList();
+    setupListDayfirst();
+    setupListDaysecond();
+    setupListDaythird();
+
   }
 
   int todayDay() {
@@ -102,11 +116,31 @@ class BMGState extends State<BMG> {
       blues = _blues;
     });
   }
+    void setupListDayfirst() async{
+    var _bluedayfirst = await dataBase.getBlueDay((todayYear()),(todayMonths()),(todayDay()),object[0].name);
+    setState(() {
+      bluedayfirst = _bluedayfirst;
+    });
+  }
+      void setupListDaysecond() async{
+    var _bluedaysecond = await dataBase.getBlueDay((todayYear()),(todayMonths()),(todayDay()),object[1].name);
+    setState(() {
+      bluedaysecond = _bluedaysecond;
+    });
+  }
+        void setupListDaythird() async{
+    var _bluedaythird = await dataBase.getBlueDay((todayYear()),(todayMonths()),(todayDay()),object[2].name);
+    setState(() {
+      bluedaythird = _bluedaythird;
+    });
+  }
   
 
 
   Widget build(BuildContext context) {
-    List<charts.Series<Blue, DateTime>> series = withSampleData();
+
+    
+    List<charts.Series<BlueDay, DateTime>> series = withSampleData();
 
     // The children consist of a Chart and Text widgets below to hold the info.
      return new Container(
@@ -144,24 +178,33 @@ class BMGState extends State<BMG> {
     );
   }
 
-    List<charts.Series<Blue, DateTime>>   _createSampleData(){
+    List<charts.Series<BlueDay, DateTime>>   _createSampleData(){
 
     return [
-      new charts.Series<Blue, DateTime>(
-          id: '${object[0].name}',
-          domainFn: (Blue blues, _) => DateTime(blues.theYear,blues.theMonths,blues.theDay,int.parse(blues.theHours)),
-          measureFn: (Blue blues, _) => blues.theTime,
+      new charts.Series<BlueDay, DateTime>(
+          id: '${object[0].name}/${object[0].fonction}',
+          domainFn: (BlueDay bluedayfirst, _) => DateTime(int.parse(bluedayfirst.theYear),int.parse(bluedayfirst.theMonth),int.parse(bluedayfirst.theDay),int.parse(bluedayfirst.theHour)),
+          measureFn: (BlueDay bluedayfirst, _) => bluedayfirst.theTime,
 
-          data: blues,
+          data: bluedayfirst,
 
 
           // Set a label accessor to control the text of the bar label.
       ),
-      charts.Series<Blue, DateTime>(
-          id: '${object[1].name}',
-          domainFn: (Blue blues, _) => DateTime(blues.theYear,blues.theMonths,blues.theDay,int.parse(blues.theHours)),
-          measureFn: (Blue blues, _) => blues.theTime+blues.theTime,
-          data: blues,
+      new charts.Series<BlueDay, DateTime>(
+          id: '${object[1].name}/${object[1].fonction}',
+          domainFn: (BlueDay bluedaysecond, _) => DateTime(int.parse(bluedaysecond.theYear),int.parse(bluedaysecond.theMonth),int.parse(bluedaysecond.theDay),int.parse(bluedaysecond.theHour)),
+          measureFn: (BlueDay bluedaysecond, _) => bluedaysecond.theTime,
+
+          data: bluedaysecond,
+          // Set a label accessor to control the text of the bar label.
+      ),
+        new charts.Series<BlueDay, DateTime>(
+          id: '${object[2].name}/${object[2].fonction}',
+          domainFn: (BlueDay bluedaythird, _) => DateTime(int.parse(bluedaythird.theYear),int.parse(bluedaythird.theMonth),int.parse(bluedaythird.theDay),int.parse(bluedaythird.theHour)),
+          measureFn: (BlueDay bluedaythird, _) => bluedaythird.theTime,
+
+          data: bluedaythird,
           // Set a label accessor to control the text of the bar label.
       ),
     ];
