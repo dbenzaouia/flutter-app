@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_app/data/database.dart';
+import '../models/ObjectDisplay.dart';
 
 
 
@@ -24,6 +25,7 @@ class PedometerWidget {
                           "Daily:Number of steps per hour",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
+                         
                         Container(
                           width: 600,
                           height: 300,
