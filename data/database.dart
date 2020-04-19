@@ -88,7 +88,7 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB101819121231123121291911998980808777123011221414.db");
+    String path = join(documentsDirectory.path, "TestDB101819012123112312129191199819808008777123011221414.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
           await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
@@ -108,23 +108,42 @@ class DBProvider {
           await db.execute('''CREATE TABLE Blue(id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           name TEXT, theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours TEXT,theMin INTEGER,thePart TEXT)''');
          
-         await db.insert('Blue', newValueBlue(1,"X8",220, 17,4,2020,"11",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(2,"X8",440, 17,4,2020,"8",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(3,"X8",330, 17, 4,2020,"9",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(4,"X8",110, 17,4,2020,"7",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(5,"X8",50, 17,4,2020,"5",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(6,"X8",68, 17,4,2020,"3",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(7,"X8",220, 17,4,2020,"1",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(8,"X8",440, 17,4,2020,"0",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(9,"Desk",220, 17,4,2020,"11",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(10,"Desk",440, 17,4,2020,"8",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(11,"Desk",330, 17, 4,2020,"9",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(12,"Desk",110, 17,4,2020,"7",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(13,"Desk",50, 17,4,2020,"5",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(14,"Desk",68, 17,4,2020,"3",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(15,"Desk",220, 17,4,2020,"1",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(16,"Desk",440, 17,4,2020,"0",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-
+         await db.insert('Blue', newValueBlue(1,"X8",2200, 19,4,2020,"0",40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(2,"X8",3400, 19,4,2020,"2",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(3,"X8",3300, 19, 4,2020,"4",9),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(4,"X8",1100, 19,4,2020,"6",5),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(5,"X8",50, 19,4,2020,"8",8),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(6,"X8",68, 19,4,2020,"10",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(8,"X8",440, 19,4,2020,"12",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(9,"X8",220, 19,4,2020,"14",40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(10,"X8",440, 19,4,2020,"16",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(11,"X8",330, 19, 4,2020,"18",9),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(12,"X8",110, 19,4,2020,"20",5),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(13,"X8",50, 19,4,2020,"22",8),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(14,"Desk",22, 19,4,2020,"1",40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(15,"Desk",44, 19,4,2020,"3",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(16,"Desk",33, 19, 4,2020,"5",9),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(17,"Desk",11, 19,4,2020,"7",5),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(18,"Desk",500, 19,4,2020,"9",8),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(19,"Desk",680, 19,4,2020,"11",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(20,"Desk",22, 19,4,2020,"13",40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(21,"Desk",44, 19,4,2020,"15",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(22,"Desk",44, 19,4,2020,"17",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(23,"Desk",44, 19,4,2020,"19",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(24,"Desk",44, 19,4,2020,"21",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(25,"Desk",44, 19,4,2020,"23",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+        await db.insert('Blue', newValueBlue(26,"Desk2",22, 19,4,2020,"1",40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(27,"Desk2",44, 19,4,2020,"2",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(28,"Desk2",33, 19, 4,2020,"5",9),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(29,"Desk2",11, 19,4,2020,"6",5),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(30,"Desk2",500, 19,4,2020,"9",8),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(31,"Desk2",680, 19,4,2020,"10",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(32,"Desk2",22, 19,4,2020,"13",40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(33,"Desk2",44, 19,4,2020,"14",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(34,"Desk2",44, 19,4,2020,"17",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(35,"Desk2",44, 19,4,2020,"18",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(36,"Desk2",44, 19,4,2020,"21",50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Blue', newValueBlue(37,"Desk2",44, 19,4,2020,"22",50),  conflictAlgorithm: ConflictAlgorithm.replace);
          /*await db.insert('Steps', newValue(9,330, 12, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(10,110, 11,4,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(11,50, 10,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
@@ -251,6 +270,26 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
 
     return res;
   }
+  Future<int> getBlueHour(int yyyy, int mm, int dd,String h,String name) async {
+    final db = await database;
+    var results = await db.rawQuery('SELECT * FROM Blue WHERE theYear = $yyyy AND theMonths = $mm AND theHours= "$h" and name="$name"' );
+    int res = 0;
+
+    int theTime;
+    print("length result");
+    print(results.length);
+    
+    for (var i = 0; i < results.length; i++) {
+      theTime = results[i]["theTime"];
+      res=res+theTime;
+      print("heure");
+      print(results[i]["theHours"]);
+      print("res thetIme blue");
+      print(res);
+    }
+
+    return (res~/60);
+  }
   Future<List<StepsDay>> getStepsDay(int y,int m,int d) async{
     List<StepsDay> res =[];
     
@@ -264,6 +303,24 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
         print("number spes pour$i est ${stepsday.numberSteps}");
      
       res.add(stepsday);
+    }
+    return res;
+  }
+    Future<List<BlueDay>> getBlueDay(int y,int m,int d,String name) async{
+    List<BlueDay> res =[];
+    
+
+
+    for (var i = 0; i < 24; i++) {
+      BlueDay blueday=new BlueDay();
+      blueday.theDay=d.toString();
+      blueday.theMonth=m.toString();
+      blueday.theYear=y.toString();
+      blueday.theHour=i.toString();
+      blueday.theTime= await getBlueHour(y, m,d,i.toString(),name);
+        print("time $name pour $i h est ${blueday.theTime}");
+     
+      res.add(blueday);
     }
     return res;
   }
@@ -311,6 +368,7 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
     return res;
 
   }
+  
  
 
 
@@ -333,6 +391,7 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
      int mois;
      int year;
      int change=0;
+     int nbday=7;
     if(m>1){
       num=NombreMois(m-1);
       mois=m-1;
@@ -346,7 +405,7 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
       change=1;
     }
     if(d>7){
-      for (var i = d-7+1; i < d+1; i++) {
+      for (var i = d-nbday+1; i < d+1; i++) {
         StepsDays stepsdays=new StepsDays();
         stepsdays.theDate=i.toString()+'/'+m.toString()+'/'+y.toString();
         stepsdays.theDay=i.toString();
@@ -355,7 +414,7 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
       }
       }
     else{
-      int a=7-d;
+      int a=nbday-d;
       for (var i = num-a; i < num; i++) {
         StepsDays stepsdays=new StepsDays();
         if(change==1){
@@ -770,6 +829,7 @@ Future<List<int>> getStepsInDay(int yyyy, int mm, int dd) async {
 
     return res;
   }
+ 
 
  /*Future<int> getHomeTimesByWeek(int yyyy, int mm, int dd) async {
     print('debut getHomeTimesByWeek');
@@ -899,5 +959,12 @@ Future<int> updateGeoloc(Geoloc newGeoloc) async {
     int numberSteps;
     String theDay;
     String theDate;
+  }
+  class BlueDay{
+    int theTime;
+    String theDay;
+    String theMonth;
+    String theYear;
+    String theHour;
   }
  
