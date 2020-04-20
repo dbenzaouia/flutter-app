@@ -36,4 +36,10 @@
     String theYear;
     int theTime;
   }
+  class BlueObjet{
+  String name;
+  String fonction;
+
+ 
+}
  
