@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/widget/blue_widget.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:flutter_app/data/database.dart';
@@ -21,12 +22,7 @@ class BMG extends StatefulWidget {
 }
 
 
-class BlueObjet{
-  String name;
-  String fonction;
 
- 
-}
 enum Types { rien,journalier, hebdomadaire, mensuel,annuel }
 
 
@@ -53,6 +49,14 @@ class BMGState extends State<BMG> {
 
   int _changed=0;
   Types _chang = Types.rien;
+
+  BlueWidgetDay Bday=BlueWidgetDay();
+  BlueWidgetYear Byear=BlueWidgetYear();
+  BlueWidgetMonths Bmonth=BlueWidgetMonths();
+  BlueWidgetWeek Bweek=BlueWidgetWeek();
+
+
+
 
 
 
@@ -302,27 +306,7 @@ class BMGState extends State<BMG> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children : <Widget>[
-      new SizedBox(
-          height: 150.0,
-          child: new charts.TimeSeriesChart(
-            series,
-            animate: true,
-            selectionModels: [
-              new charts.SelectionModelConfig(
-                type: charts.SelectionModelType.info,
-
-              )
-              
-            ],
-            behaviors: [
-            new charts.SeriesLegend(
-                position: charts.BehaviorPosition.bottom, desiredMaxRows: object.length)
-          ],
-            
-            
-          )
-          ),
-          
+            Bday.BlueWidget(series,bluedayfirst,bluedaysecond,bluedaythird, object)
     ]
           )
      );
@@ -332,18 +316,7 @@ class BMGState extends State<BMG> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children : <Widget>[
-      new SizedBox(
-          height: 150.0,
-          child: charts.BarChart(
-      seriesweek,
-      animate: true,
-      barGroupingType: charts.BarGroupingType.grouped,
-      // Add the series legend behavior to the chart to turn on series legends.
-      // By default the legend will display above the chart.
-      behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom, desiredMaxRows: object.length)],
-      )
-          ),
-          
+      Bweek.BlueWidget(seriesweek, blueweekfirst, blueweeksecond, blueweekthird, object)
     ]
           )
      );
@@ -354,17 +327,8 @@ class BMGState extends State<BMG> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children : <Widget>[
-      new SizedBox(
-          height: 150.0,
-          child: charts.BarChart(
-      seriesmonths,
-      animate: true,
-      barGroupingType: charts.BarGroupingType.grouped,
-      // Add the series legend behavior to the chart to turn on series legends.
-      // By default the legend will display above the chart.
-      behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom, desiredMaxRows: object.length)],
-      )
-          ),
+            Bmonth.BlueWidget(seriesmonths, bluemonthsfirst, bluemonthssecond, bluemonthsthird, object)
+      
           
     ]
           )
@@ -376,17 +340,8 @@ class BMGState extends State<BMG> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children : <Widget>[
-      new SizedBox(
-          height: 150.0,
-          child: charts.BarChart(
-      seriesyear,
-      animate: true,
-      barGroupingType: charts.BarGroupingType.grouped,
-      // Add the series legend behavior to the chart to turn on series legends.
-      // By default the legend will display above the chart.
-      behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom, desiredMaxRows: object.length)],
-      )
-          ),
+            Byear.BlueWidget(seriesyear, blueyearfirst, blueyearsecond, blueyearthird, object)
+      
           
     ]
           )
