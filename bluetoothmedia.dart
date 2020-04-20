@@ -345,12 +345,14 @@ void _startDiscovery() {
       child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-       new RepaintBoundary(
+              new Text("Bluetooth service allumé")
+       /*new RepaintBoundary(
                 child: new SizedBox(
                 height: 192.0,
                 child: BuildBlueList().buildList(blues),
                ),
               ),  
+              */
             ],
           ),
         );
