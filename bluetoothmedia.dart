@@ -4,10 +4,10 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_app/data/database.dart';
-import 'package:flutter_app/data/BlueManager.dart';
-import 'package:flutter_app/models/blueModel.dart';
-import 'package:flutter_app/widget/list_widget.dart';
+import 'data/database.dart';
+import 'data/BlueManager.dart';
+import 'models/blueModel.dart';
+import 'widget/list_widget.dart';
 
 
 

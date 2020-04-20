@@ -13,6 +13,9 @@ class ConfigManager{
     return dbProvider.addNewConfig(config); 
   }
 
+  Future<void> updateConfig(Config config) async {
+    return dbProvider.updateConfig(config); 
+  }
   //Future<void> updateConfig(Config config) async {
     //return dbProvider.updateConfig(config); 
   //}

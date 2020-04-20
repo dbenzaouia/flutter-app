@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:projet_geo/models/sleepModel.dart';
-import 'package:projet_geo/widget/list_widget.dart';
+import '../models/sleepModel.dart';
+import '../widget/list_widget.dart';
 
 
 

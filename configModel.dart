@@ -29,7 +29,7 @@ factory Config.fromMap(Map<String, dynamic> json) => new Config(
         wifiIP: json["wifiIP"],
         hometime: json["hometime"],
         sleeptime: json["sleeptime"],
-        pedometre: json["pedometer"],
+        pedometre: json["pedometre"],
         
       );
   

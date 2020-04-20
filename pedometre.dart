@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_app/models/stepsModel.dart';
-import 'package:flutter_app/data/database.dart';
-import 'package:flutter_app/data/stepsManager.dart';
+import 'models/stepsModel.dart';
+import 'data/database.dart';
+import 'data/stepsManager.dart';
 import 'package:intl/intl.dart';
 
 

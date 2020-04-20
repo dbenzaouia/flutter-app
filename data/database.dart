@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:flutter_app/models/sleepModel.dart';
-import 'package:flutter_app/models/stepsModel.dart';
-import 'package:flutter_app/models/hometimesModel.dart';
-import 'package:flutter_app/models/blueModel.dart';
-import 'package:flutter_app/models/geoModel.dart';
+import 'package:flutter_ap_v2/models/ConfigBlueModel.dart';
+
+import '../models/sleepModel.dart';
+import '../models/stepsModel.dart';
+import '../models/hometimesModel.dart';
+import '../models/blueModel.dart';
+import '../models/geoModel.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -108,6 +110,8 @@ class DBProvider {
                           pedometre INTEGER)''');
           await db.execute('''CREATE TABLE Blue(id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           name TEXT, theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours TEXT,theMin INTEGER,thePart TEXT)''');
+          await db.execute('''CREATE TABLE ConfigBlue (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                          name TEXT,location TEXT)''');
          
          await db.insert('Blue', newValueBlue(1,"X8",2200, 20,4,2020,"0",40),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Blue', newValueBlue(2,"X8",3400, 20,4,2020,"2",50),  conflictAlgorithm: ConflictAlgorithm.replace);
@@ -662,6 +666,15 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
     return raw;
   }
 
+     Future<int> updateConfig(Config config) async {
+    print('updating config...');
+
+    final db = await database;
+    var raw = db.update("Config", config.toMap(), where: "id = 1");
+    print('config updated !');
+    return raw;
+  }
+
    getConfig(int id) async {
     final db = await database;
     var res = await db.query("Config", where: "id = ?", whereArgs: [id]);
@@ -1078,6 +1091,54 @@ Future<int> updateGeoloc(Geoloc newGeoloc) async {
     }
     return [];
   }
-}
+
+  Future<int> addNewConfigBlue(ConfigBlueModel newConfigBlue) async {
+    print('adding new config Blue...');
+
+    final db = await database;
+    var raw = db.insert( 'ConfigBlue', newConfigBlue.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
+
+    print('config Blue added !');
+    return raw;
+  }
+
+   Future<int> updateConfigBlue(ConfigBlueModel configBlue, int id) async {
+    print('updating config...');
+
+    final db = await database;
+    var raw = db.update("ConfigBlue", configBlue.toMap(), where: "id = ?", whereArgs: [id]);
+    print('config Blue updated !');
+    return raw;
+  }
+
+   getConfigBlue(int id) async {
+    final db = await database;
+    var res = await db.query("ConfigBlue", where: "id = ?", whereArgs: [id]);
+    return res.isNotEmpty ? ConfigBlueModel.fromMap(res.first) : null;
+  }
+
+  Future<int> getConfigsBlueid(int id) async {
+    final db = await database;
+    var results = await db.rawQuery('SELECT id FROM ConfigBlue WHERE id = $id');
+
+    if (results.length > 0) {
+      return new ConfigBlueModel.fromMap(results.first).id;
+    }
+
+    return null;
+  }
+
+  Future<List<ConfigBlueModel>> fetchAllConfigBlue() async {
+    var config = await database;
+    var res = await config.query('ConfigBlue');
+
+    if (res.isNotEmpty) {
+      var theconfigs = res.map((stepMap) => ConfigBlueModel.fromMap(stepMap)).toList();
+      return theconfigs;
+    }
+    return [];
+  }
+
+  }
 
   

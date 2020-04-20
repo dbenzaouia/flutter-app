@@ -8,6 +8,9 @@ import 'pedometre.dart';
 import 'sleepTime.dart';
 import 'homeTime.dart';
 import 'userLocation.dart';
+import 'configModel.dart';
+import 'data/configManager.dart';
+import 'data/database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +32,17 @@ class MyApp extends StatelessWidget {
       systemNavigationBarDividerColor: Colors.grey,
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
+
+    Config configIni = Config(
+      wifiname: '',
+      wifiIP: '',
+      hometime: 0,
+      sleeptime: 0,
+      pedometre: 0,
+    );
+    DBProvider dbProvider = DBProvider.db;
+    ConfigManager(dbProvider).addNewConfig(configIni);
+
     return MaterialApp(
       title: 'Flutter App',
       debugShowCheckedModeBanner: false,
@@ -72,22 +86,59 @@ class First extends StatefulWidget {
 }
 
 class _FirstState extends State<First> {
+  int enabled;
+  DBProvider dbProvider = DBProvider.db;
+  final dataBase = DBProvider();
+
+  void initState() {
+    //initPlatformState();
+    enabled = 0;
+    super.initState();
+  }
+
+  void isEnabled() async {
+    var _config = await dataBase.getConfig(1);
+    print(_config.pedometre);
+    setState(() {
+      enabled = _config.pedometre;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Podometre"),
-      ),
-      body: SingleChildScrollView(
-        //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            new Pedo(),
-          ],
+    if (enabled == 0) {
+      isEnabled();
+      return new Container(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+            Center(
+              heightFactor: 20,
+              child: Text(
+                'Pedometer disabled',
+                style: TextStyle(
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ]));
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Podometre"),
         ),
-      ),
-    );
+        body: SingleChildScrollView(
+          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              new Pedo(),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }
 

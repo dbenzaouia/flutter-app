@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/widget/list_widget.dart';
+import '../widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:flutter_app/data/database.dart';
+import '../data/database.dart';
 import '../models/ObjectDisplay.dart';
 
 

@@ -5,7 +5,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/models/sleepModel.dart';
+import 'models/sleepModel.dart';
 import 'package:sensors/sensors.dart';
 import 'package:light/light.dart';
 import 'widget/sleepTrack_widget.dart';

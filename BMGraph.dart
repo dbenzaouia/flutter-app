@@ -1,12 +1,12 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/widget/blue_widget.dart';
+import 'widget/blue_widget.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
-import 'package:flutter_app/data/database.dart';
-import 'package:flutter_app/data/BlueManager.dart';
-import 'package:flutter_app/models/blueModel.dart';
-import 'package:flutter_app/widget/list_widget.dart';
+import 'data/database.dart';
+import 'data/BlueManager.dart';
+import 'models/blueModel.dart';
+import 'widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'models/ObjectDisplay.dart';
