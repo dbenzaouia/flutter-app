@@ -14,3 +14,18 @@ Add this dependency in pubspec.yaml :
   flutter_bluetooth_serial: ^0.2.2
   new_geolocation: ^1.0.0
   geocoder: ^0.2.1
+  geolocator: ^5.1.5
+
+
+modify the minsdkVersion to 21 in android/app/build.gradle (defaultconfig)
+add this line "<uses-sdk android:minSdkVersion="21"/>" in android/src/debug/AndroidManifest.xml
+
+
+The assets file must be added outside lib file.
+add assetsdependencies to yaml file like that :
+
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
+    - assets/fitness_app/

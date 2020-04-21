@@ -14,10 +14,10 @@ String hometimesToJson(HomeTimes data) {
 
 class HomeTimes {
   int id;
-  String theTime;
-  String theDay;
-  String theMonths;
-  String theYear;
+  int theTime;
+  int theDay;
+  int theMonths;
+  int theYear;
   String theHours;
   String theMin;
   String thePart;

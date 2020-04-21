@@ -6,13 +6,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:app/data/database.dart';
-import 'package:app/data/hometimesManager.dart';
-import 'package:app/models/hometimesModel.dart';
+import 'package:flutter_app/data/database.dart';
+import 'package:flutter_app/data/hometimesManager.dart';
+import 'package:flutter_app/models/hometimesModel.dart';
 import 'widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'configModel.dart';
 
-/*class HT extends StatefulWidget {
+
+class HT extends StatefulWidget {
 
   State createState() => new HTState();
   
@@ -20,30 +22,30 @@ import 'package:charts_flutter/flutter.dart' as charts;
 }
 
 class HTState extends State<HT> {
-  final String wifi="10.214.209.206";
-  final String wifiname="SmartCampus";
+
 
   String _connectionStatus = 'Unknown';
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
   
   
-  
+  List<Config> config;
   List<StreamSubscription<dynamic>> _streamSubscriptions =
       <StreamSubscription<dynamic>>[];
   DBProvider dbProvider = DBProvider.db;
   final dataBase = DBProvider();
   List<HomeTimes> hometimes = [];
   bool resetCounterPressed = false;
-  String timeToDisplay = "00:00:00";
+  int timeToDisplay = 0;
   var swatch = Stopwatch();
   final dur = Duration(seconds: 1);
-  String day="";
-  String months="";
-  String year="";
+  int day= 0;
+  int months=0;
+  int year=0 ;
   String hours="";
   String min="";
   String part="";
+  bool _changed;
   
 
 
@@ -51,41 +53,42 @@ class HTState extends State<HT> {
    String _monrouteur= "inconnu";
    String _mawifi="inconnu";
 
-    
-  @override
-  String todayDay() {
+  static int todayDay() {
     var now = new DateTime.now();
     var formatter = new DateFormat('dd');
     String formattedDate = formatter.format(now);
-    print(formattedDate);
-    return formattedDate;
+    int day = int.parse(formattedDate);
+    print('day : ' +formattedDate);
+    return day;
   }
-  String todayMonths() {
+
+  static int todayMonths() {
     var now = new DateTime.now();
     var formatter = new DateFormat('MM');
     String formattedDate = formatter.format(now);
-    print(formattedDate);
-    return formattedDate;
+    int month = int.parse(formattedDate);
+    print('month : ' + formattedDate);
+    return month;
 
   }
-  String todayYear() {
+  static int todayYear() {
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy');
     String formattedDate = formatter.format(now);
-    print(formattedDate);
-    return formattedDate;
-
+    int year = int.parse(formattedDate);
+    print('Year : ' + formattedDate);
+    return year;
   }
   String todayHours() {
     var now = new DateTime.now();
     String formattedTime = DateFormat('kk').format(now);
-    print(formattedTime);
+    print('Hours : ' + formattedTime);
     return formattedTime;
   }
   String todayMin() {
     var now = new DateTime.now();
     String formattedTime = DateFormat('mm').format(now);
-    print(formattedTime);
+    print('min : ' + formattedTime);
     return formattedTime;
 
   }
@@ -103,27 +106,24 @@ class HTState extends State<HT> {
       starttimer();
     }
     setState(() {
-      timeToDisplay = swatch.elapsed.inHours.toString().padLeft(2,"0") + ":"
-                      + (swatch.elapsed.inMinutes%60).toString().padLeft(2,"0") + ":"
-                      + (swatch.elapsed.inSeconds%60).toString().padLeft(2,"0");
-    });
-  }
+      timeToDisplay = (swatch.elapsed.inSeconds);
+    });  }
     void resetTimeCounter() {
     setState(() {
       resetCounterPressed = false;
 
     });
     swatch.reset();
-    timeToDisplay = "00:00:00";
+    timeToDisplay = 0;
   }
   void test() {
     
-    if( _monrouteur==wifi || _mawifi==wifiname){
+    if( _monrouteur==config[0].wifiIP || _mawifi==config[0].wifiIP){
       swatch.start();
        starttimer();
       keeprunning();
     }
-    else if ( (_monrouteur!=wifi || _mawifi != wifiname) && timeToDisplay != "00:00:00" ) {
+    else if ( (_monrouteur!=config[0].wifiIP || _mawifi != config[0].wifiIP) && timeToDisplay != 0 ) {
       print(timeToDisplay);
      day=todayDay();
      months=todayMonths();
@@ -132,16 +132,13 @@ class HTState extends State<HT> {
      min=todayMin();
      part=today();
     countTheHomeTimes;
-
-
     resetTimeCounter;
           
 
     }
   }
-  String get countTheHomeTimes {
-   
-   
+
+  int get countTheHomeTimes {
    var hometime = new HomeTimes(
         id: null,
         theTime: timeToDisplay,
@@ -153,18 +150,25 @@ class HTState extends State<HT> {
         thePart : part,
       );
               HometimesManager(dbProvider).addNewHometimes(hometime); 
-      
-   
     return timeToDisplay;
- 
 }
+
   void initState() {
+    _changed = true;
     super.initState();
     initConnectivity();
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
         setupList();
+        setupconfig();
     
+  }
+     void setupconfig() async{
+    var _config = await dataBase.fetchAllConfig();
+    print(_config);
+    setState(() {
+      config = _config;
+    });
   }
 
   void dispose() {
@@ -201,55 +205,26 @@ class HTState extends State<HT> {
 
   @override
   Widget build(BuildContext context) {
-    
-    List<charts.Series<HomeTimes, String>> data = withSampleData();
-    return new Container(
-      child: Column(
+     return new Container(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-       new RepaintBoundary(
-                child: new SizedBox(
-                height: 192.0,
-                child: BuildtimesList().buildList(hometimes),
-               ),
-              ),  
-              Text(
-                          "Temps passé au domicile",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                         ),
-                        Container(
-                          width: 300,
-                          height: 200,
-                          child: charts.PieChart(data, animate: true, behaviors: [new charts.DatumLegend()]),
-                        ),  
-               ]
-                  
-        ),
-       
-        
-      );
+               Center(
+                heightFactor: 20,
+                child: Text(
+                  'Hometime activé',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ), 
+                
+            ],        
+        ),        
+      ); 
+    }
     
-  }
-
-  withSampleData() {
-    return (
-      _createSampleData()
-    );
-  }
-
-  List<charts.Series<HomeTimes, String>> _createSampleData() {
-
-    return [
-      new charts.Series<HomeTimes, String>(
-          id: 'wifi',
-          data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
-          data: hometimes,
-          domainFn: (HomeTimes hometimes, _) => hometimes.theTime,
-          measureFn: (HomeTimes hometimes, _) => hometimes.id,
-      )
-    ];
-  }
- 
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     switch (result) {
@@ -356,4 +331,17 @@ class HTState extends State<HT> {
     }
   }
 
-}*/
+}
+
+
+class DataDay {
+  final int time;
+  final String location;
+  DataDay(this.location, this.time);
+}
+
+class DataList {
+  final int time;
+  final DateTime day;
+  DataList(this.day, this.time);
+}

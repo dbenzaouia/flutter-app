@@ -4,10 +4,11 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:app/data/database.dart';
-import 'package:app/data/BlueManager.dart';
-import 'package:app/models/blueModel.dart';
-import 'package:app/widget/list_widget.dart';
+import 'data/database.dart';
+import 'data/BlueManager.dart';
+import 'models/blueModel.dart';
+import 'widget/list_widget.dart';
+import 'models/ConfigBlueModel.dart';
 
 
 
@@ -38,29 +39,20 @@ class _DeviceWithAvailability extends BluetoothDevice {
 
   _DeviceWithAvailability(this.device, this.availability, [this.rssi]);
 }
-class BlueObjet{
-  String name;
-  String fonction;
 
- 
-}
 
 class BMState extends State<BM> {
   List<_DeviceWithAvailability> devices = List<_DeviceWithAvailability>();
-  //List<BluetoothDeviceListEntry> list;
-
-  // Availability
   StreamSubscription<BluetoothDiscoveryResult> _discoveryStreamSubscription;
   bool _isDiscovering;
-  BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
   int count = 0;
   DBProvider dbProvider = DBProvider.db;
   final dataBase = DBProvider();
   List<Blue> blues = [];
-  static BlueObjet bal=make("X8","media");
-  static BlueObjet ball=make("DESKTOP-0C0N5KJ","ordi");
+  
 
-  List<BlueObjet> object=[bal,ball];
+
+  List<ConfigBlueModel> object;
 
 
    bool resetCounterPressed = false;
@@ -69,12 +61,11 @@ class BMState extends State<BM> {
 
   final dur = Duration(seconds: 1);
   var now = DateTime.now();
-  String media_name="DESKTOP-0C0N5KJ";
   String value="unkown";
   int day;
   int months;
   int year;
-  int hours;
+  String hours="";
   int min;
   String part;
   int val=0;
@@ -83,12 +74,7 @@ class BMState extends State<BM> {
   BMState();
 
   @override
-   static BlueObjet make(String name,String fonction){
-    BlueObjet blue=new BlueObjet();
-    blue.name=name;
-    blue.fonction=fonction;
-    return blue;
-  }
+
 
   int todayDay() {
     var now = new DateTime.now();
@@ -113,9 +99,9 @@ class BMState extends State<BM> {
     return formattedDate;
 
   }
-  int todayHours() {
+  String todayHours() {
     var now = new DateTime.now();
-    int formattedTime = int.parse(DateFormat('kk').format(now));
+    String formattedTime = (DateFormat('kk').format(now));
     print(formattedTime);
     return formattedTime;
   }
@@ -151,11 +137,11 @@ class BMState extends State<BM> {
   
   void resetStepCounter() {
     setState(() {
-      resetCounterPressed = false;
+      resetCounterPressed = true;
+      swatch.reset();
+      timeToDisplay = 0;
 
     });
-    swatch.reset();
-    timeToDisplay = 0;
   }
   
    
@@ -182,34 +168,26 @@ class BMState extends State<BM> {
       if(blue.theTime != 0){
               BlueManager(dbProvider).addNewBlue(blue); 
       }
-   
+    resetStepCounter();
+
     return blue.theTime;
  
 }
-/*
-  void dispose() {
-    super.dispose();
-    for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
-      subscription.cancel();
-    }
-  }
-  */
+
  void initState() {
     super.initState();
     setupList();
+    setupConfig();
 
-  //First subscription
   const fiveSec = const Duration(seconds: 1);
     new Timer.periodic(fiveSec, (Timer t) {
       liste();
     });
-  //Second subscription
   
 
 
     FlutterBluetoothSerial.instance.state.then((state) {
       setState(() {
-        _bluetoothState = state;
       
         
       FlutterBluetoothSerial.instance
@@ -240,19 +218,9 @@ class BMState extends State<BM> {
     if (_isDiscovering) {
       _startDiscovery();
     }
-    // Setup a list of the bonded devices
     
-    //}
-     FlutterBluetoothSerial.instance
-        .onStateChanged()
-        .listen((BluetoothState state) {
-      setState(() {
-        _bluetoothState = state;
-          
-
-        // Discoverable mode is disabled when Bluetooth gets disabled
-      });
-    });
+    
+      
   }
      
 void liste() async{
@@ -270,8 +238,6 @@ void liste() async{
               ),
             )
             .toList();
-            
-
       });
     });
     chrono();
@@ -280,64 +246,36 @@ void liste() async{
   
   void chrono(){
     count=0;
-    print("longueur");
-    print(devices.length);
     if(devices.length>0 && value=="unkown" ){
       for (var i = 0; i < devices.length; i++) {
-        print(devices[i].device.isConnected);
-        print("i");
-        print(i);
         for (var j = 0; j < object.length; j++) {
           if(devices[i].device.isConnected && devices[i].device.name ==object[j].name && timeToDisplay==0){
-            print("je suis connecte aec ");
-            print(devices[i].device.name);
             count++;
-            print("je suis la je lance le");
-            print(devices[i].device.name);
             _save(devices[i].device.name);
             swatch.start();
             starttimer();
-            keeprunning();
             val=1;
             }
           }
         }
-      
-      print("fin for");
-    }
+      }
     else if(devices.length>0 && value!="unkown" ){
-      print("je rentre else if");
       for (var i = 0; i < devices.length; i++) {
-        print(devices[i].device.isConnected);
-        print("i");
-        print(i);
           if(!devices[i].device.isConnected && devices[i].device.name ==value){
-            print("value iscon");
-            print(!devices[i].device.isConnected && devices[i].device.name ==value);
-                  countTheTimeBlue;
-            print(timeToDisplay);
-      print(value);
-      resetStepCounter();
-            print("je suis pas connecte aec ");
-            print(devices[i].device.name);
-            print("je suis la je arrete le");
-            print(devices[i].device.name);
+            countTheTimeBlue;
+            resetStepCounter();
             _save("unkown");
-            
-            
+            swatch.stop();
           }
         }
     }
   else if (devices.length==0){
-      print("aucune connections et pas d app dispo");
       if(timeToDisplay>0 && value!="unkown"){
          countTheTimeBlue;
-            print(timeToDisplay);
-      print(value);
-      resetStepCounter();
-
+        resetStepCounter();
+        _save("unkown");
+        swatch.stop();
       }
-      print(timeToDisplay);
     }
   
   }
@@ -348,8 +286,6 @@ void liste() async{
       value = ('$name');
       prefs.setString(key, value);
     }
-    
-    print('saved $value');
   }
   void _restartDiscovery() {
     setState(() {
@@ -382,7 +318,6 @@ void _startDiscovery() {
     });
   }
    void dispose() {
-    // Avoid memory leak (`setState` after dispose) and cancel discovery
     _discoveryStreamSubscription?.cancel();
 
     super.dispose();
@@ -394,26 +329,30 @@ void _startDiscovery() {
       blues = _blues;
     });
   }
+   void setupConfig() async{
+    var _object = await dataBase.fetchAllConfigBlue();
+    print(_object);
+    setState(() {
+      object = _object;
+    });
+  }
+  
   Widget build(BuildContext context) {
     
       return new Container(
       child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-       new RepaintBoundary(
+              new Text("Bluetooth service allumé")
+       /*new RepaintBoundary(
                 child: new SizedBox(
                 height: 192.0,
                 child: BuildBlueList().buildList(blues),
                ),
               ),  
-         //new Container(
-           //child: ListView(children: list),
-        // ),
-        
-   
-      
+              */
             ],
-      ),
+          ),
         );
   }
 }

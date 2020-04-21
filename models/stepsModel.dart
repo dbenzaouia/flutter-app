@@ -19,7 +19,7 @@ class Steps {
   int theDay;
   int theMonths;
   int theYear;
-  int theHours;
+  String theHours;
   int theMin;
   String thePart;
 

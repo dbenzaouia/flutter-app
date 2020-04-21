@@ -313,7 +313,7 @@ class BuildBlueList{
                 child: Column(
                   children: <Widget>[
                     Text('Hours'),
-                    Text(blue[index].theHours.toString()),
+                    Text(blue[index].theHours),
                   ],
                 ),
               ),
