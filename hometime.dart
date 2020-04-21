@@ -6,11 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:projet_geo/data/database.dart';
-import 'package:projet_geo/data/hometimesManager.dart';
-import 'package:projet_geo/models/hometimesModel.dart';
+import 'package:flutter_app/data/database.dart';
+import 'package:flutter_app/data/hometimesManager.dart';
+import 'package:flutter_app/models/hometimesModel.dart';
 import 'widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'configModel.dart';
 
 
 class HT extends StatefulWidget {
@@ -21,15 +22,14 @@ class HT extends StatefulWidget {
 }
 
 class HTState extends State<HT> {
-  final String wifi="10.214.209.206";
-  final String wifiname="SmartCampus";
+
 
   String _connectionStatus = 'Unknown';
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
   
   
-  
+  List<Config> config;
   List<StreamSubscription<dynamic>> _streamSubscriptions =
       <StreamSubscription<dynamic>>[];
   DBProvider dbProvider = DBProvider.db;
@@ -118,12 +118,12 @@ class HTState extends State<HT> {
   }
   void test() {
     
-    if( _monrouteur==wifi || _mawifi==wifiname){
+    if( _monrouteur==config[0].wifiIP || _mawifi==config[0].wifiIP){
       swatch.start();
        starttimer();
       keeprunning();
     }
-    else if ( (_monrouteur!=wifi || _mawifi != wifiname) && timeToDisplay != 0 ) {
+    else if ( (_monrouteur!=config[0].wifiIP || _mawifi != config[0].wifiIP) && timeToDisplay != 0 ) {
       print(timeToDisplay);
      day=todayDay();
      months=todayMonths();
