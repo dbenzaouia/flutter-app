@@ -1,16 +1,17 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:projet_geo/models/ObjectDisplay.dart';
-import 'package:projet_geo/models/sleepModel.dart';
-import 'package:projet_geo/models/stepsModel.dart';
-import 'package:projet_geo/models/hometimesModel.dart';
-import 'package:projet_geo/models/blueModel.dart';
-import 'package:projet_geo/models/geoModel.dart';
+import 'package:flutter_app/models/ObjectDisplay.dart';
+import 'package:flutter_app/models/sleepModel.dart';
+import 'package:flutter_app/models/stepsModel.dart';
+import 'package:flutter_app/models/hometimesModel.dart';
+import 'package:flutter_app/models/blueModel.dart';
+import 'package:flutter_app/models/geoModel.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import '../configModel.dart';
+import 'package:flutter_app/models/ConfigBlueModel.dart';
 
 
 class DBProvider {
@@ -1039,4 +1040,3 @@ Future<int> updateGeoloc(Geoloc newGeoloc) async {
   }
 
   }
-}
