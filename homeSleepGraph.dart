@@ -32,6 +32,7 @@ class HSGraphState extends State<HSGraph> {
   int _changed=0;
   HSWidgetMonths hsMonth = new HSWidgetMonths();
   HSWidgetWeek hsWeek = new HSWidgetWeek();
+  HSWidgetDay hsDay = new HSWidgetDay();
 
 
   static int todayDay() {
@@ -147,7 +148,10 @@ class HSGraphState extends State<HSGraph> {
       ]
     )
   );  
-            
+  else if(_changed==1){
+        return hsDay.hsWidgetDay();
+
+      }
   else if(_changed==3){
         return hsMonth.hsWidgetMonth();
 
@@ -157,20 +161,50 @@ class HSGraphState extends State<HSGraph> {
       }
   }
  
-
-static Future<List<charts.Series<DataListHS, DateTime>>> hsDataWeek() async {
+static Future<List<charts.Series<DataDayHS, String>>> hsDataDay() async {
+      return (
+      await  _createDataDay()
+    );
+  }
+static Future<List<charts.Series<DataListHS, int>>> hsDataWeek() async {
       return (
       await  _createDataWeek()
     );
   }
-static Future<List<charts.Series<DataListHS, DateTime>>> hsDataMonth() async {
+static Future<List<charts.Series<DataListHS, int>>> hsDataMonth() async {
     return (
     await  _createDataMonth()
   );
 }
 
+
+
+static Future <List<charts.Series<DataDayHS, String>>> _createDataDay() async {
+    int d = todayDay();
+    int m = todayMonths();
+    int y = todayYear();
+    DBProvider().initDB();
+    var home = await DBProvider().getHomeTimesByDay(y,m,d);
+    var sleep = await DBProvider().getSleepByDay(y,m,d);
+    var outside = 24*3600-home;
+    home = home - sleep; 
+    final data = [
+      new DataDayHS('Sleep',sleep),
+      new DataDayHS('Home', home),
+      new DataDayHS('Outside', outside)
+    ];
+    return [
+      new charts.Series<DataDayHS, String>(
+          id: 'hsDay',
+          data: data,
+          domainFn: (DataDayHS data, _) => data.location,
+          measureFn: (DataDayHS data, _) => data.time,
+      )
+    ];
+  }
+
   
-  static Future <List<charts.Series<DataListHS, DateTime>>> _createDataWeek() async {
+  static Future <List<charts.Series<DataListHS, int>>> _createDataWeek() async {
    int d = todayDay();
     int m = todayMonths();
     int y = todayYear();
@@ -181,15 +215,15 @@ static Future<List<charts.Series<DataListHS, DateTime>>> hsDataMonth() async {
     List<DataListHS> datas = [];
     List<DataListHS> datah = [];
     for(int i=0; i<7; i++ ){
-      datas.add(new DataListHS(new DateTime(y,m,d), sleep[i]%3600));
-      datah.add(new DataListHS(new DateTime(y,m,d), home[i]%3600));
+      datas.add(new DataListHS(d, sleep[i]~/3600));
+      datah.add(new DataListHS(d, home[i]~/3600));
       listday = DBProvider.getDateLastDay(y, m, d);
       d = listday[2];
       y = listday[0];
       m = listday[1];
     };
     return [
-      new charts.Series<DataListHS, DateTime>(
+      new charts.Series<DataListHS, int>(
           id: 'homeW',
           data: datah,
           colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
@@ -198,7 +232,7 @@ static Future<List<charts.Series<DataListHS, DateTime>>> hsDataMonth() async {
           domainFn: (DataListHS hometimes, _) => hometimes.day,
           measureFn: (DataListHS hometimes, _) => hometimes.time,
       ),
-      new charts.Series<DataListHS, DateTime>(
+      new charts.Series<DataListHS, int>(
           id: 'sleepW',
           data: datas,
           colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
@@ -210,7 +244,7 @@ static Future<List<charts.Series<DataListHS, DateTime>>> hsDataMonth() async {
     ];
   }
 
-  static Future <List<charts.Series<DataListHS, DateTime>>> _createDataMonth() async {
+  static Future <List<charts.Series<DataListHS, int>>> _createDataMonth() async {
    int d = todayDay();
     int m = todayMonths();
     int y = todayYear();
@@ -221,15 +255,15 @@ static Future<List<charts.Series<DataListHS, DateTime>>> hsDataMonth() async {
     List<DataListHS> datas = [];
     List<DataListHS> datah = [];
     for(int i=0; i<30; i++ ){
-      datas.add(new DataListHS(new DateTime(y,m,d), sleep[i]%3600));
-      datah.add(new DataListHS(new DateTime(y,m,d), home[i]%3600));
+      datas.add(new DataListHS(d, sleep[i]~/3600));
+      datah.add(new DataListHS(d, home[i]~/3600));
       listday = DBProvider.getDateLastDay(y, m, d);
       d = listday[2];
       y = listday[0];
       m = listday[1];
     };
     return [
-      new charts.Series<DataListHS, DateTime>(
+      new charts.Series<DataListHS, int>(
           id: 'homeM',
           data: datah,
           colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
@@ -238,7 +272,7 @@ static Future<List<charts.Series<DataListHS, DateTime>>> hsDataMonth() async {
           domainFn: (DataListHS hometimes, _) => hometimes.day,
           measureFn: (DataListHS hometimes, _) => hometimes.time,
       ),
-      new charts.Series<DataListHS, DateTime>(
+      new charts.Series<DataListHS, int>(
           id: 'sleepM',
           data: datas,
           colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
