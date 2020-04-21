@@ -160,7 +160,15 @@ class HTState extends State<HT> {
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
         setupList();
+        setupconfig();
     
+  }
+     void setupconfig() async{
+    var _config = await dataBase.fetchAllConfig();
+    print(_config);
+    setState(() {
+      config = _config;
+    });
   }
 
   void dispose() {

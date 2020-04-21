@@ -5,7 +5,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:projet_geo/models/sleepModel.dart';
+import 'package:flutter_app/models/sleepModel.dart';
 import 'package:sensors/sensors.dart';
 import 'package:light/light.dart';
 import 'widget/sleepTrack_widget.dart';
@@ -15,6 +15,7 @@ import 'widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'hometime.dart';
 import 'package:intl/intl.dart';
+import 'configModel.dart';
 
 
 
@@ -38,6 +39,8 @@ class _MytestPageState extends State<MytestPage> {
   
   List<double> _accelerometerValues;
   List<double> _gyroscopeValues;
+  List<Config> config;
+
   List<StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
   int timeToDisplay = 0;
   final dur = Duration(seconds: 1);
@@ -166,6 +169,7 @@ static int todayDay() {
               });
     }));
     setupList();
+    setupconfig();
     
   }
   void setupList() async{
@@ -179,7 +183,7 @@ static int todayDay() {
   _chrono(){
 
     if(_count==0){
-    if( _wifi==_monrouteur && int.parse(_luxString)<5 && 
+    if( (_wifi==config[0].wifiname ||_monrouteur==config[0].wifiIP) && int.parse(_luxString)<5 && 
     (_accelerometerValues[0]+_accelerometerValues[1]+_accelerometerValues[2])<10.5 && 
     (_accelerometerValues[0]+_accelerometerValues[1]+_accelerometerValues[2])>9.0 && 
     (_gyroscopeValues[0]+_gyroscopeValues[1]+_gyroscopeValues[2])<0.1 && 
@@ -194,7 +198,7 @@ static int todayDay() {
     }
     }
     else{
-      if(_wifi !=_monrouteur || int.parse(_luxString)>5|| 
+      if((_monrouteur!=config[0].wifiIP || _wifi != config[0].wifiIP) || int.parse(_luxString)>5|| 
       (_accelerometerValues[0]+_accelerometerValues[1]+_accelerometerValues[2])>10.5 ||
        (_accelerometerValues[0]+_accelerometerValues[1]+_accelerometerValues[2])<9.0 || 
        (_gyroscopeValues[0]+_gyroscopeValues[1]+_gyroscopeValues[2])>0.1 || 
@@ -240,7 +244,13 @@ static int todayDay() {
   _print(){
     print(_controller.text);
   }
-
+     void setupconfig() async{
+    var _config = await dataBase.fetchAllConfig();
+    print(_config);
+    setState(() {
+      config = _config;
+    });
+  }
 
  
   void _onData(int luxValue) async {
@@ -268,7 +278,7 @@ static int todayDay() {
         String wifiName, wifiBSSID, wifiIP;
         
 
-        try {
+        try { 
           if (Platform.isIOS) {
             LocationAuthorizationStatus status =
                 await _connectivity.getLocationServiceAuthorization();
@@ -324,16 +334,45 @@ static int todayDay() {
               'Wifi Name: $wifiName\n'
               'Wifi BSSID: $wifiBSSID\n'
               'Wifi IP: $wifiIP\n';
-              _monrouteur=wifiName;
+              _monrouteur=wifiIP;
+              _wifi=wifiName;
+              _chrono();
+
 
         });
         break;
       case ConnectivityResult.mobile:
+      setState(() {
+        _connectionStatus = '$result\n'
+              'Wifi Name: ""\n'
+              'Wifi BSSID: ""\n'
+              'Wifi IP: ""\n';
+              _monrouteur="";
+              _wifi="";
+        });
+
+        _chrono();
+        break;
+
+
       case ConnectivityResult.none:
-        setState(() => _connectionStatus = result.toString());
+        setState(() { _connectionStatus = result.toString();
+          _monrouteur="";
+          _wifi="";
+
+         } );
+        _chrono();
         break;
       default:
-        setState(() => _connectionStatus = 'Failed to get connectivity.');
+        setState(() { 
+          _connectionStatus = 'Failed to get connectivity.';
+          _monrouteur="";
+          _wifi="";
+
+
+        });
+
+        _chrono();
         break;
     }
   }
@@ -381,8 +420,8 @@ Future<void> initConnectivity() async {
   DataDay(this.hour, this.time);
 }
 
-class DataList {
+class DataListS {
   final int time;
   final DateTime day;
-  DataList(this.day, this.time);
+  DataListS(this.day, this.time);
 }
