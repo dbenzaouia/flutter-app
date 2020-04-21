@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:projet_geo/sleepTime.dart';
-import 'package:projet_geo/sleepGraph.dart';
+import 'package:flutter_app/sleepTime.dart';
+import 'package:flutter_app/sleepGraph.dart';
 
 class SleeptimeWidget {
   Widget sleeptimeWidgetday(){
@@ -32,7 +32,10 @@ class SleeptimeWidget {
                             builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               data = snapshot.data;
-                              return charts.PieChart(data);
+                              return charts.PieChart(data, defaultRenderer: new charts.ArcRendererConfig(arcRendererDecorators: [
+                                new charts.ArcLabelDecorator(
+                                labelPosition: charts.ArcLabelPosition.outside)
+                              ]));
                             } else if (snapshot.hasError) {
                               return Text(
                                 'Error:\n\n${snapshot.error}',
@@ -54,7 +57,7 @@ class SleeptimeWidget {
 }
 class SleeptimeWidgetWeek {
   Widget sleeptimeWidgetweek(){
-      List<charts.Series<DataList, DateTime>> data;
+      List<charts.Series<DataListS, DateTime>> data;
       return new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -76,15 +79,15 @@ class SleeptimeWidgetWeek {
                         Container(
                           width: 600,
                           height: 300,
-                          child: FutureBuilder<List<charts.Series<DataList, DateTime>>>(
+                          child: FutureBuilder<List<charts.Series<DataListS, DateTime>>>(
                             future: SleepGraphState.withDataWeek(), // a previously-obtained Future<String> or null
                             builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               data = snapshot.data;
-                              return charts.LineChart(data,
-                                defaultRenderer:
-                                  new charts.LineRendererConfig(includeArea: true, stacked: true),
-                                  animate: true);
+                              return charts.TimeSeriesChart(data, animate: true,
+                                dateTimeFactory: const charts.LocalDateTimeFactory(),
+                                behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom)],
+                                );
                             } else if (snapshot.hasError) {
                               return Text(
                                 'Error:\n\n${snapshot.error}',
@@ -106,7 +109,7 @@ class SleeptimeWidgetWeek {
 }
 class SleeptimeWidgetMonths {
    Widget sleeptimeWidgetMonth(){
-      List<charts.Series<DataList, DateTime>> data;
+      List<charts.Series<DataListS, DateTime>> data;
       return new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -128,13 +131,14 @@ class SleeptimeWidgetMonths {
                         Container(
                           width: 600,
                           height: 300,
-                          child: FutureBuilder<List<charts.Series<DataList, DateTime>>>(
+                          child: FutureBuilder<List<charts.Series<DataListS, DateTime>>>(
                             future: SleepGraphState.withDataMonth(), // a previously-obtained Future<String> or null
                             builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               data = snapshot.data;
                               return charts.TimeSeriesChart(data, animate: true,
                                 dateTimeFactory: const charts.LocalDateTimeFactory(),
+                                behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom)],
                                 );
                             } else if (snapshot.hasError) {
                               return Text(
