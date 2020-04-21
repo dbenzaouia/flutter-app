@@ -10,6 +10,8 @@ import 'widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'models/ObjectDisplay.dart';
+import 'models/ConfigBlueModel.dart';
+
 
 
 
@@ -62,22 +64,15 @@ class BMGState extends State<BMG> {
 
 
 
-  static BlueObjet bal=make("X8","media");
-  static BlueObjet ball=make("Desk","ordi");
-  static BlueObjet ball2=make("Desk2","ordi2");
 
 
-  List<BlueObjet> object=[bal,ball,ball2];
+
+  List<ConfigBlueModel> object;
 
   BMGState();
 
   @override
-   static BlueObjet make(String name,String fonction){
-    BlueObjet blue=new BlueObjet();
-    blue.name=name;
-    blue.fonction=fonction;
-    return blue;
-  }
+
     void initState() {
     super.initState();
     setupList();
@@ -85,6 +80,7 @@ class BMGState extends State<BMG> {
     setupListWeek();
     setupListMonths();
     setupListYear();
+    setupConfig();
 
 
   }
@@ -132,6 +128,13 @@ class BMGState extends State<BMG> {
     return formattedTime;
 
 
+  }
+     void setupConfig() async{
+    var _object = await dataBase.fetchAllConfigBlue();
+    print(_object);
+    setState(() {
+      object = _object;
+    });
   }
 
   void setupList() async{
@@ -374,7 +377,7 @@ class BMGState extends State<BMG> {
 
     return [
       new charts.Series<BlueDay, DateTime>(
-          id: '${object[0].name}/${object[0].fonction}',
+          id: '${object[0].name}/${object[0].location}',
           domainFn: (BlueDay bluedayfirst, _) => DateTime(int.parse(bluedayfirst.theYear),int.parse(bluedayfirst.theMonth),int.parse(bluedayfirst.theDay),int.parse(bluedayfirst.theHour)),
           measureFn: (BlueDay bluedayfirst, _) => bluedayfirst.theTime,
 
@@ -384,7 +387,7 @@ class BMGState extends State<BMG> {
           // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueDay, DateTime>(
-          id: '${object[1].name}/${object[1].fonction}',
+          id: '${object[1].name}/${object[1].location}',
           domainFn: (BlueDay bluedaysecond, _) => DateTime(int.parse(bluedaysecond.theYear),int.parse(bluedaysecond.theMonth),int.parse(bluedaysecond.theDay),int.parse(bluedaysecond.theHour)),
           measureFn: (BlueDay bluedaysecond, _) => bluedaysecond.theTime,
 
@@ -392,7 +395,7 @@ class BMGState extends State<BMG> {
           // Set a label accessor to control the text of the bar label.
       ),
         new charts.Series<BlueDay, DateTime>(
-          id: '${object[2].name}/${object[2].fonction}',
+          id: '${object[2].name}/${object[2].location}',
           domainFn: (BlueDay bluedaythird, _) => DateTime(int.parse(bluedaythird.theYear),int.parse(bluedaythird.theMonth),int.parse(bluedaythird.theDay),int.parse(bluedaythird.theHour)),
           measureFn: (BlueDay bluedaythird, _) => bluedaythird.theTime,
 
@@ -406,7 +409,7 @@ List<charts.Series<BlueWeek, String>>   _createSampleDataWeek(){
 
     return [
       new charts.Series<BlueWeek, String>(
-          id: '${object[0].name}/${object[0].fonction}',
+          id: '${object[0].name}/${object[0].location}',
           domainFn: (BlueWeek blueweekfirst, _) => blueweekfirst.beginDate+"-"+blueweekfirst.endDate,
           measureFn: (BlueWeek blueweekfirst, _) => blueweekfirst.theTime,
 
@@ -416,7 +419,7 @@ List<charts.Series<BlueWeek, String>>   _createSampleDataWeek(){
           // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueWeek, String>(
-          id: '${object[1].name}/${object[1].fonction}',
+          id: '${object[1].name}/${object[1].location}',
           domainFn: (BlueWeek blueweeksecond, _) => blueweeksecond.beginDate+"-"+blueweeksecond.endDate,
           measureFn: (BlueWeek blueweeksecond, _) => blueweeksecond.theTime,
 
@@ -424,7 +427,7 @@ List<charts.Series<BlueWeek, String>>   _createSampleDataWeek(){
           // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueWeek, String>(
-          id: '${object[2].name}/${object[2].fonction}',
+          id: '${object[2].name}/${object[2].location}',
           domainFn: (BlueWeek blueweekthird, _) => blueweekthird.beginDate+"-"+blueweekthird.endDate,
           measureFn: (BlueWeek blueweekthird, _) => blueweekthird.theTime,
 
@@ -437,7 +440,7 @@ List<charts.Series<BlueWeek, String>>   _createSampleDataWeek(){
 
     return [
       new charts.Series<BlueMonths, String>(
-          id: '${object[0].name}/${object[0].fonction}',
+          id: '${object[0].name}/${object[0].location}',
           domainFn: (BlueMonths bluemonthsfirst, _) => bluemonthsfirst.theMonths,
           measureFn: (BlueMonths bluemonthsfirst, _) => bluemonthsfirst.theTime,
 
@@ -447,7 +450,7 @@ List<charts.Series<BlueWeek, String>>   _createSampleDataWeek(){
           // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueMonths, String>(
-          id: '${object[1].name}/${object[1].fonction}',
+          id: '${object[1].name}/${object[1].location}',
           domainFn: (BlueMonths bluemonthssecond, _) => bluemonthssecond.theMonths,
           measureFn: (BlueMonths bluemonthssecond, _) => bluemonthssecond.theTime,
 
@@ -455,7 +458,7 @@ List<charts.Series<BlueWeek, String>>   _createSampleDataWeek(){
           // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueMonths, String>(
-          id: '${object[2].name}/${object[2].fonction}',
+          id: '${object[2].name}/${object[2].location}',
           domainFn: (BlueMonths bluemonthsthird, _) => bluemonthsthird.theMonths,
           measureFn: (BlueMonths bluemonthsthird, _) => bluemonthsthird.theTime,
 
@@ -468,7 +471,7 @@ List<charts.Series<BlueWeek, String>>   _createSampleDataWeek(){
 
     return [
       new charts.Series<BlueYear, String>(
-          id: '${object[0].name}/${object[0].fonction}',
+          id: '${object[0].name}/${object[0].location}',
           domainFn: (BlueYear blueyearfirst, _) => blueyearfirst.theYear,
           measureFn: (BlueYear blueyearfirst, _) => blueyearfirst.theTime,
 
@@ -478,7 +481,7 @@ List<charts.Series<BlueWeek, String>>   _createSampleDataWeek(){
           // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueYear, String>(
-          id: '${object[1].name}/${object[1].fonction}',
+          id: '${object[1].name}/${object[1].location}',
           domainFn: (BlueYear blueyearsecond, _) => blueyearsecond.theYear,
           measureFn: (BlueYear blueyearsecond, _) => blueyearsecond.theTime,
 
@@ -486,7 +489,7 @@ List<charts.Series<BlueWeek, String>>   _createSampleDataWeek(){
           // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueYear, String>(
-          id: '${object[2].name}/${object[2].fonction}',
+          id: '${object[2].name}/${object[2].location}',
           domainFn: (BlueYear blueyearthird, _) => blueyearthird.theYear,
           measureFn: (BlueYear blueyearthird, _) => blueyearthird.theTime,
 

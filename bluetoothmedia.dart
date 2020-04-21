@@ -8,6 +8,7 @@ import 'data/database.dart';
 import 'data/BlueManager.dart';
 import 'models/blueModel.dart';
 import 'widget/list_widget.dart';
+import 'models/ConfigBlueModel.dart';
 
 
 
@@ -38,12 +39,7 @@ class _DeviceWithAvailability extends BluetoothDevice {
 
   _DeviceWithAvailability(this.device, this.availability, [this.rssi]);
 }
-class BlueObjet{
-  String name;
-  String fonction;
 
- 
-}
 
 class BMState extends State<BM> {
   List<_DeviceWithAvailability> devices = List<_DeviceWithAvailability>();
@@ -53,12 +49,10 @@ class BMState extends State<BM> {
   DBProvider dbProvider = DBProvider.db;
   final dataBase = DBProvider();
   List<Blue> blues = [];
-  static BlueObjet bal=make("X8","media");
-  static BlueObjet ball=make("DESKTOP-0C0N5KJ","ordi");
-  static BlueObjet ball2=make("DESK2","ordi2");
+  
 
 
-  List<BlueObjet> object=[bal,ball,ball2];
+  List<ConfigBlueModel> object;
 
 
    bool resetCounterPressed = false;
@@ -80,12 +74,7 @@ class BMState extends State<BM> {
   BMState();
 
   @override
-   static BlueObjet make(String name,String fonction){
-    BlueObjet blue=new BlueObjet();
-    blue.name=name;
-    blue.fonction=fonction;
-    return blue;
-  }
+
 
   int todayDay() {
     var now = new DateTime.now();
@@ -188,6 +177,7 @@ class BMState extends State<BM> {
  void initState() {
     super.initState();
     setupList();
+    setupConfig();
 
   const fiveSec = const Duration(seconds: 1);
     new Timer.periodic(fiveSec, (Timer t) {
@@ -339,6 +329,14 @@ void _startDiscovery() {
       blues = _blues;
     });
   }
+   void setupConfig() async{
+    var _object = await dataBase.fetchAllConfigBlue();
+    print(_object);
+    setState(() {
+      object = _object;
+    });
+  }
+  
   Widget build(BuildContext context) {
     
       return new Container(
