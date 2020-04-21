@@ -143,6 +143,7 @@ static int todayDay() {
     setState(() {
       if (swatch.isRunning) {
         swatch.stop();
+        timeToDisplay=0;
       }
     });
   }
@@ -170,6 +171,7 @@ static int todayDay() {
     }));
     setupList();
     setupconfig();
+    //_chrono();
     
   }
   void setupList() async{
@@ -182,8 +184,8 @@ static int todayDay() {
  
   _chrono(){
 
-    if(_count==0){
-    if( (_wifi==config[0].wifiname ||_monrouteur==config[0].wifiIP) && int.parse(_luxString)<5 && 
+    if(_count==0 && config.length>0){
+    if( (_wifi==config[0].wifiname ||_monrouteur==config[0].wifiIP) && timeToDisplay==0 && int.parse(_luxString)<5 && 
     (_accelerometerValues[0]+_accelerometerValues[1]+_accelerometerValues[2])<10.5 && 
     (_accelerometerValues[0]+_accelerometerValues[1]+_accelerometerValues[2])>9.0 && 
     (_gyroscopeValues[0]+_gyroscopeValues[1]+_gyroscopeValues[2])<0.1 && 
@@ -197,12 +199,13 @@ static int todayDay() {
 
     }
     }
-    else{
-      if((_monrouteur!=config[0].wifiIP || _wifi != config[0].wifiIP) || int.parse(_luxString)>5|| 
+    else if (config.length>0){
+      if((_monrouteur!=config[0].wifiIP && _wifi != config[0].wifiIP) || int.parse(_luxString)>5|| 
       (_accelerometerValues[0]+_accelerometerValues[1]+_accelerometerValues[2])>10.5 ||
        (_accelerometerValues[0]+_accelerometerValues[1]+_accelerometerValues[2])<9.0 || 
        (_gyroscopeValues[0]+_gyroscopeValues[1]+_gyroscopeValues[2])>0.1 || 
        (_gyroscopeValues[0]+_gyroscopeValues[1]+_gyroscopeValues[2])<(-0.1)){
+         if(timeToDisplay>0){
       _count=0;
     day=todayDay();
      months=todayMonths();
@@ -213,6 +216,11 @@ static int todayDay() {
       sleepTimer;
       print('nooo');
       stopChrono();
+         }
+         else{
+           print("ici");
+         }
+
     }
     }
     

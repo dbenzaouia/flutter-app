@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:projet_geo/data/database.dart';
+import 'package:flutter_app/data/database.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
-import 'package:projet_geo/homeSleep.dart';
+import 'package:flutter_app/homeSleep.dart';
 import 'hometime.dart';
 import 'sleepTime.dart';
 import 'models/ObjectDisplay.dart';
 
-import 'package:projet_geo/widget/homeSleep_widget.dart';
+import 'package:flutter_app/widget/homeSleep_widget.dart';
 import 'widget/sleeptime_widget.dart';
 
 
@@ -178,8 +178,8 @@ static Future<List<charts.Series<DataListHS, DateTime>>> hsDataMonth() async {
     DBProvider().initDB();
     var home = await DBProvider().getHomeTimesList(y,m,d,7);
     var sleep = await DBProvider().getSleepTimesList(y,m,d,7);
-    final datas = [];
-    final datah = [];
+    List<DataListHS> datas = [];
+    List<DataListHS> datah = [];
     for(int i=0; i<7; i++ ){
       datas.add(new DataListHS(new DateTime(y,m,d), sleep[i]%3600));
       datah.add(new DataListHS(new DateTime(y,m,d), home[i]%3600));
@@ -218,8 +218,8 @@ static Future<List<charts.Series<DataListHS, DateTime>>> hsDataMonth() async {
     DBProvider().initDB();
     var home = await DBProvider().getHomeTimesList(y,m,d,30);
     var sleep = await DBProvider().getSleepTimesList(y,m,d,30);
-    final datas = [];
-    final datah = [];
+    List<DataListHS> datas = [];
+    List<DataListHS> datah = [];
     for(int i=0; i<30; i++ ){
       datas.add(new DataListHS(new DateTime(y,m,d), sleep[i]%3600));
       datah.add(new DataListHS(new DateTime(y,m,d), home[i]%3600));

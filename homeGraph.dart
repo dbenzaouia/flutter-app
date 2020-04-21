@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:projet_geo/models/stepsModel.dart';
-import 'package:projet_geo/data/database.dart';
+import 'package:flutter_app/models/stepsModel.dart';
+import 'package:flutter_app/data/database.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
 import 'hometime.dart';
 import 'widget/pedometer_widget.dart';
 import 'models/ObjectDisplay.dart';
 
-import 'package:projet_geo/widget/hometime_widget.dart';
+import 'package:flutter_app/widget/hometime_widget.dart';
 
 
 
@@ -200,6 +200,7 @@ static Future<List<charts.Series<DataList, DateTime>>> withDataMonth() async {
           colorFn: (_, __) => charts.MaterialPalette.pink.shadeDefault,
           domainFn: (DataDay hometimes, _) => hometimes.location,
           measureFn: (DataDay hometimes, _) => hometimes.time,
+          labelAccessorFn: (DataDay row, _) => '${row.location}: ${row.time}',
       )
     ];
   }
@@ -211,7 +212,7 @@ static Future<List<charts.Series<DataList, DateTime>>> withDataMonth() async {
     List listday = [];
     DBProvider().initDB();
     var time = await DBProvider().getHomeTimesList(y,m,d,7);
-    final data = [];
+    List<DataList> data = [];
     for(int i=0; i<time.length; i++ ){
       data.add(new DataList(new DateTime(y,m,d), time[i]%3600));
       listday = DBProvider.getDateLastDay(y, m, d);
@@ -237,7 +238,7 @@ static Future<List<charts.Series<DataList, DateTime>>> withDataMonth() async {
     List listday = [];
     DBProvider().initDB();
     var time = await DBProvider().getHomeTimesList(y,m,d,30);
-    final data = [];
+    List<DataList> data = [];
     for(int i=0; i<time.length; i++ ){
       data.add(new DataList(new DateTime(y,m,d), time[i]%3600));
       listday = DBProvider.getDateLastDay(y, m, d);
