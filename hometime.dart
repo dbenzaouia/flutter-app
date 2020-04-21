@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'data/database.dart';
-import 'data/hometimesManager.dart';
-import 'models/hometimesModel.dart';
+import 'package:projet_geo/data/database.dart';
+import 'package:projet_geo/data/hometimesManager.dart';
+import 'package:projet_geo/models/hometimesModel.dart';
 import 'widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -131,16 +131,14 @@ class HTState extends State<HT> {
      hours=todayHours();
      min=todayMin();
      part=today();
-    //countTheHomeTimes;
-
-
+    countTheHomeTimes;
     resetTimeCounter;
           
 
     }
   }
 
-  /*int get countTheHomeTimes {
+  int get countTheHomeTimes {
    var hometime = new HomeTimes(
         id: null,
         theTime: timeToDisplay,
@@ -153,7 +151,7 @@ class HTState extends State<HT> {
       );
               HometimesManager(dbProvider).addNewHometimes(hometime); 
     return timeToDisplay;
-}*/
+}
 
   void initState() {
     _changed = true;
@@ -197,229 +195,28 @@ class HTState extends State<HT> {
     return _updateConnectionStatus(result);
   }
 
-  grapheDay(){
-
-  }
-
-
   @override
   Widget build(BuildContext context) {
-    List<charts.Series<DataDay, String>> data;
-    _changed = false;
-    if(_changed)
-    return new Container(
-      child: Column(
+     return new Container(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
                Center(
                 heightFactor: 20,
                 child: Text(
-                  'Acquisition en cours',
+                  'Hometime activé',
                   style: TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
               ), 
-              Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.home),
-                Padding(
-                  padding: EdgeInsets.only(left: 8.0, top: 20),
-                  child:
-                     Text('Home time: NULL'),
-                ),
-              ],),
-            
-              RaisedButton(
-                onPressed: () {
-                  setupList();
-                  setState(() {
-                    _changed ? _changed = false : _changed = true;
-                  });
-                },
-                child: Text(
-                  'Graphique',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-    else{
-      return new Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-         //color: Colors.red[300],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-              Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-                         RaisedButton(
-                onPressed: () {
-                  setState(() {
-                    _changed ? _changed = false : _changed = true;
-                  });
-                },
-
-   
-                child: 
-                  
-                Text(
-                  'Acquisition',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-                        Text(
-                          "Home Time",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                         ),
-                         new RepaintBoundary(
-                child: new SizedBox(
-                height: 192.0,
-                child:  BuildtimesList().buildList(hometimes),
-               ),
-              ), 
-                        Container(
-                          width: 300,
-                          height: 200,
-                          child: FutureBuilder<List<charts.Series<DataDay, String>>>(
-                  future: withDataDay(), // a previously-obtained Future<String> or null
-                  builder: (context, snapshot) {
-                     if (snapshot.hasData) {
-                       data = snapshot.data;
-                       return charts.PieChart(data,behaviors: [
-        new charts.DatumLegend(
-          position: charts.BehaviorPosition.end,
-          horizontalFirst: false,
-          cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
-          showMeasures: true,
-          legendDefaultMeasure: charts.LegendDefaultMeasure.firstValue,
-          measureFormatter: (num value) {
-            return value == null ? '-' : '${value}H';},
-        ),
-      ],
-      );
-                    } else if (snapshot.hasError) {
-                        return Text(
-                    'Error:\n\n${snapshot.error}',
-                    textAlign: TextAlign.center,
-                  );
-        } else {
-          return Text('Il n\'y a pas de données');
-        }
-                   } )
-                        )
-                          
-                      ],
-                    
-                  ),
-                ),
-              ), 
                 
-               ]        
+            ],        
         ),        
       ); 
     }
-  }
-
-
-static Future<List<charts.Series<DataDay, String>>> withDataDay() async {
-      return (
-      await  _createDataDay()
-    );
-  }
-static Future<List<charts.Series<DataDay, String>>> withDataWeek() async {
-      return (
-      await  _createDataWeek()
-    );
-  }
-static Future<List<charts.Series<DataDay, String>>> withDataMonth() async {
-    return (
-    await  _createDataMonth()
-  );
-}
-
-  static Future <List<charts.Series<DataDay, String>>> _createDataDay() async {
-    int d = todayDay();
-    int m = todayMonths();
-    int y = todayYear();
-    DBProvider().initDB();
-    var time = await DBProvider().getHomeTimesByDay(y,m,d);
-    var timeInHour = time%360;
-    var hour = 24-timeInHour;
-    final data = [
-      new DataDay(time, 'home'),
-      new DataDay(hour,'outside'),
-    ];
-    return [
-      new charts.Series<DataDay, String>(
-          id: 'wifi',
-         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
-          data: data,
-          domainFn: (DataDay hometimes, _) => hometimes.location,
-          measureFn: (DataDay hometimes, _) => hometimes.time,
-      )
-    ];
-  }
-
-  static Future <List<charts.Series<DataDay, String>>> _createDataWeek() async {
-    int d = todayDay();
-    int m = todayMonths();
-    int y = todayYear();
-    DBProvider().initDB();
-    var time = await DBProvider().getHomeTimesMean(y,m,d,7);
-    var timeInHour = time%360;
-    var hour = 24-timeInHour;
-    final data = [
-      new DataDay(time, 'home'),
-      new DataDay(hour,'outside'),
-    ];
-    return [
-      new charts.Series<DataDay, String>(
-          id: 'wifi',
-         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
-          data: data,
-          domainFn: (DataDay hometimes, _) => hometimes.location,
-          measureFn: (DataDay hometimes, _) => hometimes.time,
-      )
-    ];
-  }
-
-  static Future <List<charts.Series<DataDay, String>>> _createDataMonth() async {
-    int d = todayDay();
-    int m = todayMonths();
-    int y = todayYear();
-    DBProvider().initDB();
-    var time = await DBProvider().getHomeTimesMean(y,m,d,30);
-    var timeInHour = time%360;
-    var hour = 24-timeInHour;
-    final data = [
-      new DataDay(time, 'home'),
-      new DataDay(hour,'outside'),
-    ];
-    return [
-      new charts.Series<DataDay, String>(
-          id: 'wifi',
-         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
-          data: data,
-          domainFn: (DataDay hometimes, _) => hometimes.location,
-          measureFn: (DataDay hometimes, _) => hometimes.time,
-      )
-    ];
-  }
- 
+    
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     switch (result) {
@@ -532,6 +329,11 @@ static Future<List<charts.Series<DataDay, String>>> withDataMonth() async {
 class DataDay {
   final int time;
   final String location;
+  DataDay(this.location, this.time);
+}
 
-  DataDay(this.time, this.location);
+class DataList {
+  final int time;
+  final DateTime day;
+  DataList(this.day, this.time);
 }

@@ -5,7 +5,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'models/sleepModel.dart';
+import 'package:projet_geo/models/sleepModel.dart';
 import 'package:sensors/sensors.dart';
 import 'package:light/light.dart';
 import 'widget/sleepTrack_widget.dart';
@@ -107,10 +107,7 @@ static int todayDay() {
   static String today() {
     var now = new DateTime.now();
     String formattedTime = DateFormat('a').format(now);
-    print(formattedTime);
-    return formattedTime;
-
-
+    return formattedTime; 
   }
    void starttimer(){
     Timer(dur, keeprunning);
@@ -356,149 +353,36 @@ Future<void> initConnectivity() async {
   }
 
     @override
-  Widget build(BuildContext context) {
-    List<charts.Series<DataDay, String>> data;
-    final List<String> accelerometer =
-        _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
-    final List<String> gyroscope =
-        _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
-    return new Container(
-      child: Column(
+   Widget build(BuildContext context) {
+     return new Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-           new TextField(
-                  controller: _controller,
-                  decoration: InputDecoration(
-                      hintText: "wifiIP....", labelText: 'wifiIP'),
+               Center(
+                heightFactor: 20,
+                child: Text(
+                  'Sleeptime activé',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-                new RaisedButton(
-                  onPressed: () async {
-                    _wifi=_controller.text;
-                     print(_wifi);
-                  },
-                  child: const Text("actualiser mon routeur de wifi"),
-                ),
-          new Center(child: Text('Connection Status: $_connectionStatus')),
-          new RepaintBoundary(
-                child: new SizedBox(
-                height: 192.0,
-                child: BuildSleepList().buildSleepList(sleep),
-               ),
-              ),
-               new RepaintBoundary(
-                child: new SizedBox(
-                height: 192.0,
-                child: FutureBuilder<List<charts.Series<DataDay, String>>>(
-                  future: withDataDay(),
-                  builder: (context, snapshot) {
-                     if (snapshot.hasData) {
-                       data = snapshot.data;
-                       return charts.PieChart(data);
-                    } else if (snapshot.hasError) {
-                        return Text(
-                    'Error:\n\n${snapshot.error}',
-                    textAlign: TextAlign.center,
-                  );
-        } else {
-          return Text('Il n\'y a pas de données');
-        }
-                   }
-                )
-               ),
-              ),
-           //WidgetLight(accelerometer,gyroscope,_luxString,_count,timeToDisplay,sleep).buildmywid()
-
-        ],
-      ),
-    );
-  }
-
-  static Future<List<charts.Series<DataDay, String>>> withDataDay() async {
-    return (
-    await  _createDataDay()
-    );
-  }
-  static Future<List<charts.Series<DataDay, String>>> withDataWeek() async {
-    return (
-    await  _createDataWeek()
-    );
-  }
-  static Future<List<charts.Series<DataDay, String>>> withDataMonth() async {
-    return (
-    await  _createDataMonth()
-    );
-  }
-
-  static Future <List<charts.Series<DataDay, String>>>_createDataDay() async {
-    int d = todayDay();
-    int m = todayMonths();
-    int y = todayYear();
-    DBProvider().initDB();
-     var time = await DBProvider().getSleepByDay(y,m,d);
-    print(time);
-    var hour = 24-time;
-    final data = [
-      new DataDay(time, 'sleep'),
-      new DataDay(hour,'awake'),
-    ];
-    return [
-      new charts.Series<DataDay, String>(
-          id: 'wifi',
-         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
-          data: data,
-          domainFn: (DataDay sleeptime, _) => sleeptime.hour,
-          measureFn: (DataDay sleeptime, _) => sleeptime.time,
-      )
-    ];
-  }
-
-  static Future <List<charts.Series<DataDay, String>>>_createDataWeek() async {
-    int d = todayDay();
-    int m = todayMonths();
-    int y = todayYear();
-    DBProvider().initDB();
-    var time = await DBProvider().getSleepTimesMean(y,m,d,7);
-    var hour = 24-time;
-    final data = [
-      new DataDay(time, 'sleep'),
-      new DataDay(hour,'awake'),
-    ];
-    return [
-      new charts.Series<DataDay, String>(
-          id: 'wifi',
-         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
-          data: data,
-          domainFn: (DataDay sleeptime, _) => sleeptime.hour,
-          measureFn: (DataDay sleeptime, _) => sleeptime.time,
-      )
-    ];
-  }
-
-static Future <List<charts.Series<DataDay, String>>>_createDataMonth() async {
-    int d = todayDay();
-    int m = todayMonths();
-    int y = todayYear();
-    DBProvider().initDB();
-    var time = await DBProvider().getSleepTimesMean(y,m,d,30);
-    var hour = 24-time;
-    final data = [
-      new DataDay(time, 'sleep'),
-      new DataDay(hour,'awake'),
-    ];
-    return [
-      new charts.Series<DataDay, String>(
-          id: 'wifi',
-         // data: DBProvider.getHomeTimesByDay(todayYears(),todayMonth(),todayDay())
-          data: data,
-          domainFn: (DataDay sleeptime, _) => sleeptime.hour,
-          measureFn: (DataDay sleeptime, _) => sleeptime.time,
-      )
-    ];
-  }
+              ), 
+                
+            ],        
+        ),        
+      ); 
+    }
 }
 
-class DataDay {
+ class DataDay {
   final int time;
   final String hour;
+  DataDay(this.hour, this.time);
+}
 
-  DataDay(this.time, this.hour);
+class DataList {
+  final int time;
+  final DateTime day;
+  DataList(this.day, this.time);
 }

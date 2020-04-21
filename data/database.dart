@@ -1,18 +1,16 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:flutter_ap_v2/models/ConfigBlueModel.dart';
-
-import '../models/sleepModel.dart';
-import '../models/stepsModel.dart';
-import '../models/hometimesModel.dart';
-import '../models/blueModel.dart';
-import '../models/geoModel.dart';
+import 'package:projet_geo/models/ObjectDisplay.dart';
+import 'package:projet_geo/models/sleepModel.dart';
+import 'package:projet_geo/models/stepsModel.dart';
+import 'package:projet_geo/models/hometimesModel.dart';
+import 'package:projet_geo/models/blueModel.dart';
+import 'package:projet_geo/models/geoModel.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import '../configModel.dart';
-import '../models/ObjectDisplay.dart';
 
 
 class DBProvider {
@@ -36,7 +34,22 @@ class DBProvider {
     print('initialisation db ');
     return _database;
   }
-  newHometime(int id, int day,int months,int year,int time ) {
+
+  newValue(int id, int steps, int day,int months,int year,int hours,int min ) {
+   var map = Map<String, dynamic>();
+    map['id'] = id;
+    map['numberSteps']=steps;
+    map['theTime'] = '12:00:00';
+    map['theDay'] = day;
+    map['theMonths'] = months;
+    map['theYear'] = year;
+    map['theHours'] = hours;
+    map['theMin'] = min;
+    map['thePart'] = 'AM';
+    return map;
+ } 
+
+   newHometime(int id, int day,int months,int year,int time ) {
    var map = Map<String, dynamic>();
     map['id'] = id;
     map['theTime'] = time;
@@ -60,45 +73,45 @@ class DBProvider {
     map['theMin'] = 0;
     map['thePart'] = 'AM';
     return map;
- }
+ } 
 
-  newValue(int id, int steps, int day,int months,int year,String hours,int min ) {
+ newGeoloc(int id, int day,int months,int year,int time ) {
    var map = Map<String, dynamic>();
     map['id'] = id;
-    map['numberSteps']=steps;
-    map['theTime'] = '12:00:00';
-    map['theDay'] = day;
-    map['theMonths'] = months;
-    map['theYear'] = year;
-    map['theHours'] = hours;
-    map['theMin'] = min;
-    map['thePart'] = 'AM';
-    return map;
- } 
- newValueBlue(int id, String name,int time, int day,int months,int year,String hours,int min ) {
-   var map = Map<String, dynamic>();            
-    map['id'] = id;
-    map['name']=name;
     map['theTime'] = time;
     map['theDay'] = day;
     map['theMonths'] = months;
     map['theYear'] = year;
-    map['theHours'] = hours;
-    map['theMin'] = min;
+    map['theHours'] = 2;
+    map['theMin'] = 0;
     map['thePart'] = 'AM';
+    return map;
+ } 
+
+ newBlue(int id, int day,int months,int year,int time, String name ) {
+   var map = Map<String, dynamic>();
+    map['id'] = id;
+    map['theTime'] = time;
+    map['theDay'] = day;
+    map['theMonths'] = months;
+    map['theYear'] = year;
+    map['theHours'] = 2;
+    map['theMin'] = 0;
+    map['thePart'] = 'AM';
+    map['name'] = name;
     return map;
  } 
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB10181901212311231212919119981098008008777123011221414.db");
+    String path = join(documentsDirectory.path, "TestDBtest1.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
           await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
                           diffDuration INTEGER, distance INTEGER, coordinates TEXT, vitesse INTEGER, pas INTEGER)''');
           await db.execute('''CREATE TABLE Steps (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           numberSteps INTEGER, theTime INTEGER,theDay INTEGER,theMonths INTEGER,
-                          theYear INTEGER,theHours TEXT,theMin INTEGER,thePart TEXT)''');
+                          theYear INTEGER,theHours INTEGER,theMin INTEGER,thePart TEXT)''');
           await db.execute('''CREATE TABLE Sleep (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           duration INTEGER,theDay INTEGER,theMonths INTERGER,theYear INTEGER,
                           theHours TEXT,theMin TEXT,thePart TEXT)''');
@@ -109,60 +122,17 @@ class DBProvider {
                           wifiname TEXT,wifiIP TEXT,hometime INTEGER,sleeptime INTEGER,
                           pedometre INTEGER)''');
           await db.execute('''CREATE TABLE Blue(id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                          name TEXT, theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours TEXT,theMin INTEGER,thePart TEXT)''');
-          await db.execute('''CREATE TABLE ConfigBlue (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                          name TEXT,location TEXT)''');
+                          name TEXT, theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours INTEGER,theMin INTEGER,thePart TEXT)''');
          
-         await db.insert('Blue', newValueBlue(1,"X8",2200, 20,4,2020,"0",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(2,"X8",3400, 20,4,2020,"2",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(3,"X8",3300, 20, 4,2020,"4",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(4,"X8",1100, 20,4,2020,"6",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(5,"X8",50, 20,4,2020,"8",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(6,"X8",68, 20,4,2020,"10",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(8,"X8",440, 20,4,2020,"12",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(9,"X8",220, 20,4,2020,"14",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(10,"X8",440, 20,4,2020,"16",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(11,"X8",330, 20, 4,2020,"18",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(12,"X8",110, 20,4,2020,"20",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(13,"X8",50, 20,4,2020,"22",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(14,"Desk",22, 20,4,2020,"1",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(15,"Desk",44, 20,4,2020,"3",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(16,"Desk",33, 20, 4,2020,"5",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(17,"Desk",11, 20,4,2020,"7",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(18,"Desk",500, 20,4,2020,"9",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(19,"Desk",6800, 20,4,2020,"11",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(20,"Desk",22, 20,4,2020,"13",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(21,"Desk",44, 20,4,2020,"15",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(22,"Desk",44, 20,4,2020,"17",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(23,"Desk",44, 20,4,2020,"19",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(24,"Desk",44, 20,4,2020,"21",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(25,"Desk",44, 20,4,2020,"23",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-        await db.insert('Blue', newValueBlue(26,"Desk2",22, 20,4,2020,"1",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(27,"Desk2",44, 20,4,2020,"2",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(28,"Desk2",33, 20, 4,2020,"5",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(29,"Desk2",11, 20,4,2020,"6",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(30,"Desk2",500, 20,4,2020,"9",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(31,"Desk2",680, 20,4,2020,"10",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(32,"Desk2",22, 20,4,2020,"13",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(33,"Desk2",44, 20,4,2020,"14",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(34,"Desk2",44, 20,4,2020,"17",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(35,"Desk2",44, 20,4,2020,"18",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(36,"Desk2",44, 20,4,2020,"21",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(37,"Desk2",44, 20,4,2020,"22",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(38,"Desk",44, 19,1,2020,"23",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-        await db.insert('Blue', newValueBlue(39,"Desk2",22, 19,2,2020,"1",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(40,"Desk2",44, 20,3,2020,"2",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(41,"Desk2",3300, 31, 12,2019,"5",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(42,"Desk2",11, 19,5,2020,"6",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(43,"Desk2",500, 19,6,2020,"9",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(44,"Desk2",680, 19,7,2020,"10",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(45,"Desk2",22, 19,8,2020,"13",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(46,"Desk2",44, 19,9,2020,"14",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(47,"Desk2",44, 19,10,2020,"17",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(48,"Desk2",44, 19,11,2020,"18",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(49,"Desk2",44, 19,12,2020,"21",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(50,"Desk2",4400, 1,1,2020,"22",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         /*await db.insert('Steps', newValue(9,330, 12, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(1,220, 16,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(2,440, 16,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(3,330, 15, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(4,110, 15,4,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(5,50, 8,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(6,68, 9,4,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(7,220, 14,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(8,440, 13,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(9,330, 12, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(10,110, 11,4,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(11,50, 10,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(12,68, 19,4,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
@@ -173,11 +143,11 @@ class DBProvider {
          await db.insert('Steps', newValue(17,50, 3,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(18,68, 2,4,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(19,220, 1,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(20,440, 5,1,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(21,330, 4, 1,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(22,110, 3,1,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(23,50, 1,1,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(24,68, 30,12,2019,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(20,440, 13,1,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(21,330, 12, 2,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(22,110, 11,3,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(23,50, 10,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(24,68, 19,5,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(25,330, 12, 6,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(26,110, 11,7,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(27,50, 10,8,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
@@ -185,41 +155,16 @@ class DBProvider {
          await db.insert('Steps', newValue(29,110, 11,10,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(30,50, 10,11,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(31,68, 19,12,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-          */print('database created!');
-          var nbJour = 30;
+          print('database created!');
+
+    var nbJour = 30;
     for (var i = 1; i <= nbJour; i++) {
       var theTime = 16 + Random().nextInt(9); //valeur entre 16 et 24 
       var duration = 4 + Random().nextInt(9); //valeur entre 4 et 12
-      await db.insert('HomeTime', newHometime(i, i, 04,2020, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert('HomeTime', newHometime(i, i, 04, 2020, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
       await db.insert('Sleep', newSleep(i, i, 04,2020, duration),  conflictAlgorithm: ConflictAlgorithm.replace);  
     }
-/*
-    var nbJour = 30;
-    for (var i = 1; i <= nbJour; i++) {
-      var homeTimes = new HomeTimes(
-      id: i,
-      theTime: 16 + Random().nextInt(9), //valeur entre 16 et 24 
-      theDay: i,
-      theMonths: 4,
-      theYear: 2020,
-      theHours: "20:00",
-      theMin: "20:00",
-      thePart: "AM",
-    );
-    var sleepTimes = new SleepTime(
-      id: i,
-      duration: 4 + Random().nextInt(9), //valeur entre 4 et 12
-      theDay: i,
-      theMonths: 4,
-      theYear: 2020,
-      theHours: "20:00",
-      theMin: "20:00",
-      thePart: "AM",
-    );
-    addNewHomeTimes(homeTimes);
-    addNewSleepTime(sleepTimes);
-    }
-    */
+    
     /*for (var i = 1; i <= nbJour; i) {
       for (var j = 0; j<= 24; j++){
       var nb = 0;
@@ -254,13 +199,14 @@ class DBProvider {
       theYear: 2020,
       theHours: "20:00",
       theMin: "20:00",
-      thePart: 0,
+      thePart: "AM",
       );
       addNewSteps(newSteps);
       }
     }*/
   });
 }
+
 int NombreMois(int mois){
   List<int> tab=[31,28,31,30,31,30,31,31,30,31,30,31];
   return tab[mois-1];
@@ -666,15 +612,6 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
     return raw;
   }
 
-     Future<int> updateConfig(Config config) async {
-    print('updating config...');
-
-    final db = await database;
-    var raw = db.update("Config", config.toMap(), where: "id = 1");
-    print('config updated !');
-    return raw;
-  }
-
    getConfig(int id) async {
     final db = await database;
     var res = await db.query("Config", where: "id = ?", whereArgs: [id]);
@@ -704,30 +641,19 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
   }
 
    Future<int> getHomeTimesByDay(int yyyy, int mm, int dd) async {
-    print('debut getHomeTimesByDay');
-    print('$yyyy, $mm, $dd');
     final db = await database;
-    print("result");
     var results = await db.rawQuery('SELECT theTime FROM HomeTime WHERE theYear = $yyyy AND theMonth = $mm AND theDay = $dd');
-    print("pas de result");
     print(results.length);
     if (results.length > 0) {
-      //print(HomeTimes.fromMap(results.first).id);
       var timeHome = 0;
       var theTime = 0;
       for (var i = 0; i < results.length; i++) {
-        print("i");
-        print(i);
         theTime = results[i]["theTime"];
         timeHome += theTime;
-        print("timehome $timeHome");
         i++;
       }
-      print("ici 2");
       return timeHome; 
     }
-    print("ici");
-
     return 0;
   }
 
@@ -736,26 +662,14 @@ Future<int> getSleepByDay(int yyyy, int mm, int dd) async {
     var results = await db.rawQuery('SELECT duration FROM Sleep WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $dd');
     var sleepTime = 0;
     var theTime = 0;
-    for (var i = 0; i < results.length; i++) {
-      theTime = results[i]["duration"];
-      sleepTime += theTime;
+    if (results.length > 0){
+      for (var i = 0; i < results.length; i++) {
+        theTime = results[i]["duration"];
+        sleepTime += theTime;
+      }
+      return sleepTime;
     }
-    return sleepTime;
-  }
-
-  Future<int> getHometimesByDay(int yyyy, int mm, int dd) async {
-    final db = await database;
-    var results = await db.rawQuery('SELECT theTime FROM Hometime WHERE theYear = $yyyy AND theMonth = $mm AND theDay = $dd');
-    if (results.length > 0) {
-      return new HomeTimes.fromMap(results.first).id;
-    }
-    var homeTime = 0;
-    var time = 0;
-    for (var i = 0; i < results.length; i++) {
-      time = results[i]["theTime"];
-      homeTime += time;
-    }
-    return homeTime;
+    return 0;
   }
 
     Future<int> getStepsByDay(int yyyy, int mm, int dd) async {
@@ -791,13 +705,13 @@ Future<int> getSleepbyWeek(int yyyy, int mm, int dd) async {
           nbSleep += await getSleepByDay(yyyy - 1, mm, j);
         }
       }
-      else if (mm == 2 || mm == 4 || mm == 6 || mm == 8 || mm == 9 || mm == 11) {
+      else if (mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12) {
         int nbDaysBefore = 31;
         for (var j = nbDaysBefore; j > nbDaysBefore - nbDaysByWeek + dd; j--) {
           nbSleep += await getSleepByDay(yyyy, mm, j);
         }
       }
-      else if (mm == 3) {
+      else if (mm == 2) {
         int nbDaysBefore = 28;
         for (var j = nbDaysBefore; j > nbDaysBefore - nbDaysByWeek + dd; j--) {
           nbSleep += await getSleepByDay(yyyy, mm, j);
@@ -829,37 +743,37 @@ Future<int> getSleepbyWeek(int yyyy, int mm, int dd) async {
       if (mm == 1) {
         int nbDaysDecember = 31;
         for (var j = nbDaysDecember; j > nbDaysDecember - nbDaysByWeek + dd; j--) {
-          hometime += await getHometimesByDay(yyyy - 1, mm, j);
+          hometime += await getHomeTimesByDay(yyyy - 1, mm, j);
         }
       }
-      else if (mm == 2 || mm == 4 || mm == 6 || mm == 8 || mm == 9 || mm == 11) {
+      else if (mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12) {
         int nbDaysBefore = 31;
         for (var j = nbDaysBefore; j > nbDaysBefore - nbDaysByWeek + dd; j--) {
-          hometime += await getHometimesByDay(yyyy, mm, j);
+          hometime += await getHomeTimesByDay(yyyy, mm, j);
         }
       }
-      else if (mm == 3) {
+      else if (mm == 2) {
         int nbDaysBefore = 28;
         for (var j = nbDaysBefore; j > nbDaysBefore - nbDaysByWeek + dd; j--) {
-          hometime += await getHometimesByDay(yyyy, mm, j);
+          hometime += await getHomeTimesByDay(yyyy, mm, j);
         }
       }
       else {
         int nbDaysBefore = 30;
         for (var j = nbDaysBefore; j > nbDaysBefore - nbDaysByWeek + dd; j--) {
-          hometime += await getHometimesByDay(yyyy, mm, j);
+          hometime += await getHomeTimesByDay(yyyy, mm, j);
         }
       }
     }
     else {
       for (var k = dd; k > dd - 7; k--) {
-        hometime += await getHometimesByDay(yyyy, mm, k);
+        hometime += await getHomeTimesByDay(yyyy, mm, k);
       }
     }
     return hometime;
   }
 
-  List<int> getDateLastDay(int yyyy, int mm, int dd) {
+  static List<int> getDateLastDay(int yyyy, int mm, int dd) {
     var res = [0, 0, 0];
     if (dd == 1) {
       if (mm == 1) {
@@ -904,7 +818,7 @@ Future<int> getSleepbyWeek(int yyyy, int mm, int dd) async {
     var tmp;
 
     for (var i = 0; i < sampleSize; i++) {
-      homeTime += await getHometimesByDay(yyyy, mm, dd);
+      homeTime += await getHomeTimesByDay(yyyy, mm, dd);
       tmp = getDateLastDay(yyyy, mm, dd);
       yyyy = tmp[0];
       mm = tmp[1];
@@ -978,62 +892,6 @@ Future<List<int>> getStepsInDay(int yyyy, int mm, int dd) async {
     return res;
   }
  
-
- /*Future<int> getHomeTimesByWeek(int yyyy, int mm, int dd) async {
-    print('debut getHomeTimesByWeek');
-    print('$yyyy, $mm, $dd');
-    final db = await database;
-    int timeHome =0;
-    var m = mm%2;
-    int jour = 0;
-    if (mm==1 || mm==2){
-      if (m==2) jour = 28;
-      else jour = 30;
-    }else jour = 31;
-    int count=0;
-    if (dd < 8){
-      if (mm>1){
-        for (var day = 0; day < dd ; day++){
-          timeHome += await getHomeTimesByDay(yyyy, mm, day);
-        }
-        for (var day = 0;day<1 ;day++)
-      if(mm==1){
-
-      }
-    }else{
-      for (var day = dd; day < dd-7 ; day++){
-        var results += await db.rawQuery('SELECT id FROM HomeTime WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $day');
-
-      }
-    }
-    
-    var results = await db.rawQuery('SELECT id FROM HomeTime WHERE theYear = $yyyy AND theMonths = $mm AND theDay = $dd');
-        if (results.length > 0) {
-      print(HomeTimes.fromMap(results.first).id);
-          }
-      for (var i = 0; i < results.length; i++) {
-      }
-      return timeHome; 
-    }
-    return 0;
- }*/
-
- /*Future<int> getHomeTimesByMonth(String yyyy, String mm) async {
-    print('debut getHomeTimesByMonth');
-    print('$yyyy, $mm');
-    final db = await database;
-    var results = await db.rawQuery('SELECT id FROM HomeTime WHERE theYear = $yyyy AND theMonths = $mm');
-    if (results.length > 0) {
-      var timeHome = 0;
-      var theTime = 0;
-      for (var i = 0; i < results.length; i++) {
-        theTime = results[i]["theTime"];
-        timeHome += theTime;
-      }
-      return timeHome; 
-    }
-    return 0;
- }*/
  Future<int> addNewGeoloc(Geoloc geoloc) async {
     print('adding new Geoloc data...');
 
@@ -1092,53 +950,34 @@ Future<int> updateGeoloc(Geoloc newGeoloc) async {
     return [];
   }
 
-  Future<int> addNewConfigBlue(ConfigBlueModel newConfigBlue) async {
-    print('adding new config Blue...');
+  Future<List<int>> getSleepTimesList(int yyyy, int mm, int dd, int sampleSize) async {
+    int sleepTime = 0;
+    var tmp;
+    List<int> res = [];
 
-    final db = await database;
-    var raw = db.insert( 'ConfigBlue', newConfigBlue.toMap(),  conflictAlgorithm: ConflictAlgorithm.replace);
-
-    print('config Blue added !');
-    return raw;
-  }
-
-   Future<int> updateConfigBlue(ConfigBlueModel configBlue, int id) async {
-    print('updating config...');
-
-    final db = await database;
-    var raw = db.update("ConfigBlue", configBlue.toMap(), where: "id = ?", whereArgs: [id]);
-    print('config Blue updated !');
-    return raw;
-  }
-
-   getConfigBlue(int id) async {
-    final db = await database;
-    var res = await db.query("ConfigBlue", where: "id = ?", whereArgs: [id]);
-    return res.isNotEmpty ? ConfigBlueModel.fromMap(res.first) : null;
-  }
-
-  Future<int> getConfigsBlueid(int id) async {
-    final db = await database;
-    var results = await db.rawQuery('SELECT id FROM ConfigBlue WHERE id = $id');
-
-    if (results.length > 0) {
-      return new ConfigBlueModel.fromMap(results.first).id;
+    for (var i = 0; i < sampleSize; i++) {
+      sleepTime = await getSleepByDay(yyyy, mm, dd);
+      res.add(sleepTime);
+      tmp = getDateLastDay(yyyy, mm, dd);
+      yyyy = tmp[0];
+      mm = tmp[1];
+      dd = tmp[2];
     }
-
-    return null;
+    return res;
   }
 
-  Future<List<ConfigBlueModel>> fetchAllConfigBlue() async {
-    var config = await database;
-    var res = await config.query('ConfigBlue');
-
-    if (res.isNotEmpty) {
-      var theconfigs = res.map((stepMap) => ConfigBlueModel.fromMap(stepMap)).toList();
-      return theconfigs;
+  Future<List<int>> getHomeTimesList(int yyyy, int mm, int dd, int sampleSize) async {
+    int hometime = 0;
+    var tmp;
+    List<int> res = [];
+    for (var i = 0; i < sampleSize; i++) {
+      hometime = await getHomeTimesByDay(yyyy, mm, dd);
+      res.add(hometime);
+      tmp = getDateLastDay(yyyy, mm, dd);
+      yyyy = tmp[0];
+      mm = tmp[1];
+      dd = tmp[2];
     }
-    return [];
+    return res;
   }
-
-  }
-
-  
+}
