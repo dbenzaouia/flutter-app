@@ -214,7 +214,7 @@ static Future<List<charts.Series<DataList, DateTime>>> withDataMonth() async {
     var time = await DBProvider().getHomeTimesList(y,m,d,7);
     List<DataList> data = [];
     for(int i=0; i<time.length; i++ ){
-      data.add(new DataList(new DateTime(y,m,d), time[i]%3600));
+      data.add(new DataList(new DateTime(y,m,d), time[i]~/3600));
       listday = DBProvider.getDateLastDay(y, m, d);
       d = listday[2];
       y = listday[0];
@@ -240,7 +240,7 @@ static Future<List<charts.Series<DataList, DateTime>>> withDataMonth() async {
     var time = await DBProvider().getHomeTimesList(y,m,d,30);
     List<DataList> data = [];
     for(int i=0; i<time.length; i++ ){
-      data.add(new DataList(new DateTime(y,m,d), time[i]%3600));
+      data.add(new DataList(new DateTime(y,m,d), time[i]~/3600));
       listday = DBProvider.getDateLastDay(y, m, d);
       d = listday[2];
       y = listday[0];

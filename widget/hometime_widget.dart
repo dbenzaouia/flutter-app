@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:projet_geo/hometime.dart';
-import 'package:projet_geo/homeGraph.dart';
+import 'package:flutter_app/hometime.dart';
+import 'package:flutter_app/homeGraph.dart';
 
 class HometimeWidget {
   Widget hometimeWidgetday(){
@@ -32,7 +32,10 @@ class HometimeWidget {
                             builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               data = snapshot.data;
-                              return charts.PieChart(data);
+                              return charts.PieChart(data,defaultRenderer: new charts.ArcRendererConfig(arcRendererDecorators: [
+                                new charts.ArcLabelDecorator(
+                                labelPosition: charts.ArcLabelPosition.outside)
+                              ]));
                             } else if (snapshot.hasError) {
                               return Text(
                                 'Error:\n\n${snapshot.error}',

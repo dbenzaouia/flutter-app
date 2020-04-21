@@ -197,7 +197,6 @@ class SleepGraphState extends State<SleepGraph> {
           data: data,
           domainFn: (DataDay sleeptime, _) => sleeptime.hour,
           measureFn: (DataDay sleeptime, _) => sleeptime.time,
-          labelAccessorFn: (DataDay sleeptime, _) => sleeptime.hour + ' : ${sleeptime.time}'
       )
     ];
   }
@@ -211,7 +210,7 @@ class SleepGraphState extends State<SleepGraph> {
     var time = await DBProvider().getSleepTimesList(y,m,d,7);
     List<DataListS> data = [];
     for(int i=0; i<time.length; i++ ){
-      data.add(new DataListS(new DateTime(y,m,d), time[i]%3600));
+      data.add(new DataListS(new DateTime(y,m,d), time[i]~/3600));
       listday = DBProvider.getDateLastDay(y, m, d);
       d = listday[2];
       y = listday[0];
@@ -221,7 +220,6 @@ class SleepGraphState extends State<SleepGraph> {
       new charts.Series<DataListS, DateTime>(
           id: 'sleepW',
           data: data,
-          colorFn: (_, __) => charts.MaterialPalette.deepOrange.shadeDefault,
           domainFn: (DataListS sleeptimes, _) => sleeptimes.day,
           measureFn: (DataListS sleeptimes, _) => sleeptimes.time,
       )
@@ -237,7 +235,7 @@ class SleepGraphState extends State<SleepGraph> {
     var time = await DBProvider().getSleepTimesList(y,m,d,30);
     List<DataListS> data = [];
     for(int i=0; i<time.length; i++ ){
-      data.add(new DataListS(new DateTime(y,m,d), time[i]%3600));
+      data.add(new DataListS(new DateTime(y,m,d), time[i]~/3600));
       listday = DBProvider.getDateLastDay(y, m, d);
       d = listday[2];
       y = listday[0];
@@ -247,7 +245,6 @@ class SleepGraphState extends State<SleepGraph> {
       new charts.Series<DataListS, DateTime>(
           id: 'sleepM',
           data: data,
-          colorFn: (_, __) => charts.MaterialPalette.deepOrange.shadeDefault,
           domainFn: (DataListS sleeptimes, _) => sleeptimes.day,
           measureFn: (DataListS sleeptimes, _) => sleeptimes.time,
       )
