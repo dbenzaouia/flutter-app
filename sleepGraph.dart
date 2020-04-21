@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:projet_geo/data/database.dart';
+import 'package:flutter_app/data/database.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
-import 'package:projet_geo/sleepTime.dart';
+import 'package:flutter_app/sleepTime.dart';
 import 'models/ObjectDisplay.dart';
 
-import 'package:projet_geo/widget/sleeptime_widget.dart';
+import 'package:flutter_app/widget/sleeptime_widget.dart';
 
 
 
@@ -169,12 +169,12 @@ class SleepGraphState extends State<SleepGraph> {
     await  _createDataDay()
     );
   }
-  static Future<List<charts.Series<DataList, DateTime>>> withDataWeek() async {
+  static Future<List<charts.Series<DataListS, DateTime>>> withDataWeek() async {
     return (
     await  _createDataWeek()
     );
   }
-  static Future<List<charts.Series<DataList, DateTime>>> withDataMonth() async {
+  static Future<List<charts.Series<DataListS, DateTime>>> withDataMonth() async {
     return (
     await  _createDataMonth()
     );
@@ -195,61 +195,61 @@ class SleepGraphState extends State<SleepGraph> {
       new charts.Series<DataDay, String>(
           id: 'sleep',
           data: data,
-          colorFn: (_, __) => charts.MaterialPalette.deepOrange.shadeDefault,
           domainFn: (DataDay sleeptime, _) => sleeptime.hour,
           measureFn: (DataDay sleeptime, _) => sleeptime.time,
+          labelAccessorFn: (DataDay sleeptime, _) => sleeptime.hour + ' : ${sleeptime.time}'
       )
     ];
   }
 
-  static Future <List<charts.Series<DataList, DateTime>>> _createDataWeek() async {
+  static Future <List<charts.Series<DataListS, DateTime>>> _createDataWeek() async {
    int d = todayDay();
     int m = todayMonths();
     int y = todayYear();
     List listday = [];
     DBProvider().initDB();
     var time = await DBProvider().getSleepTimesList(y,m,d,7);
-    final data = [];
+    List<DataListS> data = [];
     for(int i=0; i<time.length; i++ ){
-      data.add(new DataList(new DateTime(y,m,d), time[i]%3600));
+      data.add(new DataListS(new DateTime(y,m,d), time[i]%3600));
       listday = DBProvider.getDateLastDay(y, m, d);
       d = listday[2];
       y = listday[0];
       m = listday[1];
     };
     return [
-      new charts.Series<DataList, DateTime>(
+      new charts.Series<DataListS, DateTime>(
           id: 'sleepW',
           data: data,
           colorFn: (_, __) => charts.MaterialPalette.deepOrange.shadeDefault,
-          domainFn: (DataList sleeptimes, _) => sleeptimes.day,
-          measureFn: (DataList sleeptimes, _) => sleeptimes.time,
+          domainFn: (DataListS sleeptimes, _) => sleeptimes.day,
+          measureFn: (DataListS sleeptimes, _) => sleeptimes.time,
       )
     ];
   }
 
-  static Future <List<charts.Series<DataList, DateTime>>> _createDataMonth() async {
+  static Future <List<charts.Series<DataListS, DateTime>>> _createDataMonth() async {
     int d = todayDay();
     int m = todayMonths();
     int y = todayYear();
     List listday = [];
     DBProvider().initDB();
     var time = await DBProvider().getSleepTimesList(y,m,d,30);
-    final data = [];
+    List<DataListS> data = [];
     for(int i=0; i<time.length; i++ ){
-      data.add(new DataList(new DateTime(y,m,d), time[i]%3600));
+      data.add(new DataListS(new DateTime(y,m,d), time[i]%3600));
       listday = DBProvider.getDateLastDay(y, m, d);
       d = listday[2];
       y = listday[0];
       m = listday[1];
     };
     return [
-      new charts.Series<DataList, DateTime>(
+      new charts.Series<DataListS, DateTime>(
           id: 'sleepM',
           data: data,
           colorFn: (_, __) => charts.MaterialPalette.deepOrange.shadeDefault,
-          domainFn: (DataList sleeptimes, _) => sleeptimes.day,
-          measureFn: (DataList sleeptimes, _) => sleeptimes.time,
+          domainFn: (DataListS sleeptimes, _) => sleeptimes.day,
+          measureFn: (DataListS sleeptimes, _) => sleeptimes.time,
       )
     ];
   }
