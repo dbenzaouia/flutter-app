@@ -23,11 +23,15 @@ class ConfigState extends State<Configuration> {
   int _hometime;
   int _sleeptime;
   int _pedometre;
+  int _location;
+  int _bluetooth;
   String _wifiname;
   String _wifiIP;
   String _sentence1;
   String _sentence2;
   String _sentence3;
+  String _sentence4;
+  String _sentence5;
 
   @override
   void initState() {
@@ -35,9 +39,15 @@ class ConfigState extends State<Configuration> {
     _hometime = 0;
     _sleeptime = 0;
     _pedometre = 0;
+    _location = 0;
+    _bluetooth = 0;
     _sentence1 = 'Hometime disabled';
     _sentence2 = 'Sleeptime disabled';
     _sentence3 = 'Pedometre disabled';
+    _sentence4 = 'Location disabled';
+    _sentence5 = 'Bluetooth disabled';
+    _wifiname = '';
+    _wifiIP = '';
     super.initState();
   }
 
@@ -45,10 +55,8 @@ class ConfigState extends State<Configuration> {
   Widget build(BuildContext context) {
 
     if (_configurationDone){
-      Config config = Config(id: 1,wifiname: _wifiname, wifiIP: _wifiIP, hometime: _hometime, sleeptime: _sleeptime, pedometre: _pedometre,);
+      Config config = Config(id: 1,wifiname: _wifiname, wifiIP: _wifiIP, hometime: _hometime, sleeptime: _sleeptime, pedometre: _pedometre, location: _location, bluetooth: _bluetooth);
       ConfigManager(dbProvider).updateConfig(config);
-
-
     }
     // Build a Form widget using the _formKey created above.
     return Form(
@@ -59,9 +67,6 @@ class ConfigState extends State<Configuration> {
           children: <Widget>[
             new TextFormField(
               validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
                 _wifiname = value;
                 return null;
               },
@@ -70,9 +75,6 @@ class ConfigState extends State<Configuration> {
             ),
               new TextFormField(
               validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
                 _wifiIP = value;
                 return null;
               },
@@ -123,14 +125,38 @@ class ConfigState extends State<Configuration> {
             ),
             new Container(
               child: new RaisedButton(
+                  color: _location==1 ? Colors.green[200] : Colors.white,
+                  child: new Text(_sentence4),
+                  onPressed: () {
+                    setState(() {
+                      _location==1 ? _location = 0 : _location = 1;
+                      _sentence4 == 'Location enabled'
+                          ? _sentence4 = 'Location disabled'
+                          : _sentence4 = 'Location enabled';
+                    });
+                  }),
+              margin: new EdgeInsets.only(top: 20.0),
+            ),
+            new Container(
+              child: new RaisedButton(
+                  color: _bluetooth==1 ? Colors.green[200] : Colors.white,
+                  child: new Text(_sentence5),
+                  onPressed: () {
+                    setState(() {
+                      _bluetooth==1 ? _bluetooth = 0 : _bluetooth = 1;
+                      _sentence5 == 'Bluetooth enabled'
+                          ? _sentence5 = 'Bluetooth disabled'
+                          : _sentence5 = 'Bluetooth enabled';
+                    });
+                  }),
+              margin: new EdgeInsets.only(top: 20.0),
+            ),
+            new Container(
+              child: new RaisedButton(
                   child: new Text('Appliquer'),
                   onPressed: () {
                      setState(() {
-                      // Validate returns true if the form is valid, or false
-                     // otherwise.
-                      if (_formKey.currentState.validate()) {
                         _configurationDone = true;
-                      }
                     });
                   }),
               margin: new EdgeInsets.only(top: 20.0),
@@ -140,4 +166,5 @@ class ConfigState extends State<Configuration> {
       ),
     );
   }
+
 }

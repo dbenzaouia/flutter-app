@@ -19,9 +19,11 @@ class Config {
   int hometime;
   int sleeptime;
   int pedometre;
+  int location;
+  int bluetooth;
 
 
-Config({this.id,this.wifiname,this.wifiIP,this.hometime,this.sleeptime,this.pedometre,});
+Config({this.id,this.wifiname,this.wifiIP,this.hometime,this.sleeptime,this.pedometre,this.location,this.bluetooth,});
 
 factory Config.fromMap(Map<String, dynamic> json) => new Config(
         id: json["id"],
@@ -30,6 +32,8 @@ factory Config.fromMap(Map<String, dynamic> json) => new Config(
         hometime: json["hometime"],
         sleeptime: json["sleeptime"],
         pedometre: json["pedometre"],
+        location: json["location"],
+        bluetooth: json["bluetooth"],
         
       );
   
@@ -42,6 +46,8 @@ factory Config.fromMap(Map<String, dynamic> json) => new Config(
     map['hometime'] = hometime;
     map['sleeptime'] = sleeptime;
     map['pedometre'] = pedometre;
+    map['location'] = location;
+    map['bluetooth'] = bluetooth;
 
 
 

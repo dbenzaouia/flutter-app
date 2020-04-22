@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:design/homeSleepGraph.dart';
+import 'homeSleepGraph.dart';
 
 import './design/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +17,8 @@ import 'PedoGraph.dart';
 import 'homeGraph.dart';
 import 'bluetoothmedia.dart';
 import 'BMGraph.dart';
+import 'models/ConfigBlueModel.dart';
+import 'data/configBlueManager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,15 +41,31 @@ class MyApp extends StatelessWidget {
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
 
+    //Initialisation config
+
     Config configIni = Config(
       wifiname: '',
       wifiIP: '',
       hometime: 0,
       sleeptime: 0,
       pedometre: 0,
+      location: 0,
+      bluetooth: 0,
     );
     DBProvider dbProvider = DBProvider.db;
     ConfigManager(dbProvider).addNewConfig(configIni);
+
+    //Initialisation config Bluetooth
+    ConfigBlueModel configBlue1 =
+        ConfigBlueModel(id: 1, name: '', location: '');
+    ConfigBlueModel configBlue2 =
+        ConfigBlueModel(id: 2, name: '', location: '');
+    ConfigBlueModel configBlue3 =
+        ConfigBlueModel(id: 3, name: '', location: '');
+
+    ConfigBlueManager(dbProvider).addNewConfigBlue(configBlue1);
+    ConfigBlueManager(dbProvider).addNewConfigBlue(configBlue2);
+    ConfigBlueManager(dbProvider).addNewConfigBlue(configBlue3);
 
     return MaterialApp(
       title: 'Flutter App',
@@ -112,23 +130,31 @@ class _FirstState extends State<First> {
 
   @override
   Widget build(BuildContext context) {
-    if (enabled == 1) {
+    if (enabled == 0) {
       isEnabled();
-      return new Container(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-            Center(
-              heightFactor: 20,
-              child: Text(
-                'Pedometer disabled',
-                style: TextStyle(
-                  fontSize: 22.0,
-                  fontWeight: FontWeight.w400,
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Podometre"),
+        ),
+        body: SingleChildScrollView(
+          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Center(
+                heightFactor: 20,
+                child: Text(
+                  'Pedometer disabled',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
-            ),
-          ]));
+            ],
+          ),
+        ),
+      );
     } else {
       return Scaffold(
         appBar: AppBar(
@@ -154,22 +180,67 @@ class Second extends StatefulWidget {
 }
 
 class _SecondState extends State<Second> {
+  int enabled;
+  DBProvider dbProvider = DBProvider.db;
+  final dataBase = DBProvider();
+
+  void initState() {
+    //initPlatformState();
+    enabled = 0;
+    super.initState();
+  }
+
+  void isEnabled() async {
+    var _config = await dataBase.getConfig(1);
+    print(_config.hometime);
+    setState(() {
+      enabled = _config.hometime;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("HomeTime"),
-      ),
-      body: SingleChildScrollView(
-        //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            new HomeGraph(),
-          ],
+    if (enabled == 0) {
+      isEnabled();
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("HomeTime"),
         ),
-      ),
-    );
+        body: SingleChildScrollView(
+          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Center(
+                heightFactor: 20,
+                child: Text(
+                  'HomeTime disabled',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("HomeTime"),
+        ),
+        body: SingleChildScrollView(
+          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              new HomeGraph(),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }
 
@@ -179,22 +250,67 @@ class Third extends StatefulWidget {
 }
 
 class _ThirdState extends State<Third> {
+  int enabled;
+  DBProvider dbProvider = DBProvider.db;
+  final dataBase = DBProvider();
+
+  void initState() {
+    //initPlatformState();
+    enabled = 0;
+    super.initState();
+  }
+
+  void isEnabled() async {
+    var _config = await dataBase.getConfig(1);
+    print(_config.sleeptime);
+    setState(() {
+      enabled = _config.sleeptime;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("SleepTime"),
-      ),
-      body: SingleChildScrollView(
-        //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            new HSGraph(),
-          ],
+    if (enabled == 0) {
+      isEnabled();
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("SleepTime"),
         ),
-      ),
-    );
+        body: SingleChildScrollView(
+          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Center(
+                heightFactor: 20,
+                child: Text(
+                  'SleepTime disabled',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("SleepTime"),
+        ),
+        body: SingleChildScrollView(
+          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              new HSGraph(),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }
 
@@ -204,21 +320,66 @@ class Fourth extends StatefulWidget {
 }
 
 class _FourthState extends State<Fourth> {
+  int enabled;
+  DBProvider dbProvider = DBProvider.db;
+  final dataBase = DBProvider();
+
+  void initState() {
+    //initPlatformState();
+    enabled = 0;
+    super.initState();
+  }
+
+  void isEnabled() async {
+    var _config = await dataBase.getConfig(1);
+    print(_config.location);
+    setState(() {
+      enabled = _config.location;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Location"),
-      ),
-      body:
+    if (enabled == 0) {
+      isEnabled();
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Location"),
+        ),
+        body: SingleChildScrollView(
           //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-          new Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          new Locations(),
-        ],
-      ),
-    );
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Center(
+                heightFactor: 20,
+                child: Text(
+                  'Location disabled',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Location"),
+        ),
+        body:
+            //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+            new Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            new Locations(),
+          ],
+        ),
+      );
+    }
   }
 }
 
@@ -228,22 +389,67 @@ class Fifth extends StatefulWidget {
 }
 
 class _FifthState extends State<Fifth> {
+  int enabled;
+  DBProvider dbProvider = DBProvider.db;
+  final dataBase = DBProvider();
+
+  void initState() {
+    //initPlatformState();
+    enabled = 0;
+    super.initState();
+  }
+
+  void isEnabled() async {
+    var _config = await dataBase.getConfig(1);
+    print(_config.bluetooth);
+    setState(() {
+      enabled = _config.bluetooth;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Bluetooth"),
-      ),
-      body: SingleChildScrollView(
-        //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-          //  new BMG(),
-          ],
+    if (enabled == 0) {
+      isEnabled();
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Bluetooth"),
         ),
-      ),
-    );
+        body: SingleChildScrollView(
+          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Center(
+                heightFactor: 20,
+                child: Text(
+                  'Bluetooth disabled',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Bluetooth"),
+        ),
+        body: SingleChildScrollView(
+          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              new BMG(),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }
 

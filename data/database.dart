@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:flutter_app/models/ObjectDisplay.dart';
-import 'package:flutter_app/models/sleepModel.dart';
-import 'package:flutter_app/models/stepsModel.dart';
-import 'package:flutter_app/models/hometimesModel.dart';
-import 'package:flutter_app/models/blueModel.dart';
-import 'package:flutter_app/models/geoModel.dart';
+import '../models/ObjectDisplay.dart';
+import '../models/sleepModel.dart';
+import '../models/stepsModel.dart';
+import '../models/hometimesModel.dart';
+import '../models/blueModel.dart';
+import '../models/geoModel.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -134,7 +134,7 @@ class DBProvider {
                           theHours TEXT,theMin TEXT,thePart TEXT)''');
           await db.execute('''CREATE TABLE Config (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           wifiname TEXT,wifiIP TEXT,hometime INTEGER,sleeptime INTEGER,
-                          pedometre INTEGER)''');
+                          pedometre INTEGER,location INTEGER,bluetooth INTEGER)''');
           await db.execute('''CREATE TABLE Blue(id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           name TEXT, theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours TEXT,theMin INTEGER,thePart TEXT)''');
           await db.execute('''CREATE TABLE ConfigBlue (id INTEGER PRIMARY KEY AUTOINCREMENT, 

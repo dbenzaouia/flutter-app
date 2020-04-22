@@ -3,11 +3,11 @@ import '../models/ConfigBlueModel.dart';
 
 import 'database.dart';
 
-class ConfigManager{
+class ConfigBlueManager{
   
   final DBProvider dbProvider;
 
-  ConfigManager(this.dbProvider);
+  ConfigBlueManager(this.dbProvider);
   
   Future<void>addNewConfigBlue(ConfigBlueModel configblue) async{
     return dbProvider.addNewConfigBlue(configblue); 

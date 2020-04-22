@@ -47,13 +47,9 @@ class ConfigBlueState extends State<ConfigBlue> {
     ConfigBlueModel configBlue3 =
         ConfigBlueModel(id: 3, name: _name3, location: _location3);
     if (_configurationDone) {
-      ConfigManager(dbProvider).updateConfigBlue(configBlue1, 1);
-      ConfigManager(dbProvider).updateConfigBlue(configBlue2, 2);
-      ConfigManager(dbProvider).updateConfigBlue(configBlue3, 3);
-    } else {
-      ConfigManager(dbProvider).addNewConfigBlue(configBlue1);
-      ConfigManager(dbProvider).addNewConfigBlue(configBlue2);
-      ConfigManager(dbProvider).addNewConfigBlue(configBlue3);
+      ConfigBlueManager(dbProvider).updateConfigBlue(configBlue1, 1);
+      ConfigBlueManager(dbProvider).updateConfigBlue(configBlue2, 2);
+      ConfigBlueManager(dbProvider).updateConfigBlue(configBlue3, 3);
     }
     // Build a Form widget using the _formKey created above.
     return Form(
@@ -126,4 +122,4 @@ class ConfigBlueState extends State<ConfigBlue> {
       ),
     );
   }
-}
+  }
