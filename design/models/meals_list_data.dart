@@ -55,6 +55,3 @@ List<MealsListData> tabIconsList = <MealsListData>[
       endColor: '#1E1466',
     ),
   ];
-
-mixin _today {
-}
