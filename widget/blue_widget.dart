@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import '../widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import '../models/ObjectDisplay.dart';
+import '../models/ConfigBlueModel.dart';
+
 
 
 
 class BlueWidgetDay {
-  Widget BlueWidget(List<charts.Series<BlueDay, DateTime>> series, List<BlueDay> blue, List<BlueDay> blue2, List<BlueDay> blue3,List<BlueObjet> object){
+  Widget BlueWidget(List<charts.Series<BlueDay, DateTime>> series, List<BlueDay> blue, List<BlueDay> blue2, List<BlueDay> blue3,List<ConfigBlueModel> object){
            return  new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -75,7 +77,7 @@ class BlueWidgetDay {
   }
 }
 class BlueWidgetYear {
-  Widget BlueWidget(List<charts.Series<BlueYear, String>> series,  List<BlueYear> blue, List<BlueYear> blue2, List<BlueYear> blue3,List<BlueObjet> object){
+  Widget BlueWidget(List<charts.Series<BlueYear, String>> series,  List<BlueYear> blue, List<BlueYear> blue2, List<BlueYear> blue3,List<ConfigBlueModel> object){
      return  new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -135,7 +137,7 @@ class BlueWidgetYear {
   }
 }
 class BlueWidgetMonths {
-  Widget BlueWidget(List<charts.Series<BlueMonths, String>> series,  List<BlueMonths> blue, List<BlueMonths> blue2, List<BlueMonths> blue3,List<BlueObjet> object){
+  Widget BlueWidget(List<charts.Series<BlueMonths, String>> series,  List<BlueMonths> blue, List<BlueMonths> blue2, List<BlueMonths> blue3,List<ConfigBlueModel> object){
 return  new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -195,7 +197,7 @@ return  new Container(
   }
 }
 class BlueWidgetWeek {
-  Widget BlueWidget(List<charts.Series<BlueWeek, String>> series,  List<BlueWeek> blue, List<BlueWeek> blue2, List<BlueWeek> blue3,List<BlueObjet> object){
+  Widget BlueWidget(List<charts.Series<BlueWeek, String>> series,  List<BlueWeek> blue, List<BlueWeek> blue2, List<BlueWeek> blue3,List<ConfigBlueModel> object){
 return  new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
