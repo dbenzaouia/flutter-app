@@ -18,7 +18,7 @@ class SleepListView extends StatefulWidget {
 class _SleepListViewState extends State<SleepListView>
     with TickerProviderStateMixin {
   AnimationController animationController;
-  List<MealsListData> mealsListData = MealsListData.tabIconsList;
+  List<MealsListData> mealsListData = tabIconsList;
 
   @override
   void initState() {
