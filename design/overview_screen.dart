@@ -5,6 +5,8 @@ import './second_app_theme.dart';
 import './widget_list.dart';
 import '../main.dart';
 import './ui_view/running_view.dart';
+import './ui_view/location_view.dart';
+import './ui_view/blue_view.dart';
 import './ui_view/workout_view.dart';
 import 'package:flutter/material.dart';
 
@@ -153,7 +155,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     listViews.add(
       InkWell(
         child:
-      MealsListView(
+      SleepListView(
         mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
             CurvedAnimation(
                 parent: widget.animationController,
@@ -197,6 +199,37 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                       curve: Curves.fastOutSlowIn))),
           animationController: widget.animationController),
     );
+
+    listViews.add(
+      InkWell(
+          child: LocationView(
+            animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                    parent: widget.animationController,
+                    curve: Interval((1 / count) * 3, 1.0,
+                        curve: Curves.fastOutSlowIn))),
+            animationController: widget.animationController,
+          ),
+          onTap: () {
+            Navigator.pushNamed(context, '/fourth');
+          }),
+    );
+
+    listViews.add(
+      InkWell(
+          child: BlueView(
+            animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                    parent: widget.animationController,
+                    curve: Interval((1 / count) * 3, 1.0,
+                        curve: Curves.fastOutSlowIn))),
+            animationController: widget.animationController,
+          ),
+          onTap: () {
+            Navigator.pushNamed(context, '/fifth');
+          }),
+    );
+  
   }
 
   Future<bool> getData() async {

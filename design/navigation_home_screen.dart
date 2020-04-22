@@ -24,24 +24,29 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red,
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        child: Scaffold(
-          backgroundColor: AppTheme.nearlyWhite,
-          body: DrawerUserController(
-            screenIndex: drawerIndex,
-            drawerWidth: MediaQuery.of(context).size.width * 0.75,
-            animationController: (AnimationController animationController) {
-              sliderAnimationController = animationController;
-            },
-            onDrawerCall: (DrawerIndex drawerIndexdata) {
-              changeIndex(drawerIndexdata);
-            },
-            screenView: screenView,
-          ),
+    return Scaffold(
+      backgroundColor: AppTheme.nearlyWhite,
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width + 250,
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width + 250,
+              child: DrawerUserController(
+                screenIndex: drawerIndex,
+                drawerWidth: MediaQuery.of(context).size.width * 0.75,
+                animationController: (AnimationController animationController) {
+                  sliderAnimationController = animationController;
+                },
+                onDrawerCall: (DrawerIndex drawerIndexdata) {
+                  changeIndex(drawerIndexdata);
+                },
+                screenView: screenView,
+              ),
+            ),
+          ],
         ),
       ),
     );

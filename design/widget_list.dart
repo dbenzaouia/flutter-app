@@ -3,8 +3,8 @@ import './models/meals_list_data.dart';
 import '../main.dart';
 import 'package:flutter/material.dart';
 
-class MealsListView extends StatefulWidget {
-  const MealsListView(
+class SleepListView extends StatefulWidget {
+  const SleepListView(
       {Key key, this.mainScreenAnimationController, this.mainScreenAnimation})
       : super(key: key);
 
@@ -12,10 +12,10 @@ class MealsListView extends StatefulWidget {
   final Animation<dynamic> mainScreenAnimation;
 
   @override
-  _MealsListViewState createState() => _MealsListViewState();
+  _SleepListViewState createState() => _SleepListViewState();
 }
 
-class _MealsListViewState extends State<MealsListView>
+class _SleepListViewState extends State<SleepListView>
     with TickerProviderStateMixin {
   AnimationController animationController;
   List<MealsListData> mealsListData = MealsListData.tabIconsList;
@@ -67,7 +67,7 @@ class _MealsListViewState extends State<MealsListView>
                                   curve: Curves.fastOutSlowIn)));
                   animationController.forward();
 
-                  return MealsView(
+                  return SleepView(
                     mealsListData: mealsListData[index],
                     animation: animation,
                     animationController: animationController,
@@ -82,8 +82,8 @@ class _MealsListViewState extends State<MealsListView>
   }
 }
 
-class MealsView extends StatelessWidget {
-  const MealsView(
+class SleepView extends StatelessWidget {
+  const SleepView(
       {Key key, this.mealsListData, this.animationController, this.animation})
       : super(key: key);
 
