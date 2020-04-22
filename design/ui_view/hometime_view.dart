@@ -1,3 +1,6 @@
+import '../../data/database.dart';
+
+import '../../hometime.dart';
 import '../second_app_theme.dart';
 import '../../main.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +10,7 @@ class HomeTimeView extends StatelessWidget {
   final AnimationController animationController;
   final Animation animation;
 
-  const HomeTimeView(
-      {Key key, this.animationController, this.animation})
+  const HomeTimeView({Key key, this.animationController, this.animation})
       : super(key: key);
 
   @override
@@ -16,215 +18,275 @@ class HomeTimeView extends StatelessWidget {
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
-        var _dureInHome=2;
-        var _dureHier=5;
-        var _dureAverage=7;
-
+        var _dureInHome = 0;
+        var _dureHier = 0;
+        var _dureAverage = 0;
+        int y = HTState.todayYear();
+        int m = HTState.todayMonths();
+        int d = HTState.todayDay();
+        List<int> dateh = DBProvider.getDateLastDay(y, m, d);
         var now = new DateTime.now();
-        var _dureOutHome = now.hour - _dureInHome;
-                return FadeTransition(
-                  opacity: animation,
-                  child: new Transform(
-                    transform: new Matrix4.translationValues(
-                        0.0, 30 * (1.0 - animation.value), 0.0),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 24, right: 24, top: 16, bottom: 18),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: SecondAppTheme.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8.0),
-                              bottomLeft: Radius.circular(8.0),
-                              bottomRight: Radius.circular(8.0),
-                              topRight: Radius.circular(68.0)),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: SecondAppTheme.grey.withOpacity(0.2),
-                                offset: Offset(1.1, 1.1),
-                                blurRadius: 10.0),
-                          ],
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 16, left: 16, right: 16),
-                              child: Row(
+        var _dureOutHome = 0;
+        return FadeTransition(
+          opacity: animation,
+          child: new Transform(
+            transform: new Matrix4.translationValues(
+                0.0, 30 * (1.0 - animation.value), 0.0),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 24, right: 24, top: 16, bottom: 18),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: SecondAppTheme.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8.0),
+                      bottomLeft: Radius.circular(8.0),
+                      bottomRight: Radius.circular(8.0),
+                      topRight: Radius.circular(68.0)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: SecondAppTheme.grey.withOpacity(0.2),
+                        offset: Offset(1.1, 1.1),
+                        blurRadius: 10.0),
+                  ],
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 16, left: 16, right: 16),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8, top: 4),
+                              child: Column(
                                 children: <Widget>[
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8, right: 8, top: 4),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Row(
-                                            children: <Widget>[
-                                              Container(
-                                                height: 48,
-                                                width: 2,
-                                                decoration: BoxDecoration(
-                                                  color: HexColor('#87A0E5')
+                                  Row(
+                                    children: <Widget>[
+                                      Container(
+                                        height: 48,
+                                        width: 2,
+                                        decoration: BoxDecoration(
+                                          color: HexColor('#87A0E5')
+                                              .withOpacity(0.5),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(4.0)),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 4, bottom: 2),
+                                              child: Text(
+                                                'Chez vous',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      SecondAppTheme.fontName,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 16,
+                                                  letterSpacing: -0.1,
+                                                  color: SecondAppTheme.grey
                                                       .withOpacity(0.5),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(4.0)),
                                                 ),
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(
-                                                          left: 4, bottom: 2),
-                                                      child: Text(
-                                                        'Chez vous',
-                                                        textAlign: TextAlign.center,
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              SecondAppTheme.fontName,
-                                                          fontWeight: FontWeight.w500,
-                                                          fontSize: 16,
-                                                          letterSpacing: -0.1,
-                                                          color: SecondAppTheme.grey
-                                                              .withOpacity(0.5),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment.end,
-                                                      children: <Widget>[
-                                                        SizedBox(
-                                                          width: 28,
-                                                          height: 28,
-                                                          child: Image.asset(
-                                                              "assets/fitness_app/eaten.png"),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets.only(
-                                                                  left: 4, bottom: 3),
-                                                          child: Text(
-                                                            '${animatedHour(_dureInHome)}',
-                                                            textAlign: TextAlign.center,
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  SecondAppTheme
-                                                                      .fontName,
-                                                              fontWeight:
-                                                                  FontWeight.w600,
-                                                              fontSize: 16,
-                                                              color: SecondAppTheme
-                                                                  .darkerText,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets.only(
-                                                                  left: 4, bottom: 3),
-                                                          child: Text(
-                                                            'heures',
-                                                            textAlign: TextAlign.center,
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  SecondAppTheme
-                                                                      .fontName,
-                                                              fontWeight:
-                                                                  FontWeight.w600,
-                                                              fontSize: 12,
-                                                              letterSpacing: -0.2,
-                                                              color: SecondAppTheme
-                                                                  .grey
-                                                                  .withOpacity(0.5),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: <Widget>[
+                                                SizedBox(
+                                                  width: 28,
+                                                  height: 28,
+                                                  child: Image.asset(
+                                                      "assets/fitness_app/eaten.png"),
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 8,
-                                          ),
-                                          Row(
-                                            children: <Widget>[
-                                              Container(
-                                                height: 48,
-                                                width: 2,
-                                                decoration: BoxDecoration(
-                                                  color: HexColor('#F56E98')
-                                                      .withOpacity(0.5),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(4.0)),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(
-                                                          left: 4, bottom: 2),
-                                                      child: Text(
-                                                        'En dehors',
-                                                        textAlign: TextAlign.center,
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              SecondAppTheme.fontName,
-                                                          fontWeight: FontWeight.w500,
-                                                          fontSize: 16,
-                                                          letterSpacing: -0.1,
-                                                          color: SecondAppTheme.grey
-                                                              .withOpacity(0.5),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment.end,
-                                                      children: <Widget>[
-                                                        SizedBox(
-                                                          width: 28,
-                                                          height: 28,
-                                                          child: Image.asset(
-                                                              "assets/fitness_app/burned.png"),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets.only(
-                                                                  left: 4, bottom: 3),
-                                                          child: Text(
-                                                            '${animatedHour(_dureOutHome)}',
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4, bottom: 3),
+                                                    child: FutureBuilder<int>(
+                                                        future: DBProvider()
+                                                            .getHomeTimesByDay(
+                                                                y,
+                                                                m,
+                                                                d), // a previously-obtained Future<String> or null
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          if (snapshot
+                                                              .hasData) {
+                                                            _dureInHome =
+                                                                snapshot.data ~/
+                                                                    3600;
+                                                            return Text(
+                                                              '${animatedHour(_dureInHome)}',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    SecondAppTheme
+                                                                        .fontName,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 16,
+                                                                color: SecondAppTheme
+                                                                    .darkerText,
+                                                              ),
+                                                            );
+                                                          } else if (snapshot
+                                                              .hasError) {
+                                                            return Text(
+                                                              'Error:\n\n${snapshot.error}',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                            );
+                                                          } else {
+                                                            return Text(
+                                                                'Il n\'y a pas de données');
+                                                          }
+                                                        })),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 4, bottom: 3),
+                                                  child: Text(
+                                                    'heures',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      fontFamily:
-                                                          SecondAppTheme
-                                                              .fontName,
+                                                      fontFamily: SecondAppTheme
+                                                          .fontName,
                                                       fontWeight:
                                                           FontWeight.w600,
-                                                      fontSize: 16,
-                                                      color: SecondAppTheme
-                                                          .darkerText,
+                                                      fontSize: 12,
+                                                      letterSpacing: -0.2,
+                                                      color: SecondAppTheme.grey
+                                                          .withOpacity(0.5),
                                                     ),
                                                   ),
                                                 ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Container(
+                                        height: 48,
+                                        width: 2,
+                                        decoration: BoxDecoration(
+                                          color: HexColor('#F56E98')
+                                              .withOpacity(0.5),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(4.0)),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 4, bottom: 2),
+                                              child: Text(
+                                                'En dehors',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      SecondAppTheme.fontName,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 16,
+                                                  letterSpacing: -0.1,
+                                                  color: SecondAppTheme.grey
+                                                      .withOpacity(0.5),
+                                                ),
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: <Widget>[
+                                                SizedBox(
+                                                  width: 28,
+                                                  height: 28,
+                                                  child: Image.asset(
+                                                      "assets/fitness_app/burned.png"),
+                                                ),
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4, bottom: 3),
+                                                    child: FutureBuilder<int>(
+                                                        future: DBProvider()
+                                                            .getHomeTimesByDay(
+                                                                y,
+                                                                m,
+                                                                d), // a previously-obtained Future<String> or null
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          if (snapshot
+                                                              .hasData) {
+                                                            _dureInHome =
+                                                                snapshot.data ~/
+                                                                    3600;
+                                                            _dureOutHome =
+                                                                now.hour -
+                                                                    _dureInHome;
+                                                            return Text(
+                                                              '${animatedHour(_dureOutHome)}',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    SecondAppTheme
+                                                                        .fontName,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 16,
+                                                                color: SecondAppTheme
+                                                                    .darkerText,
+                                                              ),
+                                                            );
+                                                          } else if (snapshot
+                                                              .hasError) {
+                                                            return Text(
+                                                              'Error:\n\n${snapshot.error}',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                            );
+                                                          } else {
+                                                            return Text(
+                                                                'Il n\'y a pas de données');
+                                                          }
+                                                        })),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -233,15 +295,13 @@ class HomeTimeView extends StatelessWidget {
                                                     'heures',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      fontFamily:
-                                                          SecondAppTheme
-                                                              .fontName,
+                                                      fontFamily: SecondAppTheme
+                                                          .fontName,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       fontSize: 12,
                                                       letterSpacing: -0.2,
-                                                      color: SecondAppTheme
-                                                          .grey
+                                                      color: SecondAppTheme.grey
                                                           .withOpacity(0.5),
                                                     ),
                                                   ),
@@ -266,73 +326,120 @@ class HomeTimeView extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Container(
-                                      width: 100,
-                                      height: 100,
-                                      decoration: BoxDecoration(
-                                        color: SecondAppTheme.white,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(100.0),
-                                        ),
-                                        border: new Border.all(
-                                            width: 4,
-                                            color: SecondAppTheme
-                                                .nearlyDarkBlue
-                                                .withOpacity(0.2)),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            '${animatedHour(_dureInHome)}h',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily:
-                                                  SecondAppTheme.fontName,
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 24,
-                                              letterSpacing: 0.0,
+                                        width: 100,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          color: SecondAppTheme.white,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(100.0),
+                                          ),
+                                          border: new Border.all(
+                                              width: 4,
                                               color: SecondAppTheme
-                                                  .nearlyDarkBlue,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Chez Vous',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily:
-                                                  SecondAppTheme.fontName,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12,
-                                              letterSpacing: 0.0,
-                                              color: SecondAppTheme.grey
-                                                  .withOpacity(0.5),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                                  .nearlyDarkBlue
+                                                  .withOpacity(0.2)),
+                                        ),
+                                        child: FutureBuilder<int>(
+                                            future: DBProvider().getHomeTimesByDay(
+                                                y,
+                                                m,
+                                                d), // a previously-obtained Future<String> or null
+                                            builder: (context, snapshot) {
+                                              if (snapshot.hasData) {
+                                                _dureInHome =
+                                                    snapshot.data ~/ 3600;
+                                                return Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      '${animatedHour(_dureInHome)}h',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            SecondAppTheme
+                                                                .fontName,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        fontSize: 24,
+                                                        letterSpacing: 0.0,
+                                                        color: SecondAppTheme
+                                                            .nearlyDarkBlue,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'Chez Vous',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            SecondAppTheme
+                                                                .fontName,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 12,
+                                                        letterSpacing: 0.0,
+                                                        color: SecondAppTheme
+                                                            .grey
+                                                            .withOpacity(0.5),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              } else if (snapshot.hasError) {
+                                                return Text(
+                                                  'Error:\n\n${snapshot.error}',
+                                                  textAlign: TextAlign.center,
+                                                );
+                                              } else {
+                                                return Text(
+                                                    'Il n\'y a pas de données');
+                                              }
+                                            })),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: CustomPaint(
-                                      painter: CurvePainter(
-                                          colors: [
-                                            SecondAppTheme.nearlyDarkBlue,
-                                            HexColor("#8A98E8"),
-                                            HexColor("#8A98E8")
-                                          ],
-                                          angle: drawCircle(_dureInHome) +
-                                              (360 - 140) *
-                                                  (1.0 - animation.value)),
-                                      child: SizedBox(
-                                        width: 108,
-                                        height: 108,
-                                      ),
-                                    ),
-                                  )
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: FutureBuilder<int>(
+                                          future: DBProvider().getHomeTimesByDay(
+                                              y,
+                                              m,
+                                              d), // a previously-obtained Future<String> or null
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              _dureInHome =
+                                                  snapshot.data ~/ 3600;
+                                              return CustomPaint(
+                                                painter: CurvePainter(
+                                                    colors: [
+                                                      SecondAppTheme
+                                                          .nearlyDarkBlue,
+                                                      HexColor("#8A98E8"),
+                                                      HexColor("#8A98E8")
+                                                    ],
+                                                    angle: drawCircle(
+                                                            _dureInHome) +
+                                                        (360 - 140) *
+                                                            (1.0 -
+                                                                animation
+                                                                    .value)),
+                                                child: SizedBox(
+                                                  width: 108,
+                                                  height: 108,
+                                                ),
+                                              );
+                                            } else if (snapshot.hasError) {
+                                              return Text(
+                                                'Error:\n\n${snapshot.error}',
+                                                textAlign: TextAlign.center,
+                                              );
+                                            } else {
+                                              return Text(
+                                                  'Il n\'y a pas de données');
+                                            }
+                                          }))
                                 ],
                               ),
                             ),
@@ -373,19 +480,37 @@ class HomeTimeView extends StatelessWidget {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 6),
-                                  child: Text(
-                                    '${_dureInHome}h',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: SecondAppTheme.fontName,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                      color: SecondAppTheme.grey
-                                          .withOpacity(0.5),
-                                    ),
-                                  ),
-                                ),
+                                    padding: const EdgeInsets.only(top: 6),
+                                    child: FutureBuilder<int>(
+                                        future: DBProvider().getHomeTimesByDay(
+                                            y,
+                                            m,
+                                            d), // a previously-obtained Future<String> or null
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            _dureInHome = snapshot.data ~/ 3600;
+                                            return Text(
+                                              '${_dureInHome}h',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily:
+                                                    SecondAppTheme.fontName,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                color: SecondAppTheme.grey
+                                                    .withOpacity(0.5),
+                                              ),
+                                            );
+                                          } else if (snapshot.hasError) {
+                                            return Text(
+                                              'Error:\n\n${snapshot.error}',
+                                              textAlign: TextAlign.center,
+                                            );
+                                          } else {
+                                            return Text(
+                                                'Il n\'y a pas de données');
+                                          }
+                                        })),
                               ],
                             ),
                           ),
@@ -410,19 +535,39 @@ class HomeTimeView extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 6),
-                                      child: Text(
-                                        '${_dureHier}h',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: SecondAppTheme.fontName,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
-                                          color: SecondAppTheme.grey
-                                              .withOpacity(0.5),
-                                        ),
-                                      ),
-                                    ),
+                                        padding: const EdgeInsets.only(top: 6),
+                                        child: FutureBuilder<int>(
+                                            future: DBProvider().getHomeTimesByDay(
+                                                dateh[2],
+                                                dateh[1],
+                                                dateh[
+                                                    0]), // a previously-obtained Future<String> or null
+                                            builder: (context, snapshot) {
+                                              if (snapshot.hasData) {
+                                                _dureHier =
+                                                    snapshot.data ~/ 3600;
+                                                return Text(
+                                                  '${_dureHier}h',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        SecondAppTheme.fontName,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 15,
+                                                    color: SecondAppTheme.grey
+                                                        .withOpacity(0.5),
+                                                  ),
+                                                );
+                                              } else if (snapshot.hasError) {
+                                                return Text(
+                                                  'Error:\n\n${snapshot.error}',
+                                                  textAlign: TextAlign.center,
+                                                );
+                                              } else {
+                                                return Text(
+                                                    'Il n\'y a pas de données');
+                                              }
+                                            })),
                                   ],
                                 ),
                               ],
@@ -448,19 +593,39 @@ class HomeTimeView extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 6),
-                                      child: Text(
-                                        '${_dureAverage}h',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: SecondAppTheme.fontName,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
-                                          color: SecondAppTheme.grey
-                                              .withOpacity(0.5),
-                                        ),
-                                      ),
-                                    ),
+                                        padding: const EdgeInsets.only(top: 6),
+                                        child: FutureBuilder<int>(
+                                            future: DBProvider().getHomeTimesMean(
+                                                y,
+                                                m,
+                                                d,
+                                                30), // a previously-obtained Future<String> or null
+                                            builder: (context, snapshot) {
+                                              if (snapshot.hasData) {
+                                                _dureAverage =
+                                                    snapshot.data ~/ 3600;
+                                                return Text(
+                                                  '${_dureAverage}h',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        SecondAppTheme.fontName,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 15,
+                                                    color: SecondAppTheme.grey
+                                                        .withOpacity(0.5),
+                                                  ),
+                                                );
+                                              } else if (snapshot.hasError) {
+                                                return Text(
+                                                  'Error:\n\n${snapshot.error}',
+                                                  textAlign: TextAlign.center,
+                                                );
+                                              } else {
+                                                return Text(
+                                                    'Il n\'y a pas de données');
+                                              }
+                                            })),
                                   ],
                                 ),
                               ],
@@ -482,8 +647,9 @@ class HomeTimeView extends StatelessWidget {
   int animatedHour(int x) {
     return (x * animation.value).toInt();
   }
+
   int drawCircle(int x) {
-    return x*20;
+    return x * 20;
   }
 }
 
