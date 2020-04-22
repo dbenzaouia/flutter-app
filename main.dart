@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:design/homeSleepGraph.dart';
+
 import './design/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -188,7 +190,7 @@ class _ThirdState extends State<Third> {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new MytestPage(),
+            new HSGraph(),
           ],
         ),
       ),
@@ -268,6 +270,11 @@ class _MainWidgetState extends State<MainWidget> {
               height: 0,
               width: MediaQuery.of(context).size.width,
               child: new HT(),
+            ),
+            SizedBox(
+              height: 0,
+              width: MediaQuery.of(context).size.width,
+              child: new MytestPage(),
             ),
             /* SizedBox(
               height: 0,
