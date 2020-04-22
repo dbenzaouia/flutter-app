@@ -11,6 +11,10 @@ import 'userLocation.dart';
 import 'configModel.dart';
 import 'data/configManager.dart';
 import 'data/database.dart';
+import 'PedoGraph.dart';
+import 'homeGraph.dart';
+import 'bluetoothmedia.dart';
+import 'BMGraph.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,7 +55,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTheme.textTheme,
         platform: TargetPlatform.iOS,
       ),
-      home: NavigationHomeScreen(),
+      home: MainWidget(),
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
@@ -106,7 +110,7 @@ class _FirstState extends State<First> {
 
   @override
   Widget build(BuildContext context) {
-    if (enabled == 0) {
+    if (enabled == 1) {
       isEnabled();
       return new Container(
           child: Column(
@@ -133,7 +137,7 @@ class _FirstState extends State<First> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              new Pedo(),
+              new PedoGraph(),
             ],
           ),
         ),
@@ -159,7 +163,7 @@ class _SecondState extends State<Second> {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new HT(),
+            new HomeGraph(),
           ],
         ),
       ),
@@ -204,14 +208,13 @@ class _FourthState extends State<Fourth> {
       appBar: AppBar(
         title: Text("Location"),
       ),
-      body: SingleChildScrollView(
-        //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            new Locations(),
-          ],
-        ),
+      body:
+          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+          new Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          new Locations(),
+        ],
       ),
     );
   }
@@ -231,10 +234,51 @@ class _FifthState extends State<Fifth> {
       ),
       body: SingleChildScrollView(
         //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-        child: new Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new MytestPage(),
+          //  new BMG(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MainWidget extends StatefulWidget {
+  @override
+  _MainWidgetState createState() => _MainWidgetState();
+}
+
+class _MainWidgetState extends State<MainWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width + 250,
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 0,
+              width: MediaQuery.of(context).size.width,
+              child: new Pedo(),
+            ),
+            SizedBox(
+              height: 0,
+              width: MediaQuery.of(context).size.width,
+              child: new HT(),
+            ),
+            /* SizedBox(
+              height: 0,
+              width: MediaQuery.of(context).size.width,
+              child: new BM(),
+            ), */
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width + 250,
+              child: NavigationHomeScreen(),
+            ),
           ],
         ),
       ),
