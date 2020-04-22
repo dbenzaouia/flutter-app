@@ -13,6 +13,8 @@ import 'data/configManager.dart';
 import 'data/database.dart';
 import 'PedoGraph.dart';
 import 'homeGraph.dart';
+import 'bluetoothmedia.dart';
+import 'BMGraph.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -108,7 +110,7 @@ class _FirstState extends State<First> {
 
   @override
   Widget build(BuildContext context) {
-    if (enabled == 0) {
+    if (enabled == 1) {
       isEnabled();
       return new Container(
           child: Column(
@@ -206,14 +208,13 @@ class _FourthState extends State<Fourth> {
       appBar: AppBar(
         title: Text("Location"),
       ),
-      body: SingleChildScrollView(
-        //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            new Locations(),
-          ],
-        ),
+      body:
+          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+          new Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          new Locations(),
+        ],
       ),
     );
   }
@@ -236,7 +237,7 @@ class _FifthState extends State<Fifth> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new MytestPage(),
+          //  new BMG(),
           ],
         ),
       ),
@@ -260,14 +261,19 @@ class _MainWidgetState extends State<MainWidget> {
           children: <Widget>[
             SizedBox(
               height: 0,
-              width: MediaQuery.of(context).size.width ,
+              width: MediaQuery.of(context).size.width,
               child: new Pedo(),
             ),
             SizedBox(
               height: 0,
-              width: MediaQuery.of(context).size.width ,
+              width: MediaQuery.of(context).size.width,
               child: new HT(),
             ),
+            /* SizedBox(
+              height: 0,
+              width: MediaQuery.of(context).size.width,
+              child: new BM(),
+            ), */
             SizedBox(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width + 250,
