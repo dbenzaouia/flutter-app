@@ -1,3 +1,7 @@
+int sleepJ = 1; // durée du sommeil cette nuit
+int sleepJ_1 = 2; // durée du sommeil Hier
+int sleepAverage = 3; // durée moyenne du sommeil
+
 class MealsListData {
   MealsListData({
     this.imagePath = '',
@@ -15,28 +19,30 @@ class MealsListData {
   List<String> meals;
   int kacl;
 
-  static List<MealsListData> tabIconsList = <MealsListData>[
+}
+
+List<MealsListData> tabIconsList = <MealsListData>[
     MealsListData(
       imagePath: 'assets/fitness_app/sleep.png',
       titleTxt: 'Cette nuit',
-      kacl: 1,
-      meals: <String>[],
+      kacl: sleepJ,
+      meals: <String>['nuit'],
       startColor: '#FA7D82',
       endColor: '#FFB295',
     ),
     MealsListData(
       imagePath: 'assets/fitness_app/sleep.png',
       titleTxt: 'Hier',
-      kacl: 8,
-      meals: <String>[],
+      kacl: sleepJ_1,
+      meals: <String>['hier'],
       startColor: '#738AE6',
       endColor: '#5C5EDD',
     ),
     MealsListData(
       imagePath: 'assets/fitness_app/sleep.png',
       titleTxt: 'En moyenne',
-      kacl: 7,
-      meals: <String>[],
+      kacl: sleepAverage,
+      meals: <String>['average'],
       startColor: '#FE95B6',
       endColor: '#FF5287',
     ),
@@ -49,4 +55,6 @@ class MealsListData {
       endColor: '#1E1466',
     ),
   ];
+
+mixin _today {
 }
