@@ -15,6 +15,11 @@ Add this dependency in pubspec.yaml :
   new_geolocation: ^1.0.0
   geocoder: ^0.2.1
   geolocator: ^5.1.5
+  
+  
+  google_maps_flutter: ^0.5.26
+  fluster: ^1.1.2
+  flutter_cache_manager: ^1.2.2
 
 
 modify the minsdkVersion to 21 in android/app/build.gradle (defaultconfig)
@@ -29,3 +34,12 @@ add assetsdependencies to yaml file like that :
   assets:
     - assets/images/
     - assets/fitness_app/
+    
+    #To add the map on your device, you should get a google map API key : 
+    https://pub.dev/packages/google_maps_flutter
+    https://www.raywenderlich.com/4466319-google-maps-for-flutter-tutorial-getting-started
+    
+    ADD this line in dependencies to android/build.gradle : 
+     classpath 'com.google.gms:google-services:4.2.0'
+    
+    
