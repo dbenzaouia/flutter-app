@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:math' as math;
+import 'dart:typed_data';
 import 'package:intl/intl.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,18 +14,24 @@ import 'package:flutter_app/models/geoModel.dart';
 import 'package:flutter_app/data/geolocManager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pedometer/pedometer.dart';
-import 'package:flutter_app/widget/list_widget.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/services.dart';
+import 'package:location/location.dart' as location;
+import 'package:fluster/fluster.dart';
+import 'map_marker.dart';
+import 'map_helper.dart';
 
-
-
-class Locations extends StatefulWidget {
+class LocationMap extends StatefulWidget {
   @override
-  _LocationsState createState() => new _LocationsState();
+  State<LocationMap> createState() => LocationMapState();
 }
-class _LocationsState extends State<Locations> {
+
+class LocationMapState extends State<LocationMap> {
+  
+  final Completer<GoogleMapController> _mapController = Completer();
   DBProvider dbProvider = DBProvider.db;
   final dataBase = DBProvider();
-  List<StreamSubscription<dynamic>> _subscriptions = [];
+   List<StreamSubscription<dynamic>> _subscriptions = [];
   StreamSubscription<LocationResult> _subscription;
   //Stream<geolocator.Position> _geosubscription;
   DateTime times;
@@ -46,11 +50,56 @@ class _LocationsState extends State<Locations> {
   double latitude = 0;
   double longitude = 0;
 
-  @override
-  dispose() {
-    super.dispose();
-    //_subscription.cancel();
+  GoogleMapController _controller;
+  StreamSubscription _locationSubscription;
+  location.Location _locationTracker = location.Location();
+  Marker marker;
+  Geoloc geoloc = Geoloc();
+   final Set<Marker> _markers = Set();
+    /// Minimum zoom at which the markers will cluster
+  final int _minClusterZoom = 0;
+
+  /// Maximum zoom at which the markers will cluster
+  final int _maxClusterZoom = 19;
+
+  /// [Fluster] instance used to manage the clusters
+  Fluster<MapMarker> _clusterManager;
+  /// Current map zoom. Initial zoom will be 15, street level
+  double _currentZoom = 15;
+
+  /// Map loading flag
+  bool _isMapLoading = true;
+
+  /// Markers loading flag
+  bool _areMarkersLoading = true;
+
+  /// Url image used on normal markers
+  final String _markerImageUrl =
+      'https://img.icons8.com/office/80/000000/marker.png';
+
+  /// Color of the cluster circle
+  final Color _clusterColor = Colors.blue;
+
+  /// Color of the cluster text
+  final Color _clusterTextColor = Colors.white;
+  List<LatLng> _markerLocations = []; //A DEFINIR
+  List<String> mylatlnglist = [];
+  
+  
+  /*Future<List> get listLatitude async {
+            Map list = await GeolocManager(dbProvider).getLatitude();
+    return list;
+  }*/
+  Future<List> get listLongitude async {
+            List list = await GeolocManager(dbProvider).getLongitude();
+    return list;
   }
+
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(44.7949647, -0.6214703),
+    zoom: 14.4746,
+  );
+   
   @override
   void initState(){
     super.initState();
@@ -59,7 +108,7 @@ class _LocationsState extends State<Locations> {
   }
   void setupList() async{
     var _locations = await dataBase.fetchLocationsAll();
-    print(_locations);
+    //print(_locations);
     setState(() {
       locations = _locations;
     });
@@ -119,6 +168,7 @@ class _LocationsState extends State<Locations> {
     prefs.setDouble(key, longitude);
     print('saved longitude $longitude');
   }
+
 
   _onTogglePressed() {
     if (_isTracking) {
@@ -205,21 +255,26 @@ class _LocationsState extends State<Locations> {
                 diffDuration: newlocation.diffDuration, //difference de temps entre 2 updates de localisation
                 distance: distanceInMeters.floor(),
                 coordinates: coordinates.toString(),
-                lat: coordinates.latitude.floor(),
+                lat: coordinates.latitude,
                 long: coordinates.longitude,
                 vitesse: vitesse.floor(),
                 pas: newlocation.pas,
                 pasParMetre: (newlocation.pas/distanceInMeters).floor()
               );
               GeolocManager(dbProvider).updateGeoloc(newlocation2);
-              print('laaaaa ${coordinates.latitude} ${coordinates.longitude}');
+              LatLng latlng = LatLng(newlocation2.lat,newlocation2.long);
+            //print('distance is $distanceInMeters m. pas : ${newlocation2.pas} ppm ${newlocation2.pasParMetre} m/s');
+             // _markerLocations.add(latlng);
+              
             
-              //List lati = await GeolocManager(dbProvider).getLatitude();
-              List longi = await GeolocManager(dbProvider).getLongitude();
-             //print('lzt is ${newlocation2.lat}m.  ppm ${lati} m/s');
+            //print('listy ${_markerLocations.toString()}');
+          //  updateMarker(latlng, newlocation2.id);
             setState(() {
               //if(newlocation2.distance>50){
             locations.insert(locations.length, newlocation2);
+             _markerLocations.add(latlng);
+             _initMarkers();
+            //updateMarker(latlng(newlocation2.lat, newlocation2.long), int id )
              // }
 
         });
@@ -233,46 +288,180 @@ class _LocationsState extends State<Locations> {
     }
   }
 
- /* int get _theSpeed{
-    var locationOptions = geolocator.LocationOptions(accuracy : geolocator.LocationAccuracy.best,
-                                                        distanceFilter: 10);
-      StreamSubscription<geolocator.Position> positionStream = new geolocator.Geolocator().getPositionStream(locationOptions).listen(
-    (geolocator.Position position) {
-      var speeds = position.speed;
-      print(position == null ? 'Unknown' : position.latitude.toString() + ', ' + position.longitude.toString());
-      print('speedy $speeds');
-      return speeds;
+   Future<Uint8List> getMarker() async {
+    ByteData byteData = await DefaultAssetBundle.of(context).load("assets/locIcon.jpg");
+    return byteData.buffer.asUint8List();
+  }
+   void updateMarkerAndCircle(location.LocationData newLocalData, Uint8List imageData) {
+    LatLng latlng = LatLng(newLocalData.latitude, newLocalData.longitude);
+    this.setState(() {
+      marker = Marker(
+          markerId: MarkerId(newLocalData.toString()),
+          position: latlng,
+          rotation: newLocalData.heading,
+          draggable: false,
+          zIndex: 2,
+          flat: true,
+          anchor: Offset(0.5, 0.5),
+          icon: BitmapDescriptor.defaultMarker);
     });
-     
+  }
+  /*void updateMarker(LatLng latlng, int id ){
+    print('im updating marker');
+    this.setState(() {
+          marker = Marker(
+              markerId: MarkerId(id.toString()),
+              position: latlng,
+              //rotation: newLocalData.heading,
+              draggable: false,
+              zIndex: 2,
+              flat: true,
+              anchor: Offset(0.5, 0.5),
+              icon: BitmapDescriptor.defaultMarker);
+        });
   }*/
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController.complete(controller);
+
+    /*setState(() {
+      _isMapLoading = false;
+    });*/
+
+    _initMarkers();
+  }
+  void _initMarkers() async {
+    final List<MapMarker> markers = [];
+    List<Map> latlist = await GeolocManager(dbProvider).getLatitude();
+   // print('yoyoyoy ${mylatlnglist.toString()}');
+    List longlist = await GeolocManager(dbProvider).getLongitude();
+    for (var i =0; i<latlist.length; i++){
+      //latlist.forEach((k) {print(k.values); });
+     // double into = double.parse(latlist[i].values.toString());
+      //double inti = double.parse(longlist[i].values.toString());
+      //print('toto $into $inti');
+      //_markerLocations.add(LatLng(into,inti));
+    }
+    print('marker iiiis ${_markerLocations.toString()}');
+    
+    for (LatLng markerLocation in _markerLocations) {
+      //final BitmapDescriptor markerImage =
+        //  await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
+      print('in initmarker we hve $markerLocation');
+      markers.add(
+        MapMarker(
+          id: _markerLocations.indexOf(markerLocation).toString(),
+          position: markerLocation,
+          icon: BitmapDescriptor.defaultMarker,
+        ),
+      );
+    }
+     _clusterManager = await MapHelper.initClusterManager(
+      markers,
+      _minClusterZoom,
+      _maxClusterZoom,
+    );
+
+    await _updateMarkers();
+  }
+  /// Gets the markers and clusters to be displayed on the map for the current zoom level and
+  /// updates state.
+  Future<void> _updateMarkers([double updatedZoom]) async {
+    if (_clusterManager == null || updatedZoom == _currentZoom) return;
+
+    if (updatedZoom != null) {
+      _currentZoom = updatedZoom;
+    }
+
+    setState(() {
+      _areMarkersLoading = true;
+    });
+
+    final updatedMarkers = await MapHelper.getClusterMarkers(
+      _clusterManager,
+      _currentZoom,
+      _clusterColor,
+      _clusterTextColor,
+      80,
+    );
+ _markers
+     // ..clear()
+      ..addAll(updatedMarkers);
+
+    setState(() {
+      _areMarkersLoading = false;
+    });
+  }
+  /*void getCurrentLocation() async {
+    try {
+
+      Uint8List imageData = await getMarker();
+      var location = await _locationTracker.getLocation();
+
+      updateMarkerAndCircle(location, imageData);
+
+      if (_locationSubscription != null) {
+        _locationSubscription.cancel();
+      }
 
 
+      _locationSubscription = _locationTracker.onLocationChanged.listen((newLocalData) {
+        if (_controller != null) {
+          _controller.animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
+              bearing: 192.8334901395799,
+              target: LatLng(newLocalData.latitude, newLocalData.longitude),
+              tilt: 0,
+              zoom: 18.00)));
+          updateMarkerAndCircle(newLocalData, imageData);
+        }
+      });
+
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        debugPrint("Permission Denied");
+      }
+    }
+  }*/
+  void dispose() {
+    if (_locationSubscription != null) {
+      _locationSubscription.cancel();
+    }
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    //_theSpeed();
-   List<Widget> children = [
-      new _Header(
+    return new Scaffold(
+    
+      body:Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          new _Header(
+            isRunning: _isTracking,
+            onTogglePressed: _onTogglePressed,),
+          Container(
+            height:300.0,
+            width: 450.0,
+            child:GoogleMap(
+              mapToolbarEnabled: false,
+              initialCameraPosition: _kGooglePlex,
+              markers: _markers,
+              onMapCreated: (controller) => _onMapCreated(controller),
+              onCameraMove: (position) => _updateMarkers(position.zoom),
+            ),
+           ),
+          FlatButton(
+            onPressed: _initMarkers,
+            child: Text('click')
+          ),
+         /* new _Header(
         isRunning: _isTracking,
         onTogglePressed: _onTogglePressed,
-      )
-    ];
-    children.addAll(ListTile.divideTiles(
-      context: context,
-      tiles: locations.map((location) => new _Item(data: location)).toList(),
-    ));
-    return new Container(
-      child: new Expanded(child: 
-      new ListView(
-        children: children,
+      ),*/
+        ],
       ),
-      ),
-      
 
-      
     );
   }
-
-
+  
 }
 class _Header extends StatelessWidget {
   _Header({@required this.isRunning, this.onTogglePressed});
@@ -326,90 +515,5 @@ class _HeaderButton extends StatelessWidget {
     );
   }
 }
-class _Item extends StatelessWidget {
-  _Item({@required this.data});
 
-  final Geoloc data;
-
-  @override
-  Widget build(BuildContext context) {
-    String text;
-    String status;
-    Color color;
-      text =
-          'id : ${data.id}  ${data.pas} pas ${(data.pas)/(data.distance)}';
-     // status = '${data.distance}';
-      color = Colors.green;
-
-    if(1.38<=(data.pas)/(data.distance)) {
-      status = 'Walk';
-    }
-    if(1.18<=(data.pas)/(data.distance) && (data.pas)/(data.distance)<1.38) {
-      status = 'Jog';
-    }
-    if(1.03<=(data.pas)/(data.distance) && (data.pas)/(data.distance)<1.18) {
-      status = 'Run';
-    }
-    if(0.85<=(data.pas)/(data.distance) && (data.pas)/(data.distance)<1.03) {
-      status = 'Fast Run';
-    }
-    if(data.vitesse>5 && data.distance>3000){
-      status = 'Transport';
-    }
-    else {
-      status = 'maybe transport ${(data.pas)/(data.distance)}';
-    }
-
-    final List<Widget> content = <Widget>[
-      new Text(
-        text,
-        style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      new SizedBox(
-        height: 3.0,
-      ),
-    ];
-
-    return new Container(
-      color: Colors.white,
-      child: new SizedBox(
-        height: 56.0,
-        child: new Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: new Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              new Expanded(
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: content,
-                ),
-              ),
-              new Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 4.0,
-                ),
-                decoration: new BoxDecoration(
-                  color: color,
-                  borderRadius: new BorderRadius.circular(6.0),
-                ),
-                child: new Text(
-                  status,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12.0,
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+ 

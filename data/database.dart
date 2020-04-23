@@ -122,7 +122,7 @@ class DBProvider {
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
           await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
-                          diffDuration INTEGER, distance INTEGER, coordinates TEXT, vitesse INTEGER, pas INTEGER)''');
+                          diffDuration INTEGER, distance INTEGER, coordinates TEXT, lat REAL, long REAL, vitesse INTEGER, pas INTEGER, pasParMetre INTEGER)''');
           await db.execute('''CREATE TABLE Steps (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           numberSteps INTEGER, theTime INTEGER,theDay INTEGER,theMonths INTEGER,
                           theYear INTEGER,theHours TEXT,theMin INTEGER,thePart TEXT)''');
@@ -939,6 +939,17 @@ Future<List<int>> getStepsInDay(int yyyy, int mm, int dd) async {
     var geoloc = await database;
     var result = await geoloc.rawQuery('SELECT address FROM Geoloc');
     return result.toList();
+}
+Future<List<Map>> getLatitude() async {
+   var geoloc = await database;
+  var result = await geoloc.rawQuery('SELECT lat FROM Geoloc');
+ // print('hola ${result.forEach((element) { print('element');})}');
+  return result;
+}
+Future<List<Map>> getLongitude() async {
+   var geoloc = await database;
+  var result = await geoloc.rawQuery('SELECT long FROM Geoloc');
+  return result.toList();
 }
 Future<int> updateGeoloc(Geoloc newGeoloc) async {
     var db = await database;

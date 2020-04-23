@@ -22,6 +22,12 @@ class GeolocManager{
   Future<int> updateGeoloc(Geoloc newCar) async{
      return dbProvider.updateGeoloc(newCar);
   }
+  Future<List<Map>> getLatitude() async {
+     return dbProvider.getLatitude();
+  }
+  Future<List<Map>> getLongitude() async {
+     return dbProvider.getLongitude();
+  }
   /*Future<List>getSteps() async{
     return dbProvider.getSteps();
   }*/

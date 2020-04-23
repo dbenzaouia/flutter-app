@@ -20,7 +20,7 @@ class HomeTimes {
   int theYear;
   String theHours;
   String theMin;
-  String thePart;
+  int thePart;
 
 
 

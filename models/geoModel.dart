@@ -19,8 +19,11 @@ class Geoloc{
   int diffDuration;
   int distance;
   String coordinates;
+  num lat;
+  num long;
   int vitesse;
   int pas;
+  int pasParMetre;
 
   Geoloc({
     this.id,
@@ -30,8 +33,11 @@ class Geoloc{
     this.diffDuration,
     this.distance,
     this.coordinates,
+    this.lat,
+    this.long,
     this.vitesse,
-    this.pas
+    this.pas,
+    this.pasParMetre
   });
   factory Geoloc.fromMap(Map<String, dynamic> json) => new Geoloc(
         id: json["id"],
@@ -41,8 +47,11 @@ class Geoloc{
         diffDuration: json["diffDuration"],
         distance: json["distance"],
         coordinates: json["coordinates"],
+        lat: json["lat"],
+        long: json["long"],
         vitesse: json["vitesse"],
-        pas: json["pas"]
+        pas: json["pas"],
+        pasParMetre: json["pasParMetre"]
 
       );
 
@@ -55,8 +64,11 @@ class Geoloc{
     map['diffDuration'] = diffDuration;
     map['distance'] = distance;
     map['coordinates'] = coordinates;
+    map['lat'] = lat;
+    map['long'] = long;
     map['vitesse'] = vitesse;
     map['pas'] = pas;
+    map['pasParMetre'] = pasParMetre;
     return map;
     }
 }
