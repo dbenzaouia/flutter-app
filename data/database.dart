@@ -174,6 +174,9 @@ class DBProvider {
 
     var nbJour = 30;
     for (var i = 1; i <= nbJour; i++) {
+      /* final _random = new Random();
+        int next(int min, int max) => min + _random.nextInt(max - min);
+        var realData = next(0,now.hour*3600); */
       var theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
       var duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
       await db.insert('HomeTime', newHometime(i, i, 04, 2020, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
