@@ -1,6 +1,8 @@
+import '../hometime.dart';
 import './second_app_theme.dart';
 import './models/meals_list_data.dart';
 import '../main.dart';
+import '../data/database.dart';
 import 'package:flutter/material.dart';
 
 class SleepListView extends StatefulWidget {
@@ -96,6 +98,9 @@ class SleepView extends StatelessWidget {
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
+        int _dureeJ;
+        int _dureeJ_1 = 22;
+        int _dureeAverage = 33;
         return FadeTransition(
           opacity: animation,
           child: Transform(
@@ -172,13 +177,21 @@ class SleepView extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            mealsListData.kacl != 0
-                                ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Text(
-                                        mealsListData.kacl.toString(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                FutureBuilder<int>(
+                                  future: DBProvider().getSleepByDay(
+                                      HTState.todayYear(),
+                                      HTState.todayMonths(),
+                                      HTState.todayDay()),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      _dureeJ = snapshot.data;
+                                      return Text(
+                                        //mealsListData.kacl.toString(),
+                                        snapshot.toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: SecondAppTheme.fontName,
@@ -187,45 +200,45 @@ class SleepView extends StatelessWidget {
                                           letterSpacing: 0.2,
                                           color: SecondAppTheme.white,
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4, bottom: 3),
-                                        child: Text(
-                                          'heures',
-                                          style: TextStyle(
-                                            fontFamily:
-                                                SecondAppTheme.fontName,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 10,
-                                            letterSpacing: 0.2,
-                                            color: SecondAppTheme.white,
-                                          ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text(
+                                        'Error:\n\n${snapshot.error}',
+                                        textAlign: TextAlign.center,
+                                        //print('${snapshot.error}'),
+                                      );
+                                    } else {
+                                      return Text(
+                                        //mealsListData.kacl.toString(),
+                                        '**err',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: SecondAppTheme.fontName,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 24,
+                                          letterSpacing: 0.2,
+                                          color: SecondAppTheme.white,
                                         ),
-                                      ),
-                                    ],
-                                  )
-                                : Container(
-                                    decoration: BoxDecoration(
-                                      color: SecondAppTheme.nearlyWhite,
-                                      shape: BoxShape.circle,
-                                      boxShadow: <BoxShadow>[
-                                        BoxShadow(
-                                            color: SecondAppTheme.nearlyBlack
-                                                .withOpacity(0.4),
-                                            offset: Offset(8.0, 8.0),
-                                            blurRadius: 8.0),
-                                      ],
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: HexColor(mealsListData.endColor),
-                                        size: 24,
-                                      ),
+                                      );
+                                    }
+                                  },
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 4, bottom: 3),
+                                  child: Text(
+                                    'heures',
+                                    style: TextStyle(
+                                      fontFamily: SecondAppTheme.fontName,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 10,
+                                      letterSpacing: 0.2,
+                                      color: SecondAppTheme.white,
                                     ),
                                   ),
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ),
