@@ -9,7 +9,7 @@ import './design/second_app_theme.dart';
 import 'pedometre.dart';
 import 'sleepTime.dart';
 import 'homeTime.dart';
-import 'userLocation.dart';
+import 'userLocationMap.dart';
 import 'configModel.dart';
 import 'data/configManager.dart';
 import 'data/database.dart';
@@ -366,19 +366,8 @@ class _FourthState extends State<Fourth> {
         ),
       );
     } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("Location"),
-        ),
-        body:
-            //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-            new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            new Locations(),
-          ],
-        ),
-      );
+      return new LocationMap();
+         
     }
   }
 }

@@ -518,9 +518,9 @@ class LocationMapState extends State<LocationMap> {
             alignment: Alignment.bottomCenter,
             child: Container(
               margin: EdgeInsets.all(20),
-              height: 70,
+              height: 80,
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.deepPurple[100],
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
