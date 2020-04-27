@@ -21,7 +21,6 @@ class SleepTime{
   String theMin;
   String thePart;
    
-
   SleepTime({this.id,this.duration,this.theDay,
     this.theMonths,
     this.theYear,
