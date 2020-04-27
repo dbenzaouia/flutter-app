@@ -92,7 +92,7 @@ class HomeGraphState extends State<HomeGraph> {
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-          title: Text("Podometre"),
+          title: Text("HomeTime"),
           bottom: TabBar(
             tabs: [
               Tab(
