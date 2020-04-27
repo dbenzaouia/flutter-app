@@ -9,7 +9,7 @@ class MealsListData {
   String titleTxt;
   String startColor;
   String endColor;
-  List<String> meals;
+  int id;
   int kacl;
 
   MealsListData({
@@ -17,7 +17,7 @@ class MealsListData {
     this.titleTxt = '',
     this.startColor = '',
     this.endColor = '',
-    this.meals,
+    this.id,
     this.kacl = 0,
   });
 }
@@ -32,30 +32,29 @@ class MealsListData {
   return tabIconsList;
 } */
 
-
- List<MealsListData> tabIconsList = <MealsListData>[
-    MealsListData(
-      imagePath: 'assets/fitness_app/sleep.png',
-      titleTxt: 'Cette nuit',
-      kacl: 202,
-      meals: <String>['nuit'],
-      startColor: '#FA7D82',
-      endColor: '#FFB295',
-    ),
-    MealsListData(
-      imagePath: 'assets/fitness_app/sleep.png',
-      titleTxt: 'Hier',
-      kacl: 0,
-      meals: <String>['hier'],
-      startColor: '#738AE6',
-      endColor: '#5C5EDD',
-    ),
-    MealsListData(
-      imagePath: 'assets/fitness_app/sleep.png',
-      titleTxt: 'En moyenne',
-      kacl: 132,
-      meals: <String>['average'],
-      startColor: '#FE95B6',
-      endColor: '#FF5287',
-    ),
-  ];
+List<MealsListData> tabIconsList = <MealsListData>[
+  MealsListData(
+    imagePath: 'assets/fitness_app/sleep.png',
+    titleTxt: 'Cette nuit',
+    kacl: 202,
+    id: 0,
+    startColor: '#FA7D82',
+    endColor: '#FFB295',
+  ),
+  MealsListData(
+    imagePath: 'assets/fitness_app/sleep.png',
+    titleTxt: 'Hier',
+    kacl: 0,
+    id: 1,
+    startColor: '#738AE6',
+    endColor: '#5C5EDD',
+  ),
+  MealsListData(
+    imagePath: 'assets/fitness_app/sleep.png',
+    titleTxt: 'En moyenne',
+    kacl: 132,
+    id: 2,
+    startColor: '#FE95B6',
+    endColor: '#FF5287',
+  ),
+];
