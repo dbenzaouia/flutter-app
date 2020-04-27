@@ -649,7 +649,7 @@ class HomeTimeView extends StatelessWidget {
   }
 
   int drawCircle(int x) {
-    return x * 20;
+    return x * 15;
   }
 }
 

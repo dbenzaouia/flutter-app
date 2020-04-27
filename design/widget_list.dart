@@ -1,6 +1,8 @@
+import '../hometime.dart';
 import './second_app_theme.dart';
 import './models/meals_list_data.dart';
 import '../main.dart';
+import '../data/database.dart';
 import 'package:flutter/material.dart';
 
 class SleepListView extends StatefulWidget {
@@ -93,9 +95,27 @@ class SleepView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int y = HTState.todayYear();
+    int m = HTState.todayMonths();
+    int d = HTState.todayDay();
+    List<int> dateh = DBProvider.getDateLastDay(y, m, d);
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
+        int dataType = mealsListData.id;
+        var queryDate;
+        //  = DBProvider().getSleepByDay(HTState.todayYear(), HTState.todayMonths(), HTState.todayDay());
+        if (dataType == 0) {
+          queryDate = DBProvider().getSleepByDay(y, m, d);
+        } else if (dataType == 1) {
+          queryDate = DBProvider().getSleepByDay(dateh[0], dateh[1], dateh[2]);
+        } else if (dataType == 2) {
+          queryDate =
+              DBProvider().getSleepTimesMean(dateh[0], dateh[1], dateh[2], 30);
+        } else {
+          queryDate = DBProvider().getSleepByDay(y, m, d);
+        }
+        int _duree;
         return FadeTransition(
           opacity: animation,
           child: Transform(
@@ -159,7 +179,7 @@ class SleepView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      mealsListData.meals.join('\n'),
+                                      ('test\n'),
                                       style: TextStyle(
                                         fontFamily: SecondAppTheme.fontName,
                                         fontWeight: FontWeight.w500,
@@ -172,60 +192,67 @@ class SleepView extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            mealsListData.kacl != 0
-                                ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Text(
-                                        mealsListData.kacl.toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: SecondAppTheme.fontName,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 24,
-                                          letterSpacing: 0.2,
-                                          color: SecondAppTheme.white,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4, bottom: 3),
-                                        child: Text(
-                                          'heures',
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Container(
+                                  child: FutureBuilder<int>(
+                                    future: queryDate,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        _duree = snapshot.data ~/ 3600;
+                                        return Text(
+                                          //mealsListData.kacl.toString(),
+                                          _duree.toString(),
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontFamily:
-                                                SecondAppTheme.fontName,
+                                            fontFamily: SecondAppTheme.fontName,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 10,
+                                            fontSize: 24,
                                             letterSpacing: 0.2,
                                             color: SecondAppTheme.white,
                                           ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : Container(
-                                    decoration: BoxDecoration(
-                                      color: SecondAppTheme.nearlyWhite,
-                                      shape: BoxShape.circle,
-                                      boxShadow: <BoxShadow>[
-                                        BoxShadow(
-                                            color: SecondAppTheme.nearlyBlack
-                                                .withOpacity(0.4),
-                                            offset: Offset(8.0, 8.0),
-                                            blurRadius: 8.0),
-                                      ],
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: HexColor(mealsListData.endColor),
-                                        size: 24,
-                                      ),
+                                        );
+                                      } else if (snapshot.hasError) {
+                                        return Text(
+                                          'Error:\n\n${snapshot.error}',
+                                          textAlign: TextAlign.center,
+                                          //print('${snapshot.error}'),
+                                        );
+                                      } else {
+                                        return Text(
+                                          //mealsListData.kacl.toString(),
+                                          '**',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: SecondAppTheme.fontName,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 24,
+                                            letterSpacing: 0.2,
+                                            color: SecondAppTheme.white,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 4, bottom: 3),
+                                  child: Text(
+                                    'heures',
+                                    style: TextStyle(
+                                      fontFamily: SecondAppTheme.fontName,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 10,
+                                      letterSpacing: 0.2,
+                                      color: SecondAppTheme.white,
                                     ),
                                   ),
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ),

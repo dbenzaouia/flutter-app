@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/data/database.dart';
+import 'package:projet_geo/data/database.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
-import 'package:flutter_app/homeSleep.dart';
+import 'package:projet_geo/homeSleep.dart';
 import 'hometime.dart';
 import 'sleepTime.dart';
 import 'models/ObjectDisplay.dart';
 
-import 'package:flutter_app/widget/homeSleep_widget.dart';
+import 'package:projet_geo/widget/homeSleep_widget.dart';
 import 'widget/sleeptime_widget.dart';
 
 
@@ -166,12 +166,12 @@ static Future<List<charts.Series<DataDayHS, String>>> hsDataDay() async {
       await  _createDataDay()
     );
   }
-static Future<List<charts.Series<DataListHS, int>>> hsDataWeek() async {
+static Future<List<charts.Series<DataListHS, String>>> hsDataWeek() async {
       return (
       await  _createDataWeek()
     );
   }
-static Future<List<charts.Series<DataListHS, int>>> hsDataMonth() async {
+static Future<List<charts.Series<DataListHS, String>>> hsDataMonth() async {
     return (
     await  _createDataMonth()
   );
@@ -204,10 +204,11 @@ static Future <List<charts.Series<DataDayHS, String>>> _createDataDay() async {
   }
 
   
-  static Future <List<charts.Series<DataListHS, int>>> _createDataWeek() async {
-   int d = todayDay();
+  static Future <List<charts.Series<DataListHS, String>>> _createDataWeek() async {
+    int d = todayDay();
     int m = todayMonths();
     int y = todayYear();
+    String day = d.toString();
     List listday = [];
     DBProvider().initDB();
     var home = await DBProvider().getHomeTimesList(y,m,d,7);
@@ -215,16 +216,17 @@ static Future <List<charts.Series<DataDayHS, String>>> _createDataDay() async {
     List<DataListHS> datas = [];
     List<DataListHS> datah = [];
     for(int i=0; i<7; i++ ){
-      datas.add(new DataListHS(d, sleep[i]~/3600));
-      datah.add(new DataListHS(d, home[i]~/3600));
+      datas.add(new DataListHS(day, sleep[i]~/3600));
+      datah.add(new DataListHS(day, home[i]~/3600));
       listday = DBProvider.getDateLastDay(y, m, d);
       d = listday[2];
+      day = d.toString();
       y = listday[0];
       m = listday[1];
     };
     return [
-      new charts.Series<DataListHS, int>(
-          id: 'homeW',
+      new charts.Series<DataListHS, String>(
+          id: 'hometime',
           data: datah,
           colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
           areaColorFn: (_, __) =>
@@ -232,8 +234,8 @@ static Future <List<charts.Series<DataDayHS, String>>> _createDataDay() async {
           domainFn: (DataListHS hometimes, _) => hometimes.day,
           measureFn: (DataListHS hometimes, _) => hometimes.time,
       ),
-      new charts.Series<DataListHS, int>(
-          id: 'sleepW',
+      new charts.Series<DataListHS, String>(
+          id: 'sleeptime',
           data: datas,
           colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
           areaColorFn: (_, __) =>
@@ -244,10 +246,11 @@ static Future <List<charts.Series<DataDayHS, String>>> _createDataDay() async {
     ];
   }
 
-  static Future <List<charts.Series<DataListHS, int>>> _createDataMonth() async {
-   int d = todayDay();
+  static Future <List<charts.Series<DataListHS, String>>> _createDataMonth() async {
+    int d = todayDay();
     int m = todayMonths();
     int y = todayYear();
+    String day = d.toString();
     List listday = [];
     DBProvider().initDB();
     var home = await DBProvider().getHomeTimesList(y,m,d,30);
@@ -255,15 +258,16 @@ static Future <List<charts.Series<DataDayHS, String>>> _createDataDay() async {
     List<DataListHS> datas = [];
     List<DataListHS> datah = [];
     for(int i=0; i<30; i++ ){
-      datas.add(new DataListHS(d, sleep[i]~/3600));
-      datah.add(new DataListHS(d, home[i]~/3600));
+      datas.add(new DataListHS(day, sleep[i]~/3600));
+      datah.add(new DataListHS(day, home[i]~/3600));
       listday = DBProvider.getDateLastDay(y, m, d);
       d = listday[2];
       y = listday[0];
       m = listday[1];
+      day = d.toString();
     };
     return [
-      new charts.Series<DataListHS, int>(
+      new charts.Series<DataListHS,String>(
           id: 'homeM',
           data: datah,
           colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
@@ -272,7 +276,7 @@ static Future <List<charts.Series<DataDayHS, String>>> _createDataDay() async {
           domainFn: (DataListHS hometimes, _) => hometimes.day,
           measureFn: (DataListHS hometimes, _) => hometimes.time,
       ),
-      new charts.Series<DataListHS, int>(
+      new charts.Series<DataListHS, String>(
           id: 'sleepM',
           data: datas,
           colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
