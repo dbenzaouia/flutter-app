@@ -149,6 +149,7 @@ class MapHelper {
         clusterId: cluster.id,
         pointsSize: cluster.pointsSize,
         childMarkerId: cluster.childMarkerId,
+        //infoWindow: InfoWindow(),
       ),
     );
   }

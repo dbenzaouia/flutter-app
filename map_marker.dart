@@ -12,10 +12,14 @@ class MapMarker extends Clusterable {
   final String id;
   final LatLng position;
   BitmapDescriptor icon;
+  InfoWindow infoWindow;
+  void Function() setThePins;
 
   MapMarker({
     @required this.id,
     @required this.position,
+    this.setThePins,
+    //@required this.infoWindow,
     this.icon,
     isCluster = false,
     clusterId,
@@ -38,5 +42,7 @@ class MapMarker extends Clusterable {
           position.longitude,
         ),
         icon: icon,
-      );
+        //infoWindow: infoWindow,
+        onTap: setThePins,
+        );
 }
