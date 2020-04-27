@@ -95,12 +95,27 @@ class SleepView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int y = HTState.todayYear();
+    int m = HTState.todayMonths();
+    int d = HTState.todayDay();
+    List<int> dateh = DBProvider.getDateLastDay(y, m, d);
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
-        int _dureeJ;
-        int _dureeJ_1 = 22;
-        int _dureeAverage = 33;
+        int dataType = mealsListData.id;
+        var queryDate;
+        //  = DBProvider().getSleepByDay(HTState.todayYear(), HTState.todayMonths(), HTState.todayDay());
+        if (dataType == 0) {
+          queryDate = DBProvider().getSleepByDay(y, m, d);
+        } else if (dataType == 1) {
+          queryDate = DBProvider().getSleepByDay(dateh[0], dateh[1], dateh[2]);
+        } else if (dataType == 2) {
+          queryDate =
+              DBProvider().getSleepTimesMean(dateh[0], dateh[1], dateh[2], 30);
+        } else {
+          queryDate = DBProvider().getSleepByDay(y, m, d);
+        }
+        int _duree;
         return FadeTransition(
           opacity: animation,
           child: Transform(
@@ -164,7 +179,7 @@ class SleepView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      mealsListData.meals.join('\n'),
+                                      ('test\n'),
                                       style: TextStyle(
                                         fontFamily: SecondAppTheme.fontName,
                                         fontWeight: FontWeight.w500,
@@ -181,47 +196,46 @@ class SleepView extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
-                                FutureBuilder<int>(
-                                  future: DBProvider().getSleepByDay(
-                                      HTState.todayYear(),
-                                      HTState.todayMonths(),
-                                      HTState.todayDay()),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      _dureeJ = snapshot.data;
-                                      return Text(
-                                        //mealsListData.kacl.toString(),
-                                        snapshot.toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: SecondAppTheme.fontName,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 24,
-                                          letterSpacing: 0.2,
-                                          color: SecondAppTheme.white,
-                                        ),
-                                      );
-                                    } else if (snapshot.hasError) {
-                                      return Text(
-                                        'Error:\n\n${snapshot.error}',
-                                        textAlign: TextAlign.center,
-                                        //print('${snapshot.error}'),
-                                      );
-                                    } else {
-                                      return Text(
-                                        //mealsListData.kacl.toString(),
-                                        '**err',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: SecondAppTheme.fontName,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 24,
-                                          letterSpacing: 0.2,
-                                          color: SecondAppTheme.white,
-                                        ),
-                                      );
-                                    }
-                                  },
+                                Container(
+                                  child: FutureBuilder<int>(
+                                    future: queryDate,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        _duree = snapshot.data ~/ 3600;
+                                        return Text(
+                                          //mealsListData.kacl.toString(),
+                                          _duree.toString(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: SecondAppTheme.fontName,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 24,
+                                            letterSpacing: 0.2,
+                                            color: SecondAppTheme.white,
+                                          ),
+                                        );
+                                      } else if (snapshot.hasError) {
+                                        return Text(
+                                          'Error:\n\n${snapshot.error}',
+                                          textAlign: TextAlign.center,
+                                          //print('${snapshot.error}'),
+                                        );
+                                      } else {
+                                        return Text(
+                                          //mealsListData.kacl.toString(),
+                                          '**',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: SecondAppTheme.fontName,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 24,
+                                            letterSpacing: 0.2,
+                                            color: SecondAppTheme.white,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
                                 ),
                                 Padding(
                                   padding:
