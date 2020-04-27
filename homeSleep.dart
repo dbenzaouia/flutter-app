@@ -36,6 +36,6 @@ class DataDayHS {
 
 class DataListHS {
   final int time;
-  final DateTime day;
+  final String day;
   DataListHS(this.day, this.time);
 }

@@ -19,7 +19,7 @@ class SleepTime{
   int theYear;
   String theHours;
   String theMin;
-  int thePart;
+  String thePart;
    
 
   SleepTime({this.id,this.duration,this.theDay,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:flutter_app/homeSleep.dart';
+import 'package:projet_geo/homeSleep.dart';
 
 import '../homeSleepGraph.dart';
 
@@ -57,7 +57,7 @@ class HSWidgetDay {
 }
 class HSWidgetWeek {
   Widget hsWidgetWeek(){
-      List<charts.Series<DataListHS, int>> data;
+      List<charts.Series<DataListHS, String>> data;
       return new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -79,7 +79,7 @@ class HSWidgetWeek {
                         Container(
                           width: 600,
                           height: 300,
-                          child: FutureBuilder<List<charts.Series<DataListHS, int>>>(
+                          child: FutureBuilder<List<charts.Series<DataListHS, String>>>(
                             future: HSGraphState.hsDataWeek(), // a previously-obtained Future<String> or null
                             builder: (context, snapshot) {
                             if (snapshot.hasData) {
@@ -109,7 +109,7 @@ class HSWidgetWeek {
 }
 class HSWidgetMonths {
    Widget hsWidgetMonth(){
-      List<charts.Series<DataListHS, int>> data;
+      List<charts.Series<DataListHS, String>> data;
       return new Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -131,7 +131,7 @@ class HSWidgetMonths {
                         Container(
                           width: 600,
                           height: 300,
-                          child: FutureBuilder<List<charts.Series<DataListHS, int>>>(
+                          child: FutureBuilder<List<charts.Series<DataListHS, String>>>(
                             future: HSGraphState.hsDataMonth(), // a previously-obtained Future<String> or null
                             builder: (context, snapshot) {
                             if (snapshot.hasData) {
@@ -154,10 +154,8 @@ class HSWidgetMonths {
                   ),
                 ),
               ), 
-            ]       
+            ]
         ),
       );
   }
-
-  Widget hsWidgetDay() {}
 }
