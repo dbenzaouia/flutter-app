@@ -940,22 +940,36 @@ Future<List<int>> getStepsInDay(int yyyy, int mm, int dd) async {
     var result = await geoloc.rawQuery('SELECT address FROM Geoloc');
     return result.toList();
 }
-Future<List<Map>> getLatitude() async {
+Future<List<num>> getLatitude() async {
    var geoloc = await database;
   var result = await geoloc.rawQuery('SELECT lat FROM Geoloc');
- // print('hola ${result.forEach((element) { print('element');})}');
-  return result;
+  return List.generate(result.length, (index) { 
+    return result[index]['lat'];
+  
+  });
 }
-Future<List<Map>> getLongitude() async {
+Future<List<num>> getLongitude() async {
    var geoloc = await database;
   var result = await geoloc.rawQuery('SELECT long FROM Geoloc');
-  return result.toList();
+  return List.generate(result.length, (index) { 
+    return result[index]['long'];
+  
+  });
 }
 Future<int> updateGeoloc(Geoloc newGeoloc) async {
     var db = await database;
     return db.update('Geoloc', newGeoloc.toMap(),
         where: 'id = ?', whereArgs: [newGeoloc.id], conflictAlgorithm: ConflictAlgorithm.replace);
   }
+  Future<Geoloc> getAddress(int id) async{
+  var db = await database;
+  List<Map> result = await db.query('Geoloc', columns: ['id','address','elapsedTime', 'elapsedDuration','diffDuration',
+                                    'distance','coordinates','lat','long','vitesse','pas','pasParMetre'], where: 'id = ?', whereArgs: [id]);
+  if (result.length > 0) {
+  return new Geoloc.fromMap(result.first);
+   }
+   return null;
+}
    Future<int> addNewBlue(Blue newblue) async {
     print('adding new data blue...');
 

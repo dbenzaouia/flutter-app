@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+//import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -20,6 +21,10 @@ import 'package:location/location.dart' as location;
 import 'package:fluster/fluster.dart';
 import 'map_marker.dart';
 import 'map_helper.dart';
+import 'models/pinData.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 
 class LocationMap extends StatefulWidget {
   @override
@@ -53,6 +58,7 @@ class LocationMapState extends State<LocationMap> {
   GoogleMapController _controller;
   StreamSubscription _locationSubscription;
   location.Location _locationTracker = location.Location();
+  geolocator.Position position;
   Marker marker;
   Geoloc geoloc = Geoloc();
    final Set<Marker> _markers = Set();
@@ -85,11 +91,17 @@ class LocationMapState extends State<LocationMap> {
   List<LatLng> _markerLocations = []; //A DEFINIR
   List<String> mylatlnglist = [];
   
-  
-  /*Future<List> get listLatitude async {
-            Map list = await GeolocManager(dbProvider).getLatitude();
-    return list;
-  }*/
+  int _child = 0;
+
+  PinData _currentPinData = PinData(
+    id: null,
+    locationName: '',
+    activity: '',
+  );
+  PinData _sourcePinData;
+  double _pinPillPosition = -100;
+
+
   Future<List> get listLongitude async {
             List list = await GeolocManager(dbProvider).getLongitude();
     return list;
@@ -105,6 +117,8 @@ class LocationMapState extends State<LocationMap> {
     super.initState();
     setupList();
     initPlatformState();
+    getPermission();
+
   }
   void setupList() async{
     var _locations = await dataBase.fetchLocationsAll();
@@ -201,7 +215,7 @@ class LocationMapState extends State<LocationMap> {
             var first = addresses.first;
             var location = new Geoloc(
                   id: null,
-                  address: '${first.locality}+${first.addressLine}',
+                  address: '${first.addressLine}',
                   elapsedTime: dateFormat.format(times),
                   elapsedDuration: ((new DateTime.now().millisecondsSinceEpoch) /1000).round()-
                   _subscriptionStartedTimestamp,
@@ -262,25 +276,18 @@ class LocationMapState extends State<LocationMap> {
                 pasParMetre: (newlocation.pas/distanceInMeters).floor()
               );
               GeolocManager(dbProvider).updateGeoloc(newlocation2);
-              LatLng latlng = LatLng(newlocation2.lat,newlocation2.long);
             //print('distance is $distanceInMeters m. pas : ${newlocation2.pas} ppm ${newlocation2.pasParMetre} m/s');
-             // _markerLocations.add(latlng);
               
             
-            //print('listy ${_markerLocations.toString()}');
-          //  updateMarker(latlng, newlocation2.id);
+           if(mounted){
             setState(() {
-              //if(newlocation2.distance>50){
             locations.insert(locations.length, newlocation2);
-             _markerLocations.add(latlng);
-             _initMarkers();
-            //updateMarker(latlng(newlocation2.lat, newlocation2.long), int id )
-             // }
-
-        });
+            });
+           }
       });
                                                      
       _subscription.onDone(() {
+        stopListening();
         setState(() {
           _isTracking = false;
         });
@@ -306,20 +313,8 @@ class LocationMapState extends State<LocationMap> {
           icon: BitmapDescriptor.defaultMarker);
     });
   }
-  /*void updateMarker(LatLng latlng, int id ){
-    print('im updating marker');
-    this.setState(() {
-          marker = Marker(
-              markerId: MarkerId(id.toString()),
-              position: latlng,
-              //rotation: newLocalData.heading,
-              draggable: false,
-              zIndex: 2,
-              flat: true,
-              anchor: Offset(0.5, 0.5),
-              icon: BitmapDescriptor.defaultMarker);
-        });
-  }*/
+ 
+ 
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
 
@@ -329,31 +324,62 @@ class LocationMapState extends State<LocationMap> {
 
     _initMarkers();
   }
+
   void _initMarkers() async {
     final List<MapMarker> markers = [];
-    List<Map> latlist = await GeolocManager(dbProvider).getLatitude();
-   // print('yoyoyoy ${mylatlnglist.toString()}');
-    List longlist = await GeolocManager(dbProvider).getLongitude();
+    List<num> latlist = await GeolocManager(dbProvider).getLatitude();
+    List<num> longlist = await GeolocManager(dbProvider).getLongitude();
     for (var i =0; i<latlist.length; i++){
-      //latlist.forEach((k) {print(k.values); });
-     // double into = double.parse(latlist[i].values.toString());
-      //double inti = double.parse(longlist[i].values.toString());
-      //print('toto $into $inti');
-      //_markerLocations.add(LatLng(into,inti));
+      double into = latlist[i].toDouble();
+      double inti = longlist[i].toDouble();
+      _markerLocations.add(LatLng(into,inti));
     }
-    print('marker iiiis ${_markerLocations.toString()}');
     
     for (LatLng markerLocation in _markerLocations) {
       //final BitmapDescriptor markerImage =
         //  await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
-      print('in initmarker we hve $markerLocation');
+      Geoloc data = await GeolocManager(dbProvider).getAddress( _markerLocations.indexOf(markerLocation)+1);
+      String address = data.address;
+      print('add is $address');
+      String status = '';
+      if(1.38<=(data.pas)/(data.distance)) {
+        status = 'Walk';
+      }
+      if(1.18<=(data.pas)/(data.distance) && (data.pas)/(data.distance)<1.38) {
+        status = 'Jog';
+      }
+      if(1.03<=(data.pas)/(data.distance) && (data.pas)/(data.distance)<1.18) {
+        status = 'Run';
+      }
+      if(0.85<=(data.pas)/(data.distance) && (data.pas)/(data.distance)<1.03) {
+        status = 'Fast Run';
+      }
+      if(data.vitesse>5 && data.distance>3000){
+        status = 'Transport';
+      }
+      else {
+        status = 'Walk';
+      }
+      _sourcePinData = PinData(
+        id: _markerLocations.indexOf(markerLocation)+1,
+        locationName: address,
+        activity: status,
+        time: data.elapsedTime
+      );
       markers.add(
         MapMarker(
           id: _markerLocations.indexOf(markerLocation).toString(),
           position: markerLocation,
           icon: BitmapDescriptor.defaultMarker,
+          setThePins: () {
+            setState(() {
+              _currentPinData = _sourcePinData;
+              _pinPillPosition = 0;
+            });
+          },
         ),
       );
+
     }
      _clusterManager = await MapHelper.initClusterManager(
       markers,
@@ -384,49 +410,70 @@ class LocationMapState extends State<LocationMap> {
       80,
     );
  _markers
-     // ..clear()
+      ..clear()
       ..addAll(updatedMarkers);
-
+    if(mounted){
     setState(() {
       _areMarkersLoading = false;
     });
-  }
-  /*void getCurrentLocation() async {
-    try {
-
-      Uint8List imageData = await getMarker();
-      var location = await _locationTracker.getLocation();
-
-      updateMarkerAndCircle(location, imageData);
-
-      if (_locationSubscription != null) {
-        _locationSubscription.cancel();
-      }
-
-
-      _locationSubscription = _locationTracker.onLocationChanged.listen((newLocalData) {
-        if (_controller != null) {
-          _controller.animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
-              bearing: 192.8334901395799,
-              target: LatLng(newLocalData.latitude, newLocalData.longitude),
-              tilt: 0,
-              zoom: 18.00)));
-          updateMarkerAndCircle(newLocalData, imageData);
-        }
-      });
-
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {
-        debugPrint("Permission Denied");
-      }
     }
-  }*/
+  }
+  Future<void> getPermission() async {
+    PermissionStatus permission = await Permission.location.status;
+
+    if (permission == PermissionStatus.denied) {
+      await Permission.locationAlways.request();
+    }
+     var geolocators = geolocator.Geolocator();
+
+    geolocator.GeolocationStatus geolocationStatus =
+        await geolocators.checkGeolocationPermissionStatus();
+
+    switch (geolocationStatus) {
+      case geolocator.GeolocationStatus.denied:
+        showToast('Access denied');
+        break;
+      case geolocator.GeolocationStatus.disabled:
+        showToast('Disabled');
+        break;
+      case geolocator.GeolocationStatus.restricted:
+        showToast('restricted');
+        break;
+      case geolocator.GeolocationStatus.unknown:
+        showToast('Unknown');
+        break;
+      case geolocator.GeolocationStatus.granted:
+        showToast('Accesss Granted');
+        _getCurrentLocation();
+    }
+  }
+   void _getCurrentLocation() async {
+    geolocator.Position res = await geolocator.Geolocator().getCurrentPosition();
+    setState(() {
+      position = res;
+      _child = 1;
+    });
+  }
+
+    void showToast(message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+  
+
+
   void dispose() {
     if (_locationSubscription != null) {
       _locationSubscription.cancel();
     }
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -434,35 +481,103 @@ class LocationMapState extends State<LocationMap> {
       body:Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          new _Header(
-            isRunning: _isTracking,
-            onTogglePressed: _onTogglePressed,),
+         
           Container(
-            height:300.0,
+            height:640.0,
             width: 450.0,
-            child:GoogleMap(
-              mapToolbarEnabled: false,
-              initialCameraPosition: _kGooglePlex,
-              markers: _markers,
-              onMapCreated: (controller) => _onMapCreated(controller),
-              onCameraMove: (position) => _updateMarkers(position.zoom),
+            child: Stack(
+              children: <Widget>[
+                     _child==0?
+                       Center(
+                            child: Text('Loading...'),
+                          )
+                     :
+                     
+                     GoogleMap(
+                        mapType: MapType.hybrid,
+                        mapToolbarEnabled: false,
+                        initialCameraPosition:CameraPosition(
+                        target: LatLng(position.latitude, position.longitude), zoom: 14.4746),
+                        markers: _markers,
+                        onMapCreated: (controller) => _onMapCreated(controller),
+                        onCameraMove: (position) => _updateMarkers(position.zoom),
+                        tiltGesturesEnabled: false,
+                        onTap: (LatLng location) {
+                          setState(() {
+                            _pinPillPosition = -100;
+                          });
+                        },
+                  ),
+                     
+                     AnimatedPositioned(
+          bottom: _pinPillPosition,
+          right: 0,
+          left: 0,
+          duration: Duration(milliseconds: 200),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              margin: EdgeInsets.all(20),
+              height: 70,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      blurRadius: 20,
+                      offset: Offset.zero,
+                      color: Colors.grey.withOpacity(0.5),
+                    )
+                  ]),
+                  child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _buildLocationInfo(),
+                ],
+              ),
             ),
-           ),
-          FlatButton(
-            onPressed: _initMarkers,
-            child: Text('click')
           ),
-         /* new _Header(
-        isRunning: _isTracking,
-        onTogglePressed: _onTogglePressed,
-      ),*/
+        ),
+        Positioned(
+          top: 20,
+          left: 20,
+          right: 20,
+          child: _Header(isRunning: _isTracking,
+                          onTogglePressed: _onTogglePressed,),
+                          
+                 
+                )
+
+              ]
+            )
+      
+           ),
         ],
       ),
 
     );
   }
-  
+   Widget _buildLocationInfo() {
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.only(left: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('Location :${ _currentPinData.locationName}' ), 
+            Text('${_currentPinData.activity}'),
+            Text('${_currentPinData.time}'),
+           
+              //style: CustomAppTheme().data.textTheme.subtitle,
+          ],
+        ),
+      ),
+    );
+  }
 }
+
 class _Header extends StatelessWidget {
   _Header({@required this.isRunning, this.onTogglePressed});
 
@@ -475,7 +590,7 @@ class _Header extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: new Center(
         child: new _HeaderButton(
-          title: isRunning ? 'Stop' : 'Start',
+          title: isRunning ? 'Stop tracking' : 'Start tracking',
           color: isRunning ? Colors.deepOrange : Colors.teal,
           onTap: onTogglePressed,
         ),
