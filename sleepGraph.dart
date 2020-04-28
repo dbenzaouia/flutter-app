@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/data/database.dart';
+import './data/database.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
-import 'package:flutter_app/sleepTime.dart';
+import './sleepTime.dart';
 import 'models/ObjectDisplay.dart';
 
-import 'package:flutter_app/widget/sleeptime_widget.dart';
+import './widget/sleeptime_widget.dart';
 
 
 

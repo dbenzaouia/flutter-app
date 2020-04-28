@@ -86,7 +86,6 @@ class HomeGraphState extends State<HomeGraph> {
 
 
  Widget build(BuildContext context) {
-    Types _chang = Types.rien;
     return DefaultTabController(
       length: 3,
       child: Scaffold(

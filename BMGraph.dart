@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'widget/blue_widget.dart';
 import 'dart:async';
@@ -12,21 +11,11 @@ import 'package:flutter/material.dart';
 import 'models/ObjectDisplay.dart';
 import 'models/ConfigBlueModel.dart';
 
-
-
-
 class BMG extends StatefulWidget {
-
-
   BMGState createState() => new BMGState();
-  
- 
 }
 
-
-
-enum Types { rien,journalier, hebdomadaire, mensuel,annuel }
-
+enum Types { rien, journalier, hebdomadaire, mensuel, annuel }
 
 class BMGState extends State<BMG> {
   DBProvider dbProvider = DBProvider.db;
@@ -47,33 +36,20 @@ class BMGState extends State<BMG> {
   List<BlueYear> blueyearthird;
   List<BlueYear> blueyearsecond;
 
-
-
-  int _changed=0;
+  int _changed = 0;
   Types _chang = Types.rien;
 
-  BlueWidgetDay Bday=BlueWidgetDay();
-  BlueWidgetYear Byear=BlueWidgetYear();
-  BlueWidgetMonths Bmonth=BlueWidgetMonths();
-  BlueWidgetWeek Bweek=BlueWidgetWeek();
-
-
-
-
-
-
-
-
-
-
+  BlueWidgetDay Bday = BlueWidgetDay();
+  BlueWidgetYear Byear = BlueWidgetYear();
+  BlueWidgetMonths Bmonth = BlueWidgetMonths();
+  BlueWidgetWeek Bweek = BlueWidgetWeek();
 
   List<ConfigBlueModel> object;
 
   BMGState();
 
   @override
-
-    void initState() {
+  void initState() {
     super.initState();
     setupList();
     setupListDay();
@@ -81,8 +57,6 @@ class BMGState extends State<BMG> {
     setupListMonths();
     setupListYear();
     setupConfig();
-
-
   }
 
   int todayDay() {
@@ -92,44 +66,45 @@ class BMGState extends State<BMG> {
     print(formattedDate);
     return formattedDate;
   }
+
   int todayMonths() {
     var now = new DateTime.now();
     var formatter = new DateFormat('MM');
     int formattedDate = int.parse(formatter.format(now));
     print(formattedDate);
     return formattedDate;
-
   }
+
   int todayYear() {
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy');
     int formattedDate = int.parse(formatter.format(now));
     print(formattedDate);
     return formattedDate;
-
   }
+
   int todayHours() {
     var now = new DateTime.now();
     int formattedTime = int.parse(DateFormat('kk').format(now));
     print(formattedTime);
     return formattedTime;
   }
+
   int todayMin() {
     var now = new DateTime.now();
     int formattedTime = int.parse(DateFormat('mm').format(now));
     print(formattedTime);
     return formattedTime;
-
   }
+
   String today() {
     var now = new DateTime.now();
     String formattedTime = DateFormat('a').format(now);
     print(formattedTime);
     return formattedTime;
-
-
   }
-     void setupConfig() async{
+
+  void setupConfig() async {
     var _object = await dataBase.fetchAllConfigBlue();
     print(_object);
     setState(() {
@@ -137,7 +112,7 @@ class BMGState extends State<BMG> {
     });
   }
 
-  void setupList() async{
+  void setupList() async {
     var _blues = await dataBase.fetchAllBlues();
     print(_blues);
     setState(() {
@@ -145,358 +120,268 @@ class BMGState extends State<BMG> {
     });
   }
 
+  void setupListDay() async {
+    var _bluedayfirst = await dataBase.getBlueDay(
+        (todayYear()), (todayMonths()), (todayDay()), object[0].name);
 
-    void setupListDay() async{
-    var _bluedayfirst = await dataBase.getBlueDay((todayYear()),(todayMonths()),(todayDay()),object[0].name);
+    var _bluedaysecond = await dataBase.getBlueDay(
+        (todayYear()), (todayMonths()), (todayDay()), object[1].name);
 
-    var _bluedaysecond = await dataBase.getBlueDay((todayYear()),(todayMonths()),(todayDay()),object[1].name);
-
-    var _bluedaythird = await dataBase.getBlueDay((todayYear()),(todayMonths()),(todayDay()),object[2].name);
+    var _bluedaythird = await dataBase.getBlueDay(
+        (todayYear()), (todayMonths()), (todayDay()), object[2].name);
     setState(() {
       bluedaythird = _bluedaythird;
       bluedaysecond = _bluedaysecond;
       bluedayfirst = _bluedayfirst;
-
-
     });
   }
-  void setupListWeek() async{
 
-    var _blueweekfirst = await dataBase.getBlueWeek((todayYear()),(todayMonths()),(todayDay()),object[0].name);
-    var _blueweeksecond = await dataBase.getBlueWeek((todayYear()),(todayMonths()),(todayDay()),object[1].name);
-    var _blueweekthird = await dataBase.getBlueWeek((todayYear()),(todayMonths()),(todayDay()),object[2].name);
-
+  void setupListWeek() async {
+    var _blueweekfirst = await dataBase.getBlueWeek(
+        (todayYear()), (todayMonths()), (todayDay()), object[0].name);
+    var _blueweeksecond = await dataBase.getBlueWeek(
+        (todayYear()), (todayMonths()), (todayDay()), object[1].name);
+    var _blueweekthird = await dataBase.getBlueWeek(
+        (todayYear()), (todayMonths()), (todayDay()), object[2].name);
 
     setState(() {
       blueweekthird = _blueweekthird;
       blueweeksecond = _blueweeksecond;
       blueweekfirst = _blueweekfirst;
-
-
     });
-              
-    
   }
-    void setupListMonths() async{
-    var _bluemonthsfirst = await dataBase.getBlueMonths((todayYear()),object[0].name);
-    var _bluemonthssecond = await dataBase.getBlueMonths((todayYear()),object[1].name);
-    var _bluemonthsthird = await dataBase.getBlueMonths((todayYear()),object[2].name);
 
+  void setupListMonths() async {
+    var _bluemonthsfirst =
+        await dataBase.getBlueMonths((todayYear()), object[0].name);
+    var _bluemonthssecond =
+        await dataBase.getBlueMonths((todayYear()), object[1].name);
+    var _bluemonthsthird =
+        await dataBase.getBlueMonths((todayYear()), object[2].name);
 
     setState(() {
       bluemonthsthird = _bluemonthsthird;
       bluemonthssecond = _bluemonthssecond;
       bluemonthsfirst = _bluemonthsfirst;
-
-
     });
-              
-    
   }
-      void setupListYear() async{
-    var _blueyearfirst = await dataBase.getBlueYear((todayYear()),object[0].name);
-    var _blueyearsecond = await dataBase.getBlueYear((todayYear()),object[1].name);
-    var _blueyearthird = await dataBase.getBlueYear((todayYear()),object[2].name);
 
+  void setupListYear() async {
+    var _blueyearfirst =
+        await dataBase.getBlueYear((todayYear()), object[0].name);
+    var _blueyearsecond =
+        await dataBase.getBlueYear((todayYear()), object[1].name);
+    var _blueyearthird =
+        await dataBase.getBlueYear((todayYear()), object[2].name);
 
     setState(() {
       blueyearthird = _blueyearthird;
       blueyearsecond = _blueyearsecond;
       blueyearfirst = _blueyearfirst;
-
-
     });
-              
-    
   }
-  
-
 
   Widget build(BuildContext context) {
-
-    
     List<charts.Series<BlueDay, DateTime>> series = withSampleData();
     List<charts.Series<BlueWeek, String>> seriesweek = withSampleDataWeek();
-    List<charts.Series<BlueMonths, String>> seriesmonths = withSampleDataMonths();
+    List<charts.Series<BlueMonths, String>> seriesmonths =
+        withSampleDataMonths();
     List<charts.Series<BlueYear, String>> seriesyear = withSampleDataYear();
 
-
-
-
     // The children consist of a Chart and Text widgets below to hold the info.
-    if(_changed==0)
-       return new Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-               Center(
-                heightFactor: 20,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+          title: Text("HomeTime"),
+          bottom: TabBar(
+            tabs: [
+              Tab(
                 child: Text(
-                  'Quel type de graphe?',
+                  'journalier',
                   style: TextStyle(
                     fontSize: 15.0,
-                    fontWeight: FontWeight.w400,
                   ),
                 ),
-              ), 
-               Column(
-                children: <Widget>[
-                  ListTile(
-                  title: const Text('journalier'),
-                  leading: Radio(
-                  value: Types.journalier,
-                  groupValue: _chang,
-
-                  onChanged: (Types value) {
-                    setState(() { 
-                      _chang = value;
-                      _changed=1;
-                    });
-                  },
+              ),
+              Tab(
+                  child: Text(
+                'hebdomadaire',
+                style: TextStyle(
+                  fontSize: 15.0,
                 ),
-               ),
-       
-              ListTile(
-                title: const Text('hebdomadaire'),
-                leading: Radio(
-                value: Types.hebdomadaire,
-                groupValue: _chang,
-
-                onChanged: (Types value) {
-                setState(() { 
-                  _chang = value;
-                  _changed=2;
-                 });
-                },
-              ),
-            ),
-            ListTile(
-              title: const Text('mensuel'),
-              leading: Radio(
-              value: Types.mensuel,
-              groupValue: _chang,
-
-              onChanged: (Types value) {
-              setState(() { 
-                _chang = value; 
-                _changed=3;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              title: const Text('annuel'),
-              leading: Radio(
-              value: Types.annuel,
-              groupValue: _chang,
-
-              onChanged: (Types value) {
-               setState(() { 
-                  _chang = value; 
-                  _changed=4;
-                });
-               },
-              ),
-            ),
+              )),
+              Tab(
+                  child: Text(
+                'mensuel',
+                style: TextStyle(
+                  fontSize: 15.0,
+                ),
+              )),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Bday.BlueWidget(series,bluedayfirst,bluedaysecond,bluedaythird, object),
+            Bweek.BlueWidget(seriesweek, blueweekfirst, blueweeksecond, blueweekthird, object),
+            Bmonth.BlueWidget(seriesmonths, bluemonthsfirst, bluemonthssecond, bluemonthsthird, object),
           ],
         ),
-      ]
-    )
-  );  
-            
-  else if (_changed==1){
-     return new Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children : <Widget>[
-            Bday.BlueWidget(series,bluedayfirst,bluedaysecond,bluedaythird, object)
-    ]
-          )
-     );
-  }
-  else if(_changed==2){
-  return new Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children : <Widget>[
-      Bweek.BlueWidget(seriesweek, blueweekfirst, blueweeksecond, blueweekthird, object)
-    ]
-          )
-     );
-
-  }
-  else if(_changed==3){
-    return new Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children : <Widget>[
-            Bmonth.BlueWidget(seriesmonths, bluemonthsfirst, bluemonthssecond, bluemonthsthird, object)
-      
-          
-    ]
-          )
-     );
-
-  }
-  else if(_changed==4){
-    return new Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children : <Widget>[
-            Byear.BlueWidget(seriesyear, blueyearfirst, blueyearsecond, blueyearthird, object)
-      
-          
-    ]
-          )
-     );
-
-  }
-  }
-   withSampleData() {
-    return (
-      _createSampleData()
-    );
-  }
-     withSampleDataWeek() {
-    return (
-      _createSampleDataWeek()
-    );
-  }
-       withSampleDataMonths() {
-    return (
-      _createSampleDataMonths()
-    );
-  }
-         withSampleDataYear() {
-    return (
-      _createSampleDataYear()
+      ),
     );
   }
 
-    List<charts.Series<BlueDay, DateTime>>   _createSampleData(){
+  withSampleData() {
+    return (_createSampleData());
+  }
 
+  withSampleDataWeek() {
+    return (_createSampleDataWeek());
+  }
+
+  withSampleDataMonths() {
+    return (_createSampleDataMonths());
+  }
+
+  withSampleDataYear() {
+    return (_createSampleDataYear());
+  }
+
+  List<charts.Series<BlueDay, DateTime>> _createSampleData() {
     return [
       new charts.Series<BlueDay, DateTime>(
-          id: '${object[0].name}/${object[0].location}',
-          domainFn: (BlueDay bluedayfirst, _) => DateTime(int.parse(bluedayfirst.theYear),int.parse(bluedayfirst.theMonth),int.parse(bluedayfirst.theDay),int.parse(bluedayfirst.theHour)),
-          measureFn: (BlueDay bluedayfirst, _) => bluedayfirst.theTime,
+        id: '${object[0].name}/${object[0].location}',
+        domainFn: (BlueDay bluedayfirst, _) => DateTime(
+            int.parse(bluedayfirst.theYear),
+            int.parse(bluedayfirst.theMonth),
+            int.parse(bluedayfirst.theDay),
+            int.parse(bluedayfirst.theHour)),
+        measureFn: (BlueDay bluedayfirst, _) => bluedayfirst.theTime,
 
-          data: bluedayfirst,
+        data: bluedayfirst,
 
-
-          // Set a label accessor to control the text of the bar label.
+        // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueDay, DateTime>(
-          id: '${object[1].name}/${object[1].location}',
-          domainFn: (BlueDay bluedaysecond, _) => DateTime(int.parse(bluedaysecond.theYear),int.parse(bluedaysecond.theMonth),int.parse(bluedaysecond.theDay),int.parse(bluedaysecond.theHour)),
-          measureFn: (BlueDay bluedaysecond, _) => bluedaysecond.theTime,
+        id: '${object[1].name}/${object[1].location}',
+        domainFn: (BlueDay bluedaysecond, _) => DateTime(
+            int.parse(bluedaysecond.theYear),
+            int.parse(bluedaysecond.theMonth),
+            int.parse(bluedaysecond.theDay),
+            int.parse(bluedaysecond.theHour)),
+        measureFn: (BlueDay bluedaysecond, _) => bluedaysecond.theTime,
 
-          data: bluedaysecond,
-          // Set a label accessor to control the text of the bar label.
+        data: bluedaysecond,
+        // Set a label accessor to control the text of the bar label.
       ),
-        new charts.Series<BlueDay, DateTime>(
-          id: '${object[2].name}/${object[2].location}',
-          domainFn: (BlueDay bluedaythird, _) => DateTime(int.parse(bluedaythird.theYear),int.parse(bluedaythird.theMonth),int.parse(bluedaythird.theDay),int.parse(bluedaythird.theHour)),
-          measureFn: (BlueDay bluedaythird, _) => bluedaythird.theTime,
+      new charts.Series<BlueDay, DateTime>(
+        id: '${object[2].name}/${object[2].location}',
+        domainFn: (BlueDay bluedaythird, _) => DateTime(
+            int.parse(bluedaythird.theYear),
+            int.parse(bluedaythird.theMonth),
+            int.parse(bluedaythird.theDay),
+            int.parse(bluedaythird.theHour)),
+        measureFn: (BlueDay bluedaythird, _) => bluedaythird.theTime,
 
-          data: bluedaythird,
-          // Set a label accessor to control the text of the bar label.
+        data: bluedaythird,
+        // Set a label accessor to control the text of the bar label.
       ),
     ];
-  } 
+  }
 
-List<charts.Series<BlueWeek, String>>   _createSampleDataWeek(){
-
+  List<charts.Series<BlueWeek, String>> _createSampleDataWeek() {
     return [
       new charts.Series<BlueWeek, String>(
-          id: '${object[0].name}/${object[0].location}',
-          domainFn: (BlueWeek blueweekfirst, _) => blueweekfirst.beginDate+"-"+blueweekfirst.endDate,
-          measureFn: (BlueWeek blueweekfirst, _) => blueweekfirst.theTime,
+        id: '${object[0].name}/${object[0].location}',
+        domainFn: (BlueWeek blueweekfirst, _) =>
+            blueweekfirst.beginDate + "-" + blueweekfirst.endDate,
+        measureFn: (BlueWeek blueweekfirst, _) => blueweekfirst.theTime,
 
-          data: blueweekfirst,
+        data: blueweekfirst,
 
-
-          // Set a label accessor to control the text of the bar label.
+        // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueWeek, String>(
-          id: '${object[1].name}/${object[1].location}',
-          domainFn: (BlueWeek blueweeksecond, _) => blueweeksecond.beginDate+"-"+blueweeksecond.endDate,
-          measureFn: (BlueWeek blueweeksecond, _) => blueweeksecond.theTime,
+        id: '${object[1].name}/${object[1].location}',
+        domainFn: (BlueWeek blueweeksecond, _) =>
+            blueweeksecond.beginDate + "-" + blueweeksecond.endDate,
+        measureFn: (BlueWeek blueweeksecond, _) => blueweeksecond.theTime,
 
-          data: blueweeksecond,
-          // Set a label accessor to control the text of the bar label.
+        data: blueweeksecond,
+        // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueWeek, String>(
-          id: '${object[2].name}/${object[2].location}',
-          domainFn: (BlueWeek blueweekthird, _) => blueweekthird.beginDate+"-"+blueweekthird.endDate,
-          measureFn: (BlueWeek blueweekthird, _) => blueweekthird.theTime,
+        id: '${object[2].name}/${object[2].location}',
+        domainFn: (BlueWeek blueweekthird, _) =>
+            blueweekthird.beginDate + "-" + blueweekthird.endDate,
+        measureFn: (BlueWeek blueweekthird, _) => blueweekthird.theTime,
 
-          data: blueweekthird,
-          // Set a label accessor to control the text of the bar label.
+        data: blueweekthird,
+        // Set a label accessor to control the text of the bar label.
       ),
     ];
-  } 
-  List<charts.Series<BlueMonths, String>>   _createSampleDataMonths(){
+  }
 
+  List<charts.Series<BlueMonths, String>> _createSampleDataMonths() {
     return [
       new charts.Series<BlueMonths, String>(
-          id: '${object[0].name}/${object[0].location}',
-          domainFn: (BlueMonths bluemonthsfirst, _) => bluemonthsfirst.theMonths,
-          measureFn: (BlueMonths bluemonthsfirst, _) => bluemonthsfirst.theTime,
+        id: '${object[0].name}/${object[0].location}',
+        domainFn: (BlueMonths bluemonthsfirst, _) => bluemonthsfirst.theMonths,
+        measureFn: (BlueMonths bluemonthsfirst, _) => bluemonthsfirst.theTime,
 
-          data: bluemonthsfirst,
+        data: bluemonthsfirst,
 
-
-          // Set a label accessor to control the text of the bar label.
+        // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueMonths, String>(
-          id: '${object[1].name}/${object[1].location}',
-          domainFn: (BlueMonths bluemonthssecond, _) => bluemonthssecond.theMonths,
-          measureFn: (BlueMonths bluemonthssecond, _) => bluemonthssecond.theTime,
+        id: '${object[1].name}/${object[1].location}',
+        domainFn: (BlueMonths bluemonthssecond, _) =>
+            bluemonthssecond.theMonths,
+        measureFn: (BlueMonths bluemonthssecond, _) => bluemonthssecond.theTime,
 
-          data: bluemonthssecond,
-          // Set a label accessor to control the text of the bar label.
+        data: bluemonthssecond,
+        // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueMonths, String>(
-          id: '${object[2].name}/${object[2].location}',
-          domainFn: (BlueMonths bluemonthsthird, _) => bluemonthsthird.theMonths,
-          measureFn: (BlueMonths bluemonthsthird, _) => bluemonthsthird.theTime,
+        id: '${object[2].name}/${object[2].location}',
+        domainFn: (BlueMonths bluemonthsthird, _) => bluemonthsthird.theMonths,
+        measureFn: (BlueMonths bluemonthsthird, _) => bluemonthsthird.theTime,
 
-          data: bluemonthsthird,
-          // Set a label accessor to control the text of the bar label.
+        data: bluemonthsthird,
+        // Set a label accessor to control the text of the bar label.
       ),
     ];
-  } 
-   List<charts.Series<BlueYear, String>>   _createSampleDataYear(){
+  }
 
+  List<charts.Series<BlueYear, String>> _createSampleDataYear() {
     return [
       new charts.Series<BlueYear, String>(
-          id: '${object[0].name}/${object[0].location}',
-          domainFn: (BlueYear blueyearfirst, _) => blueyearfirst.theYear,
-          measureFn: (BlueYear blueyearfirst, _) => blueyearfirst.theTime,
+        id: '${object[0].name}/${object[0].location}',
+        domainFn: (BlueYear blueyearfirst, _) => blueyearfirst.theYear,
+        measureFn: (BlueYear blueyearfirst, _) => blueyearfirst.theTime,
 
-          data: blueyearfirst,
+        data: blueyearfirst,
 
-
-          // Set a label accessor to control the text of the bar label.
+        // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueYear, String>(
-          id: '${object[1].name}/${object[1].location}',
-          domainFn: (BlueYear blueyearsecond, _) => blueyearsecond.theYear,
-          measureFn: (BlueYear blueyearsecond, _) => blueyearsecond.theTime,
+        id: '${object[1].name}/${object[1].location}',
+        domainFn: (BlueYear blueyearsecond, _) => blueyearsecond.theYear,
+        measureFn: (BlueYear blueyearsecond, _) => blueyearsecond.theTime,
 
-          data: blueyearsecond,
-          // Set a label accessor to control the text of the bar label.
+        data: blueyearsecond,
+        // Set a label accessor to control the text of the bar label.
       ),
       new charts.Series<BlueYear, String>(
-          id: '${object[2].name}/${object[2].location}',
-          domainFn: (BlueYear blueyearthird, _) => blueyearthird.theYear,
-          measureFn: (BlueYear blueyearthird, _) => blueyearthird.theTime,
+        id: '${object[2].name}/${object[2].location}',
+        domainFn: (BlueYear blueyearthird, _) => blueyearthird.theYear,
+        measureFn: (BlueYear blueyearthird, _) => blueyearthird.theTime,
 
-          data: blueyearthird,
-          // Set a label accessor to control the text of the bar label.
+        data: blueyearthird,
+        // Set a label accessor to control the text of the bar label.
       ),
     ];
-  } 
+  }
 }
-

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:flutter_app/hometime.dart';
-import 'package:flutter_app/homeGraph.dart';
+import '../hometime.dart';
+import '../homeGraph.dart';
 
 class HometimeWidget {
   Widget hometimeWidgetday(){

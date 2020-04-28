@@ -78,7 +78,7 @@ class LocationView extends StatelessWidget {
                                                 fontFamily:
                                                     SecondAppTheme.fontName,
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: 16,
+                                                fontSize: 13,
                                                 letterSpacing: 0.0,
                                                 color: SecondAppTheme
                                                     .nearlyDarkBlue,
@@ -91,7 +91,7 @@ class LocationView extends StatelessWidget {
                                                 fontFamily:
                                                     SecondAppTheme.fontName,
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: 16,
+                                                fontSize: 13,
                                                 letterSpacing: 0.0,
                                                 color: SecondAppTheme
                                                     .nearlyDarkBlue,

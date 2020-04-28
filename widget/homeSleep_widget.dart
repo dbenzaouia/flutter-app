@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:projet_geo/homeSleep.dart';
+import '../homeSleep.dart';
 
 import '../homeSleepGraph.dart';
 
