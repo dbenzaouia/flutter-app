@@ -44,7 +44,17 @@ class BMGState extends State<BMG> {
   BlueWidgetMonths Bmonth = BlueWidgetMonths();
   BlueWidgetWeek Bweek = BlueWidgetWeek();
 
-  List<ConfigBlueModel> object;
+  static ConfigBlueModel make(String nameblue){
+  ConfigBlueModel bla=new ConfigBlueModel();
+  bla.name=nameblue;
+  bla.location=nameblue;
+  return bla;
+}
+
+
+
+
+  List<ConfigBlueModel> object=[make("bla"),make("nameblue"),make("2")];
 
   BMGState();
 
