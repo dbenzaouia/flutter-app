@@ -476,6 +476,7 @@ class LocationMapState extends State<LocationMap> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceHeight = MediaQuery.of(context).size.height;
     return new Scaffold(
     
       body:Column(
@@ -483,7 +484,7 @@ class LocationMapState extends State<LocationMap> {
         children: <Widget>[
          
           Container(
-            height:640.0,
+            height:deviceHeight,
             width: 450.0,
             child: Stack(
               children: <Widget>[
