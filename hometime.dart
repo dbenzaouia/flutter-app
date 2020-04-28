@@ -117,7 +117,8 @@ class HTState extends State<HT> {
     timeToDisplay = 0;
   }
   void test() {
-    
+    if(config!=null){
+    if(config.length>0){
     if( _monrouteur==config[0].wifiIP || _mawifi==config[0].wifiIP){
       swatch.start();
        starttimer();
@@ -135,6 +136,8 @@ class HTState extends State<HT> {
     resetTimeCounter;
           
 
+    }
+    }
     }
   }
 

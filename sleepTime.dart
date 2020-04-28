@@ -183,6 +183,7 @@ static int todayDay() {
   }
  
   _chrono(){
+    if(config!=null){
 
     if(_count==0 && config.length>0){
     if( (_wifi==config[0].wifiname ||_monrouteur==config[0].wifiIP) && timeToDisplay==0 && int.parse(_luxString)<5 && 
@@ -221,6 +222,7 @@ static int todayDay() {
            print("ici");
          }
 
+    }
     }
     }
     
