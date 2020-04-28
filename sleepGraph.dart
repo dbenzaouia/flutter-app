@@ -152,6 +152,8 @@ class SleepGraphState extends State<SleepGraph> {
     DBProvider().initDB();
     var time = await DBProvider().getSleepByDay(y,m,d);
     var hour = 24*3600-time;
+    time = time ~/3600;
+    hour = hour ~/3600;
     final data = [
       new DataDay('sleep', time),
       new DataDay('awake', hour),

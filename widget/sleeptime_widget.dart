@@ -21,7 +21,7 @@ class SleeptimeWidget {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Time spend sleeping",
+                          "Time spend sleeping today",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(

@@ -89,7 +89,7 @@ class DBProvider {
     return map;
  } 
 
- newBlue(int id, int day,int months,int year,int time, String name ) {
+ newBlueValue(int id, int day,int months,int year,int time, String name ) {
    var map = Map<String, dynamic>();
     map['id'] = id;
     map['theTime'] = time;
@@ -102,21 +102,7 @@ class DBProvider {
     map['name'] = name;
     return map;
  } 
-  newValueBlue(int id, String name,int time, int day,int months,int year,String hours,int min ) {
-   var map = Map<String, dynamic>();            
-    map['id'] = id;
-    map['name']=name;
-    map['theTime'] = time;
-    map['theDay'] = day;
-    map['theMonths'] = months;
-    map['theYear'] = year;
-    map['theHours'] = hours;
-    map['theMin'] = min;
-    map['thePart'] = 'AM';
-    return map;
- }
-
-    
+   
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
@@ -142,60 +128,7 @@ class DBProvider {
           await db.execute('''CREATE TABLE ConfigBlue (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           name TEXT,location TEXT)''');
 
-
-
-
-
-          await db.insert('Blue', newValueBlue(1,"",2200, 28,4,2020,"0",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(2,"",3400, 28,4,2020,"2",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(3,"",3300, 28, 4,2020,"4",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(4,"",1100, 28,4,2020,"6",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(5,"",50, 28,4,2020,"8",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(6,"",68, 20,4,2020,"10",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(8,"S",440, 20,4,2020,"12",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(9,"X8",220, 20,4,2020,"14",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(10,"X8",440, 20,4,2020,"16",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(11,"X8",330, 20, 4,2020,"18",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(12,"X8",110, 20,4,2020,"20",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(13,"X8",50, 20,4,2020,"22",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(14,"Desk",22, 20,4,2020,"1",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(15,"Desk",44, 20,4,2020,"3",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(16,"Desk",33, 20, 4,2020,"5",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(17,"Desk",11, 20,4,2020,"7",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(18,"Desk",500, 20,4,2020,"9",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(19,"Desk",6800, 20,4,2020,"11",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(20,"Desk",22, 20,4,2020,"13",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(21,"Desk",44, 20,4,2020,"15",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(22,"Desk",44, 20,4,2020,"17",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(23,"Desk",44, 20,4,2020,"19",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(24,"Desk",44, 20,4,2020,"21",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(25,"Desk",44, 20,4,2020,"23",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-        await db.insert('Blue', newValueBlue(26,"Desk2",22, 20,4,2020,"1",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(27,"Desk2",44, 20,4,2020,"2",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(28,"Desk2",33, 20, 4,2020,"5",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(29,"Desk2",11, 20,4,2020,"6",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(30,"Desk2",500, 20,4,2020,"9",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(31,"Desk2",680, 20,4,2020,"10",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(32,"Desk2",22, 20,4,2020,"13",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(33,"Desk2",44, 20,4,2020,"14",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(34,"Desk2",44, 20,4,2020,"17",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(35,"Desk2",44, 20,4,2020,"18",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(36,"Desk2",44, 20,4,2020,"21",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(37,"Desk2",44, 20,4,2020,"22",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(38,"Desk",44, 19,1,2020,"23",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-        await db.insert('Blue', newValueBlue(39,"Desk2",22, 19,2,2020,"1",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(40,"Desk2",44, 20,3,2020,"2",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(41,"Desk2",3300, 31, 12,2019,"5",9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(42,"Desk2",11, 19,5,2020,"6",5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(43,"Desk2",500, 19,6,2020,"9",8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(44,"Desk2",680, 19,7,2020,"10",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(45,"Desk2",22, 19,8,2020,"13",40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(46,"Desk2",44, 19,9,2020,"14",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(47,"Desk2",44, 19,10,2020,"17",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(48,"Desk2",44, 19,11,2020,"18",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(49,"Desk2",44, 19,12,2020,"21",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Blue', newValueBlue(50,"Desk2",4400, 1,1,2020,"22",50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(1,220, 16,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         /*await db.insert('Steps', newValue(1,220, 16,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(2,440, 16,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(3,330, 15, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(4,110, 15,4,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
@@ -226,15 +159,78 @@ class DBProvider {
          await db.insert('Steps', newValue(29,110, 11,10,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(30,50, 10,11,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(31,68, 19,12,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-          print('database created!');
+          print('database created!');*/
 
-    var nbJour = 30;
-    for (var i = 1; i <= nbJour; i++) {
-      var theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
-      var duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
+    var date = new DateTime.now();
+    var heure = date.hour;
+    var day = date.day;
+    var year = date.year;
+    var month = date.month;
+    var nbJour = 30-day;
+
+    var theTime = Random().nextInt(heure)*3600; //valeur entre 0 et hour en secondes 
+    var duration = Random().nextInt(theTime); //valeur entre 0 et theTime en secondes
+    var timev = Random().nextInt(2)*3600;
+    var timeh = Random().nextInt(8)*3600;
+    var timeb = Random().nextInt(8)*3600;
+    await db.insert('HomeTime', newHometime(day, day, month, year, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert('Sleep', newSleep(day, day, month, year, duration),  conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert('Blue', newBlueValue(day, day, month, year, timev, 'voiture'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+    await db.insert('Blue', newBlueValue(50 + day, day, month, year, timeh, 'enceinte salon'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+    await db.insert('Blue', newBlueValue(100 + day, day, month, year, timeb, 'enceinte chambre'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+
+    for (var i = day-1; i >= 1; i--) {
+      theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
+      duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
+      timev = Random().nextInt(2)*3600;
+      timeh = Random().nextInt(8)*3600;
+      timeb = Random().nextInt(8)*3600;
       await db.insert('HomeTime', newHometime(i, i, 04, 2020, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
-      await db.insert('Sleep', newSleep(i, i, 04,2020, duration),  conflictAlgorithm: ConflictAlgorithm.replace);  
+      await db.insert('Sleep', newSleep(i, i, 04,2020, duration),  conflictAlgorithm: ConflictAlgorithm.replace); 
+      await db.insert('Blue', newBlueValue(i, i, month, year, timev, 'voiture'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+      await db.insert('Blue', newBlueValue(50 + i, i, month, year, timeh, 'enceinte salon'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+      await db.insert('Blue', newBlueValue(100 + i, i, month, year, timeb, 'enceinte chambre'),  conflictAlgorithm: ConflictAlgorithm.replace);  
     }
+    
+    for (var i = 31; i>=31-nbJour; i--){
+      theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
+      duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
+      timev = Random().nextInt(2)*3600;
+      timeh = Random().nextInt(8)*3600;
+      timeb = Random().nextInt(8)*3600;
+      await db.insert('HomeTime', newHometime(day + i, i, month-1, year, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert('Sleep', newSleep(day + i, i, month-1, year, duration),  conflictAlgorithm: ConflictAlgorithm.replace); 
+      await db.insert('Blue', newBlueValue(day+i, i, month, year, timev, 'voiture'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+      await db.insert('Blue', newBlueValue(50 + day + i, i, month, year, timeh, 'enceinte salon'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+      await db.insert('Blue', newBlueValue(100 + day + i, i, month, year, timeb, 'enceinte chambre'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+    }
+
+      for (var i = 1; i <= 60; i) {
+        for (var j = 0; j<= 24; j++){
+          var nb = 0;
+          if(j<=6){
+            nb = 0;
+          }
+          else if(j==7 || j==10 || j==11 || j==14 || j==15 || j==16){
+            nb = 20 + Random().nextInt(21);
+          }
+          else if (j==8 || j==9 || j==12 || j==13 || j==17 || j==18 || j==19){
+            nb = 300 + Random().nextInt(201);
+          }
+          else if(j==20 || j==21){
+            nb = 100 + Random().nextInt(51);
+          }
+          else {
+            nb = 50 + Random().nextInt(21);
+          }
+          if (i<=31){
+            await db.insert('Steps', newValue(i, nb, i, month, year, 12, 10),  conflictAlgorithm: ConflictAlgorithm.replace);
+          }
+          else {
+            await db.insert('Steps', newValue(i -31, nb, i-31, month-1, year, 12, 10),  conflictAlgorithm: ConflictAlgorithm.replace);
+          }
+        }
+      }
   });
 }
 

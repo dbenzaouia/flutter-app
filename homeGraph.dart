@@ -154,6 +154,8 @@ static Future<List<charts.Series<DataList, DateTime>>> withDataMonth() async {
     DBProvider().initDB();
     var time = await DBProvider().getHomeTimesByDay(y,m,d);
     var hour = 24*3600-time;
+    hour = hour ~/3600;
+    time = time ~/3600;
     final data = [
       new DataDay('home', time),
       new DataDay('outside', hour),
