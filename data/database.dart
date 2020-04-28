@@ -115,10 +115,34 @@ class DBProvider {
     map['thePart'] = 'AM';
     return map;
  }
+   newValueConfig() {
+   var map = Map<String, dynamic>();            
+    map['id'] = 1;
+    map['wifiname']="name";
+    map['wifiIP'] = "wifiIP";
+    map['hometime'] = 0;
+    map['sleeptime'] = 0;
+    map['pedometre'] = 0;
+    map['location'] = 0;
+    map['bluetooth'] = 0;
+
+
+    return map;
+ }
+    newValueConfigBlue(int id) {
+   var map = Map<String, dynamic>();            
+    map['id'] = id;
+    map['name']="name";
+    map['location'] = "location";
+    
+
+
+    return map;
+ }
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDBtest1123joa06.db");
+    String path = join(documentsDirectory.path, "TestDBtest1123joa061012.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
           await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
@@ -139,6 +163,12 @@ class DBProvider {
                           name TEXT, theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours TEXT,theMin INTEGER,thePart TEXT)''');
           await db.execute('''CREATE TABLE ConfigBlue (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           name TEXT,location TEXT)''');
+          await db.insert('Config', newValueConfig(),  conflictAlgorithm: ConflictAlgorithm.replace);
+          await db.insert('ConfigBlue', newValueConfigBlue(1),  conflictAlgorithm: ConflictAlgorithm.replace);
+          await db.insert('ConfigBlue', newValueConfigBlue(2),  conflictAlgorithm: ConflictAlgorithm.replace);
+          await db.insert('ConfigBlue', newValueConfigBlue(3),  conflictAlgorithm: ConflictAlgorithm.replace);
+
+
          await db.insert('Steps', newValue(1,220, 16,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(2,440, 16,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(3,330, 15, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
