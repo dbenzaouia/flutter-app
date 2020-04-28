@@ -230,54 +230,11 @@ class DBProvider {
 
     var nbJour = 30;
     for (var i = 1; i <= nbJour; i++) {
-      /* final _random = new Random();
-        int next(int min, int max) => min + _random.nextInt(max - min);
-        var realData = next(0,now.hour*3600); */
       var theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
       var duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
       await db.insert('HomeTime', newHometime(i, i, 04, 2020, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
       await db.insert('Sleep', newSleep(i, i, 04,2020, duration),  conflictAlgorithm: ConflictAlgorithm.replace);  
     }
-    
-    /*for (var i = 1; i <= nbJour; i) {
-      for (var j = 0; j<= 24; j++){
-      var nb = 0;
-      if(j<=6){
-        nb = 0;
-      }
-      else if(j==7 || j==10 || j==11 || j==14 || j==15 || j==16){
-        nb = 20 + Random().nextInt(21);
-      }
-      else if (j==8 || j==9 || j==12 || j==13 || j==17 || j==18 || j==19){
-        nb = 300 + Random().nextInt(201);
-      }
-      else if(j==20 || j==21){
-        nb = 100 + Random().nextInt(51);
-      }
-      else {
-        nb = 50 + Random().nextInt(21);
-      }
-      var newSteps = new Steps(
-      id: 1+i*j,
-      numberSteps: nb,
-      theTime: j,
-      theDay: i,
-      theMonths: json["theMonths"],
-      theYear: json["theYear"],
-      theHours: json["theHours"],
-      theMin: json["theMin"],
-      thePart: json["thePart"]
-      duration: 16 + Random().nextInt(8), //valeur entre 16 et 24 
-      theDay: i,
-      theMonths: 4,
-      theYear: 2020,
-      theHours: "20:00",
-      theMin: "20:00",
-      thePart: "AM",
-      );
-      addNewSteps(newSteps);
-      }
-    }*/
   });
 }
 
@@ -335,11 +292,10 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
 
     for (var i = 0; i < 24; i++) {
       StepsDay stepsday=new StepsDay();
-    stepsday.theDate=d.toString()+'/'+m.toString()+'/'+y.toString();
-        stepsday.theHour=i.toString();
-        stepsday.numberSteps= await getStepsHour(y, m,d,i.toString());
-        print("number spes pour$i est ${stepsday.numberSteps}");
-     
+      stepsday.theDate=d.toString()+'/'+m.toString()+'/'+y.toString();
+      stepsday.theHour=i.toString();
+      stepsday.numberSteps= await getStepsHour(y, m,d,i.toString());
+      print("number spes pour$i est ${stepsday.numberSteps}");
       res.add(stepsday);
     }
     return res;
@@ -356,8 +312,7 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
       blueday.theYear=y.toString();
       blueday.theHour=i.toString();
       blueday.theTime= await getBlueHour(y, m,d,i.toString(),name);
-        print("time $name pour $i h est ${blueday.theTime}");
-     
+      print("time $name pour $i h est ${blueday.theTime}");
       res.add(blueday);
     }
     return res;
@@ -366,7 +321,6 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
     final db = await database;
     var results = await db.rawQuery('SELECT numberSteps FROM Steps WHERE theYear = $yyyy AND theMonths = $mm ' );
     int res = 0;
-
     int theTime = 0;
   
     for (var i = 0; i < results.length; i++) {
@@ -951,10 +905,6 @@ Future<List<int>> getStepsInDay(int yyyy, int mm, int dd) async {
     final db = await database;
     var results = await db.rawQuery('SELECT numberSteps FROM Steps WHERE theYear = $yyyy AND theMonth = $mm AND theDay = $dd');
     List<int> res = [];
-
-    // if (results.length > 0) {
-    //   return new Steps.fromMap(results.first).id;
-    // }
 
     int theTime = 0;
   
