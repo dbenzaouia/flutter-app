@@ -15,6 +15,16 @@ Add this dependency in pubspec.yaml :
   new_geolocation: ^1.0.0
   geocoder: ^0.2.1
   geolocator: ^5.1.5
+  
+  google_maps_flutter: ^0.5.26
+
+  fluster: ^1.1.2	  
+
+  flutter_cache_manager: ^1.2.2	  
+
+  fluttertoast: ^4.0.0
+
+  permission_handler: ^5.0.0+hotfix.4
 
 
 modify the minsdkVersion to 21 in android/app/build.gradle (defaultconfig)
