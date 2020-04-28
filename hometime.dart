@@ -131,7 +131,7 @@ class HTState extends State<HT> {
     print(config[0].wifiIP);
     print(_mawifi);
     print(config[0].wifiIP);
-    if( _monrouteur==config[0].wifiIP || _mawifi==config[0].wifiname || true){
+    if( _monrouteur==config[0].wifiIP || _mawifi==config[0].wifiname ){
       swatch.start();
        starttimer();
       keeprunning();
@@ -316,8 +316,8 @@ class HTState extends State<HT> {
               'Wifi Name: ""\n'
               'Wifi BSSID: ""\n'
               'Wifi IP: ""\n';
-              _monrouteur="";
-              _mawifi="";
+              _monrouteur="wifiip";
+              _mawifi="wifinam";
         });
 
         test();
@@ -326,8 +326,8 @@ class HTState extends State<HT> {
 
       case ConnectivityResult.none:
         setState(() { _connectionStatus = result.toString();
-          _monrouteur="";
-          _mawifi="";
+          _monrouteur="wifiip";
+          _mawifi="wifinam";
 
          } );
         test();
@@ -335,8 +335,8 @@ class HTState extends State<HT> {
       default:
         setState(() { 
           _connectionStatus = 'Failed to get connectivity.';
-          _monrouteur="";
-          _mawifi="";
+          _monrouteur="wifiip";
+          _mawifi="wifinam";
 
 
         });

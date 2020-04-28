@@ -369,8 +369,8 @@ static int todayDay() {
               'Wifi Name: ""\n'
               'Wifi BSSID: ""\n'
               'Wifi IP: ""\n';
-              _monrouteur="";
-              _wifi="";
+              _monrouteur="wifip";
+              _wifi="wifin";
         });
 
         _chrono();
@@ -379,8 +379,8 @@ static int todayDay() {
 
       case ConnectivityResult.none:
         setState(() { _connectionStatus = result.toString();
-          _monrouteur="";
-          _wifi="";
+          _monrouteur="wifip";
+          _wifi="wifin";
 
          } );
         _chrono();
@@ -388,8 +388,8 @@ static int todayDay() {
       default:
         setState(() { 
           _connectionStatus = 'Failed to get connectivity.';
-          _monrouteur="";
-          _wifi="";
+          _monrouteur="wifip";
+          _wifi="wifin";
 
 
         });
