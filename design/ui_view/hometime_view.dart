@@ -538,10 +538,10 @@ class HomeTimeView extends StatelessWidget {
                                         padding: const EdgeInsets.only(top: 6),
                                         child: FutureBuilder<int>(
                                             future: DBProvider().getHomeTimesByDay(
-                                                dateh[2],
+                                                dateh[0],
                                                 dateh[1],
                                                 dateh[
-                                                    0]), // a previously-obtained Future<String> or null
+                                                    2]), // a previously-obtained Future<String> or null
                                             builder: (context, snapshot) {
                                               if (snapshot.hasData) {
                                                 _dureHier =
