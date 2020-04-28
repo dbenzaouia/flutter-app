@@ -248,6 +248,8 @@ void liste() async{
     count=0;
     if(devices.length>0 && value=="unkown" ){
       for (var i = 0; i < devices.length; i++) {
+        if(object!=null){
+
         for (var j = 0; j < object.length; j++) {
           if(devices[i].device.isConnected && devices[i].device.name ==object[j].name && timeToDisplay==0){
             count++;
@@ -259,6 +261,7 @@ void liste() async{
           }
         }
       }
+    }
     else if(devices.length>0 && value!="unkown" ){
       for (var i = 0; i < devices.length; i++) {
           if(!devices[i].device.isConnected && devices[i].device.name ==value){
@@ -277,6 +280,7 @@ void liste() async{
         swatch.stop();
       }
     }
+    
   
   }
    _save(name) async{
