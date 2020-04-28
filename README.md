@@ -30,6 +30,8 @@ add assetsdependencies to yaml file like that :
     - assets/images/
     - assets/fitness_app/
     
-    #  To add the map on your device, you should get a google map API key : 
-    https://pub.dev/packages/google_maps_flutter	    https://pub.dev/packages/google_maps_flutter
-    https://www.raywenderlich.com/4466319-google-maps-for-flutter-tutorial-getting-started	    https://www.raywenderlich.com/4466319-google-maps-for-flutter-tutorial-getting-started
+  #  To add the map on your device, you should get a google map API key : 
+    https://pub.dev/packages/google_maps_flutter	
+    
+    https://www.raywenderlich.com/4466319-google-maps-for-flutter-tutorial-getting-started	    
+
