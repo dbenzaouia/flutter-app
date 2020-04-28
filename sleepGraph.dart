@@ -84,83 +84,48 @@ class SleepGraphState extends State<SleepGraph> {
 
 
  Widget build(BuildContext context) {
-    Types _chang = Types.rien;
-    if(_changed==0)
-       return new Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-               Center(
-                heightFactor: 20,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+          title: Text("SleepTime"),
+          bottom: TabBar(
+            tabs: [
+              Tab(
                 child: Text(
-                  'Quel type de graphe?',
+                  'journalier',
                   style: TextStyle(
                     fontSize: 15.0,
-                    fontWeight: FontWeight.w400,
                   ),
                 ),
-              ), 
-               Column(
-                children: <Widget>[
-                  ListTile(
-                  title: const Text('journalier'),
-                  leading: Radio(
-                  value: Types.journalier,
-                  groupValue: _chang,
-
-                  onChanged: (Types value) {
-                    setState(() { 
-                      _chang = value;
-                      _changed=1;
-                    });
-                  },
+              ),
+              Tab(
+                  child: Text(
+                'hebdomadaire',
+                style: TextStyle(
+                  fontSize: 15.0,
                 ),
-               ),
-       
-              ListTile(
-                title: const Text('hebdomadaire'),
-                leading: Radio(
-                value: Types.hebdomadaire,
-                groupValue: _chang,
-
-                onChanged: (Types value) {
-                setState(() { 
-                  _chang = value;
-                  _changed=2;
-                 });
-                },
-              ),
-            ),
-            ListTile(
-              title: const Text('mensuel'),
-              leading: Radio(
-              value: Types.mensuel,
-              groupValue: _chang,
-
-              onChanged: (Types value) {
-              setState(() { 
-                _chang = value; 
-                _changed=3;
-                  });
-                },
-              ),
-            ),
+              )),
+              Tab(
+                  child: Text(
+                'mensuel',
+                style: TextStyle(
+                  fontSize: 15.0,
+                ),
+              )),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            sleepDay.sleeptimeWidgetday(),
+            sleepMonth.sleeptimeWidgetMonth(),
+            sleepWeek.sleeptimeWidgetweek(),
           ],
         ),
-      ]
-    )
-  );  
-            
-  else if (_changed==1){
-        return sleepDay.sleeptimeWidgetday();
-      }
-  else if(_changed==3){
-        return sleepMonth.sleeptimeWidgetMonth();
-
-      }
-  else if(_changed==2){
-        return sleepWeek.sleeptimeWidgetweek();
-      }
+      ),
+    );
   }
  
 

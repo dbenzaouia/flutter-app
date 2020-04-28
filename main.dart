@@ -1,4 +1,6 @@
 import 'dart:io';
+import './sleepGraph.dart';
+
 import 'homeSleepGraph.dart';
 
 import './design/app_theme.dart';
@@ -270,7 +272,7 @@ class _ThirdState extends State<Third> {
         ),
       );
     } else {
-      return HSGraph();
+      return SleepGraph();
     }
   }
 }
