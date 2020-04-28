@@ -39,8 +39,17 @@ class _MytestPageState extends State<MytestPage> {
   
   List<double> _accelerometerValues;
   List<double> _gyroscopeValues;
-  List<Config> config;
+  static Config makeinit(){
+  Config bla=new Config();
+  bla.wifiname="hjh";
+  bla.wifiIP="huh";
+  return bla;
+}
 
+
+
+
+  List<Config> config=[makeinit()];
   List<StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
   int timeToDisplay = 0;
   final dur = Duration(seconds: 1);
@@ -183,7 +192,11 @@ static int todayDay() {
   }
  
   _chrono(){
-    if(config!=null){
+    /*print("ici debut sleep");
+    print(_monrouteur);
+    print(config[0].wifiIP);
+    print(_wifi);
+    print(config[0].wifiname);*/
 
     if(_count==0 && config.length>0){
     if( (_wifi==config[0].wifiname ||_monrouteur==config[0].wifiIP) && timeToDisplay==0 && int.parse(_luxString)<5 && 
@@ -224,7 +237,7 @@ static int todayDay() {
 
     }
     }
-    }
+    
     
   }
   int get sleepTimer{
@@ -264,7 +277,6 @@ static int todayDay() {
 
  
   void _onData(int luxValue) async {
-    print("Lux value: $luxValue");
     setState(() {
       _luxString = "$luxValue";
         _chrono();

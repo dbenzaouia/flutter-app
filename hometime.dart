@@ -28,8 +28,17 @@ class HTState extends State<HT> {
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
   
-  
-  List<Config> config;
+  static Config makeinit(){
+  Config bla=new Config();
+  bla.wifiname="";
+  bla.wifiIP="";
+  return bla;
+}
+
+
+
+
+  List<Config> config=[makeinit()];
   List<StreamSubscription<dynamic>> _streamSubscriptions =
       <StreamSubscription<dynamic>>[];
   DBProvider dbProvider = DBProvider.db;
@@ -117,14 +126,17 @@ class HTState extends State<HT> {
     timeToDisplay = 0;
   }
   void test() {
-    if(config!=null){
-    if(config.length>0){
-    if( _monrouteur==config[0].wifiIP || _mawifi==config[0].wifiIP){
+    print("ici debut");
+    print(_monrouteur);
+    print(config[0].wifiIP);
+    print(_mawifi);
+    print(config[0].wifiIP);
+    if( _monrouteur==config[0].wifiIP || _mawifi==config[0].wifiname || true){
       swatch.start();
        starttimer();
       keeprunning();
     }
-    else if ( (_monrouteur!=config[0].wifiIP || _mawifi != config[0].wifiIP) && timeToDisplay != 0 ) {
+    else if ( (_monrouteur!=config[0].wifiIP || _mawifi != config[0].wifiname) && timeToDisplay != 0 ) {
       print(timeToDisplay);
      day=todayDay();
      months=todayMonths();
@@ -137,8 +149,8 @@ class HTState extends State<HT> {
           
 
     }
-    }
-    }
+    
+    
   }
 
   int get countTheHomeTimes {
