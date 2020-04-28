@@ -156,20 +156,7 @@ class _FirstState extends State<First> {
         ),
       );
     } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("Podometre"),
-        ),
-        body: SingleChildScrollView(
-          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              new PedoGraph(),
-            ],
-          ),
-        ),
-      );
+      return PedoGraph();
     }
   }
 }
@@ -226,20 +213,7 @@ class _SecondState extends State<Second> {
         ),
       );
     } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("HomeTime"),
-        ),
-        body: SingleChildScrollView(
-          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              new HomeGraph(),
-            ],
-          ),
-        ),
-      );
+      return HomeGraph();
     }
   }
 }
@@ -296,20 +270,7 @@ class _ThirdState extends State<Third> {
         ),
       );
     } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("SleepTime"),
-        ),
-        body: SingleChildScrollView(
-          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              new HSGraph(),
-            ],
-          ),
-        ),
-      );
+      return HSGraph();
     }
   }
 }
@@ -424,20 +385,7 @@ class _FifthState extends State<Fifth> {
         ),
       );
     } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("Bluetooth"),
-        ),
-        body: SingleChildScrollView(
-          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              new BMG(),
-            ],
-          ),
-        ),
-      );
+      return BMG();
     }
   }
 }

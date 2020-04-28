@@ -150,8 +150,9 @@ class WorkoutView extends StatelessWidget {
                                         );
                                       } else if (snapshot.hasError) {
                                         return Text(
-                                          'Error:\n\n${snapshot.error}',
+                                          'Error:\n++\n${snapshot.error}',
                                           textAlign: TextAlign.center,
+                                          //print('${snapshot.error}'),
                                         );
                                       } else {
                                         return Text(

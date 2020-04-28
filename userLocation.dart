@@ -12,11 +12,11 @@ import 'package:geocoder/geocoder.dart' ;
 import 'package:geolocator/geolocator.dart'as geolocator;
 //import 'package:geolocator/geolocator.dart';
 import 'data/database.dart';
-import 'package:flutter_app/models/geoModel.dart';
-import 'package:flutter_app/data/geolocManager.dart';
+import './models/geoModel.dart';
+import './data/geolocManager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pedometer/pedometer.dart';
-import 'package:flutter_app/widget/list_widget.dart';
+import './widget/list_widget.dart';
 
 
 
