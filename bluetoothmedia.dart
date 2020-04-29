@@ -254,6 +254,7 @@ void liste() async{
 }
   
   void chrono(){
+    setupConfig();
     count=0;
     if(devices.length>0 && value=="unkown" ){
       for (var i = 0; i < devices.length; i++) {
