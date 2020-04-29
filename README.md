@@ -26,7 +26,7 @@ Add this dependency in pubspec.yaml :
 
   permission_handler: ^5.0.0+hotfix.4
 
-
+ 
 modify the minsdkVersion to 21 in android/app/build.gradle (defaultconfig)
 add this line "<uses-sdk android:minSdkVersion="21"/>" in android/src/debug/AndroidManifest.xml
 
