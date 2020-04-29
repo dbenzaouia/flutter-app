@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import '../sleepTime.dart';
-import '../sleepGraph.dart';
+import '../service/sleepTime.dart';
+import '../Graph/sleepGraph.dart';
 
 class SleeptimeWidget {
   Widget sleeptimeWidgetday(){

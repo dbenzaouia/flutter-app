@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import '../homeSleep.dart';
+import '../service/homeSleep.dart';
 
-import '../homeSleepGraph.dart';
+import '../Graph/homeSleepGraph.dart';
 
 class HSWidgetDay {
   Widget hsWidgetDay(){
