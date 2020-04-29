@@ -190,7 +190,8 @@ static int todayDay() {
       sleep = _sleep;
     });
   }
- 
+  setupconfig();
+
   _chrono(){
     /*print("ici debut sleep");
     print(_monrouteur);
@@ -358,6 +359,8 @@ static int todayDay() {
               'Wifi IP: $wifiIP\n';
               _monrouteur=wifiIP;
               _wifi=wifiName;
+              setupconfig();
+
               _chrono();
 
 
@@ -372,6 +375,7 @@ static int todayDay() {
               _monrouteur="wifip";
               _wifi="wifin";
         });
+        setupconfig();
 
         _chrono();
         break;
@@ -383,6 +387,8 @@ static int todayDay() {
           _wifi="wifin";
 
          } );
+        setupconfig();
+
         _chrono();
         break;
       default:
@@ -393,6 +399,7 @@ static int todayDay() {
 
 
         });
+        setupconfig();
 
         _chrono();
         break;

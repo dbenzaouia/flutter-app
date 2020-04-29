@@ -305,6 +305,7 @@ class HTState extends State<HT> {
               'Wifi IP: $wifiIP\n';
               _monrouteur=wifiIP;
               _mawifi=wifiName;
+              setupconfig();
               test();
 
 
@@ -319,7 +320,7 @@ class HTState extends State<HT> {
               _monrouteur="wifiip";
               _mawifi="wifinam";
         });
-
+        setupconfig();
         test();
         break;
 
@@ -330,6 +331,7 @@ class HTState extends State<HT> {
           _mawifi="wifinam";
 
          } );
+         setupconfig();
         test();
         break;
       default:
@@ -340,10 +342,11 @@ class HTState extends State<HT> {
 
 
         });
-
+        setupconfig();
         test();
         break;
     }
+    
   }
 
 }
