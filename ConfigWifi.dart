@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'configModel.dart';
 import 'data/configManager.dart';
 import 'data/database.dart';
-import 'ConfigWifi.dart';
 
-class Configuration extends StatefulWidget {
-  ConfigState createState() => new ConfigState();
+class ConfigWifi extends StatefulWidget {
+  ConfigWifiState createState() => new ConfigWifiState();
 }
 
-class ConfigState extends State<Configuration> {
+class ConfigWifiState extends State<ConfigWifi> {
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   //
@@ -122,78 +121,38 @@ class ConfigState extends State<Configuration> {
             padding: new EdgeInsets.all(20),
             child: new Column(
               children: <Widget>[
-                new ConfigWifi(),
-                new Container(
-                  child: new RaisedButton(
-                      color: hometime == 1 ? Colors.green[200] : Colors.white,
-                      child: new Text(_sentence1),
-                      onPressed: () {
-                        setState(() {
-                          hometime == 1 ? hometime = 0 : hometime = 1;
-                          _sentence1 == 'Hometime enabled'
-                              ? _sentence1 = 'Hometime disabled'
-                              : _sentence1 = 'Hometime enabled';
-                          _configurationDone = true;
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
+                new TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    wifiname = value;
+                    return null;
+                  },
+                  decoration: new InputDecoration(
+                      hintText: 'examplebox', labelText: 'Wifi name'),
+                ),
+                new TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    wifiIP = value;
+                    return null;
+                  },
+                  decoration: new InputDecoration(
+                      hintText: '***.***.***.***', labelText: 'Wifi IP'),
                 ),
                 new Container(
                   child: new RaisedButton(
-                      color: sleeptime == 1 ? Colors.green[200] : Colors.white,
-                      child: new Text(_sentence2),
+                      child: new Text('Appliquer'),
                       onPressed: () {
                         setState(() {
-                          sleeptime == 1 ? sleeptime = 0 : sleeptime = 1;
-                          _sentence2 == 'Sleeptime enabled'
-                              ? _sentence2 = 'Sleeptime disabled'
-                              : _sentence2 = 'Sleeptime enabled';
-                          _configurationDone = true;
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
-                ),
-                new Container(
-                  child: new RaisedButton(
-                      color: pedometre == 1 ? Colors.green[200] : Colors.white,
-                      child: new Text(_sentence3),
-                      onPressed: () {
-                        setState(() {
-                          pedometre == 1 ? pedometre = 0 : pedometre = 1;
-                          _sentence3 == 'Pedometre enabled'
-                              ? _sentence3 = 'Pedometre disabled'
-                              : _sentence3 = 'Pedometre enabled';
-                          _configurationDone = true;
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
-                ),
-                new Container(
-                  child: new RaisedButton(
-                      color: location == 1 ? Colors.green[200] : Colors.white,
-                      child: new Text(_sentence4),
-                      onPressed: () {
-                        setState(() {
-                          location == 1 ? location = 0 : location = 1;
-                          _sentence4 == 'Location enabled'
-                              ? _sentence4 = 'Location disabled'
-                              : _sentence4 = 'Location enabled';
-                          _configurationDone = true;
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
-                ),
-                new Container(
-                  child: new RaisedButton(
-                      color: bluetooth == 1 ? Colors.green[200] : Colors.white,
-                      child: new Text(_sentence5),
-                      onPressed: () {
-                        setState(() {
-                          bluetooth == 1 ? bluetooth = 0 : bluetooth = 1;
-                          _sentence5 == 'Bluetooth enabled'
-                              ? _sentence5 = 'Bluetooth disabled'
-                              : _sentence5 = 'Bluetooth enabled';
-                          _configurationDone = true;
+                          // Validate returns true if the form is valid, or false
+                          // otherwise.
+                          if (_formKey.currentState.validate()) {
+                            _configurationDone = true;
+                          }
                         });
                       }),
                   margin: new EdgeInsets.only(top: 20.0),
