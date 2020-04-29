@@ -10,6 +10,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import '../models/ObjectDisplay.dart';
 import '../models/ConfigBlueModel.dart';
+import '../ConfigBlue.dart';
 
 class BMG extends StatefulWidget {
   BMGState createState() => new BMGState();
@@ -36,6 +37,8 @@ class BMGState extends State<BMG> {
   List<BlueYear> blueyearthird;
   List<BlueYear> blueyearsecond;
 
+
+  bool configBlue;
   int _changed = 0;
   Types _chang = Types.rien;
 
@@ -60,6 +63,7 @@ class BMGState extends State<BMG> {
 
   @override
   void initState() {
+    configBlue = false;
     super.initState();
     setupList();
     setupListDay();
@@ -192,15 +196,43 @@ class BMGState extends State<BMG> {
   }
 
   Widget build(BuildContext context) {
-    setupConfig();
+    if (configBlue){
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Bluetooth"),
+        ),
+        body: SingleChildScrollView(
+          //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              new ConfigBlue(),
+              new Container(
+                  child: new RaisedButton(
+                      child: new Text('Service'),
+                      onPressed: () {
+                        setState(() {
+                          configBlue = false;
+                        });
+                      }),
+                  margin: new EdgeInsets.only(top: 20.0),
+                ),
+            ],
+          ),
+        ),
+      );
+
+    }
+    else{
     List<charts.Series<BlueDay, DateTime>> series = withSampleData();
     List<charts.Series<BlueWeek, String>> seriesweek = withSampleDataWeek();
-    List<charts.Series<BlueMonths, String>> seriesmonths =withSampleDataMonths();
+    List<charts.Series<BlueMonths, String>> seriesmonths =
+        withSampleDataMonths();
     List<charts.Series<BlueYear, String>> seriesyear = withSampleDataYear();
 
     // The children consist of a Chart and Text widgets below to hold the info.
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
@@ -229,6 +261,13 @@ class BMGState extends State<BMG> {
                   fontSize: 15.0,
                 ),
               )),
+              Tab(
+                  child: Text(
+                'configuration',
+                style: TextStyle(
+                  fontSize: 15.0,
+                ),
+              )),
             ],
           ),
         ),
@@ -237,32 +276,27 @@ class BMGState extends State<BMG> {
             Bday.BlueWidget(series,bluedayfirst,bluedaysecond,bluedaythird, object),
             Bweek.BlueWidget(seriesweek, blueweekfirst, blueweeksecond, blueweekthird, object),
             Bmonth.BlueWidget(seriesmonths, bluemonthsfirst, bluemonthssecond, bluemonthsthird, object),
+            new ConfigBlue(),
           ],
         ),
       ),
     );
   }
+  }
 
   withSampleData() {
-    setupConfig();
-
     return (_createSampleData());
   }
 
   withSampleDataWeek() {
-    setupConfig();
-
     return (_createSampleDataWeek());
   }
 
   withSampleDataMonths() {
-    setupConfig();
-
     return (_createSampleDataMonths());
   }
 
   withSampleDataYear() {
-    setupConfig();
     return (_createSampleDataYear());
   }
 
