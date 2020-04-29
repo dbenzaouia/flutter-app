@@ -126,6 +126,7 @@ class HTState extends State<HT> {
     timeToDisplay = 0;
   }
   void test() {
+    setupconfig();
     print("ici debut");
     print(_monrouteur);
     print(config[0].wifiIP);
@@ -305,7 +306,6 @@ class HTState extends State<HT> {
               'Wifi IP: $wifiIP\n';
               _monrouteur=wifiIP;
               _mawifi=wifiName;
-              setupconfig();
               test();
 
 
@@ -320,7 +320,6 @@ class HTState extends State<HT> {
               _monrouteur="wifiip";
               _mawifi="wifinam";
         });
-        setupconfig();
         test();
         break;
 
@@ -331,7 +330,6 @@ class HTState extends State<HT> {
           _mawifi="wifinam";
 
          } );
-         setupconfig();
         test();
         break;
       default:
@@ -342,7 +340,6 @@ class HTState extends State<HT> {
 
 
         });
-        setupconfig();
         test();
         break;
     }
