@@ -192,10 +192,10 @@ class BMGState extends State<BMG> {
   }
 
   Widget build(BuildContext context) {
+    setupConfig();
     List<charts.Series<BlueDay, DateTime>> series = withSampleData();
     List<charts.Series<BlueWeek, String>> seriesweek = withSampleDataWeek();
-    List<charts.Series<BlueMonths, String>> seriesmonths =
-        withSampleDataMonths();
+    List<charts.Series<BlueMonths, String>> seriesmonths =withSampleDataMonths();
     List<charts.Series<BlueYear, String>> seriesyear = withSampleDataYear();
 
     // The children consist of a Chart and Text widgets below to hold the info.
@@ -244,18 +244,25 @@ class BMGState extends State<BMG> {
   }
 
   withSampleData() {
+    setupConfig();
+
     return (_createSampleData());
   }
 
   withSampleDataWeek() {
+    setupConfig();
+
     return (_createSampleDataWeek());
   }
 
   withSampleDataMonths() {
+    setupConfig();
+
     return (_createSampleDataMonths());
   }
 
   withSampleDataYear() {
+    setupConfig();
     return (_createSampleDataYear());
   }
 
