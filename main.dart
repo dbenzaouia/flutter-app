@@ -1,24 +1,24 @@
 import 'dart:io';
-import './sleepGraph.dart';
+import './Graph/sleepGraph.dart';
 
-import 'homeSleepGraph.dart';
+import 'Graph/homeSleepGraph.dart';
 
 import './design/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './design/navigation_home_screen.dart';
 import './design/second_app_theme.dart';
-import 'pedometre.dart';
-import 'sleepTime.dart';
+import 'service/pedometre.dart';
+import 'service/sleepTime.dart';
 import 'homeTime.dart';
 import 'userLocationMap.dart';
 import 'configModel.dart';
 import 'data/configManager.dart';
 import 'data/database.dart';
-import 'PedoGraph.dart';
-import 'homeGraph.dart';
-import 'bluetoothmedia.dart';
-import 'BMGraph.dart';
+import 'Graph/PedoGraph.dart';
+import 'Graph/homeGraph.dart';
+import 'service/bluetoothmedia.dart';
+import 'Graph/BMGraph.dart';
 import 'models/ConfigBlueModel.dart';
 import 'data/configBlueManager.dart';
 
