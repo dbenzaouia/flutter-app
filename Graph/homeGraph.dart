@@ -93,6 +93,7 @@ class HomeGraphState extends State<HomeGraph> {
         appBar: AppBar(
           title: Text("HomeTime"),
           bottom: TabBar(
+            isScrollable: true,
             tabs: [
               Tab(
                 child: Text(

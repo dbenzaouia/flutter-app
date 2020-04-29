@@ -107,6 +107,7 @@ class PedoGraphState extends State<PedoGraph> {
         appBar: AppBar(
           title: Text("Podometre"),
           bottom: TabBar(
+            isScrollable: true,
             tabs: [
               Tab(
                 child: Text(

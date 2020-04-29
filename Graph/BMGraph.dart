@@ -238,6 +238,7 @@ class BMGState extends State<BMG> {
         appBar: AppBar(
           title: Text("Bluetooth"),
           bottom: TabBar(
+            isScrollable: true,
             tabs: [
               Tab(
                 child: Text(

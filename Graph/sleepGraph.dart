@@ -91,6 +91,7 @@ class SleepGraphState extends State<SleepGraph> {
         appBar: AppBar(
           title: Text("SleepTime"),
           bottom: TabBar(
+            isScrollable: true,
             tabs: [
               Tab(
                 child: Text(

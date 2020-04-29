@@ -85,6 +85,7 @@ class HSGraphState extends State<HSGraph> {
         appBar: AppBar(
           title: Text("SleepTime"),
           bottom: TabBar(
+            isScrollable: true,
             tabs: [
               Tab(
                 child: Text(
