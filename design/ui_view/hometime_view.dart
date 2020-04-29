@@ -156,7 +156,7 @@ class HomeTimeView extends StatelessWidget {
                                                             );
                                                           } else {
                                                             return Text(
-                                                                'Il n\'y a pas de données');
+                                                                '**');
                                                           }
                                                         })),
                                                 Padding(
@@ -284,7 +284,7 @@ class HomeTimeView extends StatelessWidget {
                                                             );
                                                           } else {
                                                             return Text(
-                                                                'Il n\'y a pas de données');
+                                                                '**');
                                                           }
                                                         })),
                                                 Padding(
@@ -396,7 +396,7 @@ class HomeTimeView extends StatelessWidget {
                                                 );
                                               } else {
                                                 return Text(
-                                                    'Il n\'y a pas de données');
+                                                    '**');
                                               }
                                             })),
                                   ),
@@ -437,7 +437,7 @@ class HomeTimeView extends StatelessWidget {
                                               );
                                             } else {
                                               return Text(
-                                                  'Il n\'y a pas de données');
+                                                  '**');
                                             }
                                           }))
                                 ],
@@ -508,7 +508,7 @@ class HomeTimeView extends StatelessWidget {
                                             );
                                           } else {
                                             return Text(
-                                                'Il n\'y a pas de données');
+                                                '**');
                                           }
                                         })),
                               ],
@@ -565,7 +565,7 @@ class HomeTimeView extends StatelessWidget {
                                                 );
                                               } else {
                                                 return Text(
-                                                    'Il n\'y a pas de données');
+                                                    '**');
                                               }
                                             })),
                                   ],
@@ -623,7 +623,7 @@ class HomeTimeView extends StatelessWidget {
                                                 );
                                               } else {
                                                 return Text(
-                                                    'Il n\'y a pas de données');
+                                                    '**');
                                               }
                                             })),
                                   ],
