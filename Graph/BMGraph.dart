@@ -236,7 +236,7 @@ class BMGState extends State<BMG> {
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-          title: Text("HomeTime"),
+          title: Text("Bluetooth"),
           bottom: TabBar(
             tabs: [
               Tab(
