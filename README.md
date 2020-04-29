@@ -47,4 +47,7 @@ add assetsdependencies to yaml file like that :
     
      ADD this line in dependencies to android/build.gradle : 	    
      classpath 'com.google.gms:google-services:4.2.0'
+     
+  # Base de données fictive 
+    La base de données fictive construit des données pour le premier jour de lancement de l'application et les 30 jours précédents. Pour les données de bluetooth, elle créée des données pour 3 devices qui ont pour nom "voiture", "enceinte chambre" et "enceinte salon". 
 
