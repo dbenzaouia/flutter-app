@@ -89,7 +89,7 @@ class DBProvider {
     return map;
  } 
 
- newBlueValue(int id, int day,int months,int year,int time, String name ) {
+ newBlue(int id, int day,int months,int year,int time, String name ) {
    var map = Map<String, dynamic>();
     map['id'] = id;
     map['theTime'] = time;
@@ -102,11 +102,23 @@ class DBProvider {
     map['name'] = name;
     return map;
  } 
-   
+  newValueBlue(int id, String name,int time, int day,int months,int year,String hours,int min ) {
+   var map = Map<String, dynamic>();            
+    map['id'] = id;
+    map['name']=name;
+    map['theTime'] = time;
+    map['theDay'] = day;
+    map['theMonths'] = months;
+    map['theYear'] = year;
+    map['theHours'] = hours;
+    map['theMin'] = min;
+    map['thePart'] = 'AM';
+    return map;
+ }
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDBtest1123joa061011211112.db");
+    String path = join(documentsDirectory.path, "TestDBtest1123joa069.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
           await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
@@ -127,8 +139,7 @@ class DBProvider {
                           name TEXT, theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours TEXT,theMin INTEGER,thePart TEXT)''');
           await db.execute('''CREATE TABLE ConfigBlue (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           name TEXT,location TEXT)''');
-
-         /*await db.insert('Steps', newValue(1,220, 16,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
+         await db.insert('Steps', newValue(1,220, 16,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(2,440, 16,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(3,330, 15, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(4,110, 15,4,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
@@ -159,8 +170,9 @@ class DBProvider {
          await db.insert('Steps', newValue(29,110, 11,10,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(30,50, 10,11,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
          await db.insert('Steps', newValue(31,68, 19,12,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-          print('database created!');*/
+        print('database created!');
 
+    
     var date = new DateTime.now();
     var heure = date.hour;
     var day = date.day;
@@ -170,67 +182,61 @@ class DBProvider {
 
     var theTime = Random().nextInt(heure)*3600; //valeur entre 0 et hour en secondes 
     var duration = Random().nextInt(theTime); //valeur entre 0 et theTime en secondes
-    var timev = Random().nextInt(2)*3600;
-    var timeh = Random().nextInt(8)*3600;
-    var timeb = Random().nextInt(8)*3600;
     await db.insert('HomeTime', newHometime(day, day, month, year, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
-    await db.insert('Sleep', newSleep(day, day, month, year, duration),  conflictAlgorithm: ConflictAlgorithm.replace);
-    await db.insert('Blue', newBlueValue(day, day, month, year, timev, 'voiture'),  conflictAlgorithm: ConflictAlgorithm.replace); 
-    await db.insert('Blue', newBlueValue(50 + day, day, month, year, timeh, 'enceinte salon'),  conflictAlgorithm: ConflictAlgorithm.replace); 
-    await db.insert('Blue', newBlueValue(100 + day, day, month, year, timeb, 'enceinte chambre'),  conflictAlgorithm: ConflictAlgorithm.replace); 
-
+    await db.insert('Sleep', newSleep(day, day, month, year, duration),  conflictAlgorithm: ConflictAlgorithm.replace); 
     for (var i = day-1; i >= 1; i--) {
-      theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
-      duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
-      timev = Random().nextInt(2)*3600;
-      timeh = Random().nextInt(8)*3600;
-      timeb = Random().nextInt(8)*3600;
+      var theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
+      var duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
       await db.insert('HomeTime', newHometime(i, i, 04, 2020, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
-      await db.insert('Sleep', newSleep(i, i, 04,2020, duration),  conflictAlgorithm: ConflictAlgorithm.replace); 
-      await db.insert('Blue', newBlueValue(i, i, month, year, timev, 'voiture'),  conflictAlgorithm: ConflictAlgorithm.replace); 
-      await db.insert('Blue', newBlueValue(50 + i, i, month, year, timeh, 'enceinte salon'),  conflictAlgorithm: ConflictAlgorithm.replace); 
-      await db.insert('Blue', newBlueValue(100 + i, i, month, year, timeb, 'enceinte chambre'),  conflictAlgorithm: ConflictAlgorithm.replace);  
+      await db.insert('Sleep', newSleep(i, i, 04,2020, duration),  conflictAlgorithm: ConflictAlgorithm.replace);  
     }
-    
     for (var i = 31; i>=31-nbJour; i--){
-      theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
-      duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
-      timev = Random().nextInt(2)*3600;
-      timeh = Random().nextInt(8)*3600;
-      timeb = Random().nextInt(8)*3600;
+      var theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
+      var duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
       await db.insert('HomeTime', newHometime(day + i, i, month-1, year, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
       await db.insert('Sleep', newSleep(day + i, i, month-1, year, duration),  conflictAlgorithm: ConflictAlgorithm.replace); 
-      await db.insert('Blue', newBlueValue(day+i, i, month, year, timev, 'voiture'),  conflictAlgorithm: ConflictAlgorithm.replace); 
-      await db.insert('Blue', newBlueValue(50 + day + i, i, month, year, timeh, 'enceinte salon'),  conflictAlgorithm: ConflictAlgorithm.replace); 
-      await db.insert('Blue', newBlueValue(100 + day + i, i, month, year, timeb, 'enceinte chambre'),  conflictAlgorithm: ConflictAlgorithm.replace); 
     }
-
-      for (var i = 1; i <= 60; i) {
-        for (var j = 0; j<= 24; j++){
-          var nb = 0;
-          if(j<=6){
-            nb = 0;
-          }
-          else if(j==7 || j==10 || j==11 || j==14 || j==15 || j==16){
-            nb = 20 + Random().nextInt(21);
-          }
-          else if (j==8 || j==9 || j==12 || j==13 || j==17 || j==18 || j==19){
-            nb = 300 + Random().nextInt(201);
-          }
-          else if(j==20 || j==21){
-            nb = 100 + Random().nextInt(51);
-          }
-          else {
-            nb = 50 + Random().nextInt(21);
-          }
-          if (i<=31){
-            await db.insert('Steps', newValue(i, nb, i, month, year, 12, 10),  conflictAlgorithm: ConflictAlgorithm.replace);
-          }
-          else {
-            await db.insert('Steps', newValue(i -31, nb, i-31, month-1, year, 12, 10),  conflictAlgorithm: ConflictAlgorithm.replace);
-          }
-        }
+    
+    
+    /*for (var i = 1; i <= nbJour; i) {
+      for (var j = 0; j<= 24; j++){
+      var nb = 0;
+      if(j<=6){
+        nb = 0;
       }
+      else if(j==7 || j==10 || j==11 || j==14 || j==15 || j==16){
+        nb = 20 + Random().nextInt(21);
+      }
+      else if (j==8 || j==9 || j==12 || j==13 || j==17 || j==18 || j==19){
+        nb = 300 + Random().nextInt(201);
+      }
+      else if(j==20 || j==21){
+        nb = 100 + Random().nextInt(51);
+      }
+      else {
+        nb = 50 + Random().nextInt(21);
+      }
+      var newSteps = new Steps(
+      id: 1+i*j,
+      numberSteps: nb,
+      theTime: j,
+      theDay: i,
+      theMonths: json["theMonths"],
+      theYear: json["theYear"],
+      theHours: json["theHours"],
+      theMin: json["theMin"],
+      thePart: json["thePart"]
+      duration: 16 + Random().nextInt(8), //valeur entre 16 et 24 
+      theDay: i,
+      theMonths: 4,
+      theYear: 2020,
+      theHours: "20:00",
+      theMin: "20:00",
+      thePart: "AM",
+      );
+      addNewSteps(newSteps);
+      }
+    }*/
   });
 }
 
@@ -288,10 +294,11 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
 
     for (var i = 0; i < 24; i++) {
       StepsDay stepsday=new StepsDay();
-      stepsday.theDate=d.toString()+'/'+m.toString()+'/'+y.toString();
-      stepsday.theHour=i.toString();
-      stepsday.numberSteps= await getStepsHour(y, m,d,i.toString());
-      print("number spes pour$i est ${stepsday.numberSteps}");
+    stepsday.theDate=d.toString()+'/'+m.toString()+'/'+y.toString();
+        stepsday.theHour=i.toString();
+        stepsday.numberSteps= await getStepsHour(y, m,d,i.toString());
+        print("number spes pour$i est ${stepsday.numberSteps}");
+     
       res.add(stepsday);
     }
     return res;
@@ -308,7 +315,8 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
       blueday.theYear=y.toString();
       blueday.theHour=i.toString();
       blueday.theTime= await getBlueHour(y, m,d,i.toString(),name);
-      print("time $name pour $i h est ${blueday.theTime}");
+        print("time $name pour $i h est ${blueday.theTime}");
+     
       res.add(blueday);
     }
     return res;
@@ -317,6 +325,7 @@ Future<int> getStepsHour(int yyyy, int mm, int dd,String h) async {
     final db = await database;
     var results = await db.rawQuery('SELECT numberSteps FROM Steps WHERE theYear = $yyyy AND theMonths = $mm ' );
     int res = 0;
+
     int theTime = 0;
   
     for (var i = 0; i < results.length; i++) {
@@ -901,6 +910,10 @@ Future<List<int>> getStepsInDay(int yyyy, int mm, int dd) async {
     final db = await database;
     var results = await db.rawQuery('SELECT numberSteps FROM Steps WHERE theYear = $yyyy AND theMonth = $mm AND theDay = $dd');
     List<int> res = [];
+
+    // if (results.length > 0) {
+    //   return new Steps.fromMap(results.first).id;
+    // }
 
     int theTime = 0;
   
