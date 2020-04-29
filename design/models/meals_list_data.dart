@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../../data/database.dart';
 import 'dart:async';
-import '../../hometime.dart';
+import '../../service/hometime.dart';
 
 class MealsListData {
   String imagePath;

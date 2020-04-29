@@ -1,4 +1,4 @@
-import '../hometime.dart';
+import '../service/hometime.dart';
 import './second_app_theme.dart';
 import './models/meals_list_data.dart';
 import '../main.dart';
