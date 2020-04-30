@@ -14,6 +14,24 @@ import 'package:flutter/material.dart';
 import '../data/database.dart';
 import '../configModel.dart';
 
+class ConfigFromDashboard extends StatefulWidget {
+  @override
+  _ConfigFromDashboardState createState() => _ConfigFromDashboardState();
+}
+
+class _ConfigFromDashboardState extends State<ConfigFromDashboard> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Settings"),
+      ),
+      body: Configuration(),
+      backgroundColor: Colors.white,
+    );
+  }
+}
+
 class MyDiaryScreen extends StatefulWidget {
   const MyDiaryScreen({Key key, this.animationController}) : super(key: key);
 
@@ -88,7 +106,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     });
   }
 
-  void addAllListData() async{
+  void addAllListData() async {
     loadConfig();
     const int count = 9;
 
@@ -121,7 +139,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Configuration()),
+                              builder: (context) => ConfigFromDashboard()),
                         );
                       },
                       child: Text('Go to settings'),
@@ -158,7 +176,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Configuration()),
+                              builder: (context) => ConfigFromDashboard()),
                         );
                       },
                       child: Text('Go to settings'),
@@ -196,7 +214,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Configuration()),
+                              builder: (context) => ConfigFromDashboard()),
                         );
                       },
                       child: Text('Go to settings'),
@@ -237,7 +255,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Configuration()),
+                              builder: (context) => ConfigFromDashboard()),
                         );
                       },
                       child: Text('Go to settings'),
@@ -261,7 +279,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
           onTap: () {
             if (hometime == 1) {
               Navigator.pushNamed(context, '/second');
-            } else {            
+            } else {
               showDialog(
                 context: context,
                 builder: (_) => AlertDialog(
@@ -274,7 +292,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Configuration()),
+                              builder: (context) => ConfigFromDashboard()),
                         );
                       },
                       child: Text('Go to settings'),
@@ -315,7 +333,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Configuration()),
+                              builder: (context) => ConfigFromDashboard()),
                         );
                       },
                       child: Text('Go to settings'),
@@ -353,7 +371,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Configuration()),
+                              builder: (context) => ConfigFromDashboard()),
                         );
                       },
                       child: Text('Go to settings'),
@@ -424,7 +442,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Configuration()),
+                              builder: (context) => ConfigFromDashboard()),
                         );
                       },
                       child: Text('Go to settings'),
@@ -464,7 +482,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Configuration()),
+                              builder: (context) => ConfigFromDashboard()),
                         );
                       },
                       child: Text('Go to settings'),
