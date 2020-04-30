@@ -250,9 +250,17 @@ class BMGState extends State<BMG> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              new Center(
-                child: new Text("Wait please"),
+              Container(
+            height:350,
+            width: 450.0,
+            child: Stack(
+              children: <Widget>[
+                       Center(
+                            child: Text('Loading...')
+                          ),
+              ]
                 )
+              )
             ],
           ),
         ),
