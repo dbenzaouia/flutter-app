@@ -46,6 +46,11 @@ class BMGState extends State<BMG> {
   BlueWidgetYear Byear = BlueWidgetYear();
   BlueWidgetMonths Bmonth = BlueWidgetMonths();
   BlueWidgetWeek Bweek = BlueWidgetWeek();
+  var swatch = Stopwatch();
+  final dur = Duration(seconds: 1);
+  int timeToDisplay=0;
+
+
 
   static ConfigBlueModel make(String nameblue){
   ConfigBlueModel bla=new ConfigBlueModel();
@@ -71,8 +76,22 @@ class BMGState extends State<BMG> {
     });
     setupList();
     setup();
+    swatch.start();
+    starttimer();
    
   }
+    void keeprunning(){
+    if(swatch.isRunning){
+      starttimer();
+    }
+     setState(() {
+      timeToDisplay =  (swatch.elapsed.inSeconds);
+    });
+  }
+     void starttimer(){
+    Timer(dur, keeprunning);
+  }
+  
   void setup(){
     setupListDay();
     setupListWeek();
@@ -217,7 +236,11 @@ class BMGState extends State<BMG> {
   }
 
   Widget build(BuildContext context) {
-    if (configBlue){
+    List<charts.Series<BlueDay, DateTime>> series = withSampleData();
+    List<charts.Series<BlueWeek, String>> seriesweek = withSampleDataWeek();
+    List<charts.Series<BlueMonths, String>> seriesmonths =withSampleDataMonths();
+    List<charts.Series<BlueYear, String>> seriesyear = withSampleDataYear();
+    if (timeToDisplay<10){
       return Scaffold(
         appBar: AppBar(
           title: Text("Bluetooth"),
@@ -227,17 +250,9 @@ class BMGState extends State<BMG> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              new ConfigBlue(),
-              new Container(
-                  child: new RaisedButton(
-                      child: new Text('Service'),
-                      onPressed: () {
-                        setState(() {
-                          configBlue = false;
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
-                ),
+              new Center(
+                child: new Text("Wait please"),
+                )
             ],
           ),
         ),
@@ -245,11 +260,7 @@ class BMGState extends State<BMG> {
 
     }
     else{
-    List<charts.Series<BlueDay, DateTime>> series = withSampleData();
-    List<charts.Series<BlueWeek, String>> seriesweek = withSampleDataWeek();
-    List<charts.Series<BlueMonths, String>> seriesmonths =
-        withSampleDataMonths();
-    List<charts.Series<BlueYear, String>> seriesyear = withSampleDataYear();
+    
 
     // The children consist of a Chart and Text widgets below to hold the info.
     return DefaultTabController(
