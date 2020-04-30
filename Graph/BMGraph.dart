@@ -232,7 +232,7 @@ class BMGState extends State<BMG> {
 
     // The children consist of a Chart and Text widgets below to hold the info.
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
@@ -262,13 +262,6 @@ class BMGState extends State<BMG> {
                   fontSize: 15.0,
                 ),
               )),
-              Tab(
-                  child: Text(
-                'configuration',
-                style: TextStyle(
-                  fontSize: 15.0,
-                ),
-              )),
             ],
           ),
         ),
@@ -277,7 +270,6 @@ class BMGState extends State<BMG> {
             Bday.BlueWidget(series,bluedayfirst,bluedaysecond,bluedaythird, object),
             Bweek.BlueWidget(seriesweek, blueweekfirst, blueweeksecond, blueweekthird, object),
             Bmonth.BlueWidget(seriesmonths, bluemonthsfirst, bluemonthssecond, bluemonthsthird, object),
-            new ConfigBlue(),
           ],
         ),
       ),

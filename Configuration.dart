@@ -3,6 +3,7 @@ import 'configModel.dart';
 import 'data/configManager.dart';
 import 'data/database.dart';
 import 'ConfigWifi.dart';
+import './ConfigBlue.dart';
 
 class Configuration extends StatefulWidget {
   ConfigState createState() => new ConfigState();
@@ -161,7 +162,8 @@ class ConfigState extends State<Configuration> {
                           context: context,
                           builder: (_) => AlertDialog(
                             title: Text('HomeTime'),
-                            content: Text('In order to activate HomeTime service, please complete Wifi settings'),
+                            content: Text(
+                                'In order to activate HomeTime service, please complete Wifi settings'),
                             actions: [
                               FlatButton(
                                 onPressed: () {
@@ -244,6 +246,10 @@ class ConfigState extends State<Configuration> {
               Card(
                 child: ListTile(
                   title: Text('Bluetooth'),
+                  subtitle: Text(
+                    'it involves more settings',
+                    style: TextStyle(fontSize: 10),
+                  ),
                   trailing: Switch(
                     value: bluetooth == 1,
                     onChanged: (value) {
@@ -251,10 +257,38 @@ class ConfigState extends State<Configuration> {
                         bluetooth = toInt(value);
                         _configurationDone = true;
                       });
+                      if (value) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: Text('Bluetooth'),
+                            content: Text(
+                                'In order to activate Bluetooth service, please complete bluetooth settings'),
+                            actions: [
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ConfigBlue()),
+                                  );
+                                },
+                                child: Text('Go to bluetooth settings'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     },
                     activeTrackColor: Colors.indigoAccent[300],
                     activeColor: Colors.indigoAccent,
                   ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ConfigBlue()),
+                    );
+                  },
                 ),
               ),
             ],
