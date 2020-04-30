@@ -32,7 +32,7 @@ class BlueWidgetDay {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children : <Widget>[
       new SizedBox(
-          height: 150.0,
+          height: 350.0,
           child: new charts.TimeSeriesChart(
             series,
             animate: true,
@@ -45,7 +45,7 @@ class BlueWidgetDay {
             ],
             behaviors: [
             new charts.SeriesLegend(
-                position: charts.BehaviorPosition.bottom, desiredMaxRows: object.length)
+                position: charts.BehaviorPosition.bottom,horizontalFirst: false, desiredMaxRows: object.length)
           ],
             
             
@@ -101,14 +101,14 @@ class BlueWidgetYear {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children : <Widget>[
        new SizedBox(
-          height: 150.0,
+          height: 350.0,
           child: charts.BarChart(
       series,
       animate: true,
       barGroupingType: charts.BarGroupingType.grouped,
       // Add the series legend behavior to the chart to turn on series legends.
       // By default the legend will display above the chart.
-      behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom, desiredMaxRows: object.length)],
+      behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom,horizontalFirst: false, desiredMaxRows: object.length)],
       )
           )
           
@@ -161,14 +161,14 @@ return  new Container(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children : <Widget>[
        new SizedBox(
-          height: 150.0,
+          height: 350.0,
           child: charts.BarChart(
       series,
       animate: true,
       barGroupingType: charts.BarGroupingType.grouped,
       // Add the series legend behavior to the chart to turn on series legends.
       // By default the legend will display above the chart.
-      behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom, desiredMaxRows: object.length)],
+      behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom,horizontalFirst: false, desiredMaxRows: object.length)],
       )
           )
           
@@ -221,14 +221,14 @@ return  new Container(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children : <Widget>[
        new SizedBox(
-          height: 150.0,
+          height: 350.0,
           child: charts.BarChart(
       series,
       animate: true,
       barGroupingType: charts.BarGroupingType.grouped,
       // Add the series legend behavior to the chart to turn on series legends.
       // By default the legend will display above the chart.
-      behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom, desiredMaxRows: object.length)],
+      behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom,horizontalFirst: false, desiredMaxRows: object.length)],
       )
           )
           
