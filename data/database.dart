@@ -89,7 +89,7 @@ class DBProvider {
     return map;
  } 
 
- newBlue(int id, int day,int months,int year,int time, String name ) {
+ newBlueValue(int id, int day,int months,int year,int time, String name ) {
    var map = Map<String, dynamic>();
     map['id'] = id;
     map['theTime'] = time;
@@ -102,23 +102,10 @@ class DBProvider {
     map['name'] = name;
     return map;
  } 
-  newValueBlue(int id, String name,int time, int day,int months,int year,String hours,int min ) {
-   var map = Map<String, dynamic>();            
-    map['id'] = id;
-    map['name']=name;
-    map['theTime'] = time;
-    map['theDay'] = day;
-    map['theMonths'] = months;
-    map['theYear'] = year;
-    map['theHours'] = hours;
-    map['theMin'] = min;
-    map['thePart'] = 'AM';
-    return map;
- }
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDBtest1123joa06968.db");
+    String path = join(documentsDirectory.path, "TestDBtest1123joa069123.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
           await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
@@ -151,8 +138,14 @@ class DBProvider {
 
     var theTime = Random().nextInt(heure)*3600; //valeur entre 0 et hour en secondes 
     var duration = Random().nextInt(theTime); //valeur entre 0 et theTime en secondes
+    var timev = Random().nextInt(2)*3600;
+    var timeh = Random().nextInt(8)*3600;
+    var timeb = Random().nextInt(8)*3600;
     await db.insert('HomeTime', newHometime(day, day, month, year, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
     await db.insert('Sleep', newSleep(day, day, month, year, duration),  conflictAlgorithm: ConflictAlgorithm.replace); 
+    await db.insert('Blue', newBlueValue(day, day, month, year, timev, 'voiture'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+    await db.insert('Blue', newBlueValue(50 + day, day, month, year, timeh, 'enceinte salon'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+    await db.insert('Blue', newBlueValue(100 + day, day, month, year, timeb, 'enceinte chambre'),  conflictAlgorithm: ConflictAlgorithm.replace);
     
     for(var i = 6; i<24; i++){
       var step = Random().nextInt(200);
@@ -163,17 +156,29 @@ class DBProvider {
       var theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
       var duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
       var step = 5000 + Random().nextInt(5000);
+      timev = Random().nextInt(2)*3600;
+      timeh = Random().nextInt(8)*3600;
+      timeb = Random().nextInt(8)*3600;
       await db.insert('HomeTime', newHometime(i, i, month, 2020, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
       await db.insert('Sleep', newSleep(i, i, month, 2020, duration),  conflictAlgorithm: ConflictAlgorithm.replace);
       await db.insert('Steps', newValue(i, step, i, month, year, 12, 0),  conflictAlgorithm: ConflictAlgorithm.replace);  
-    }
+      await db.insert('Blue', newBlueValue(i, i, month, year, timev, 'voiture'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+      await db.insert('Blue', newBlueValue(50 + i, i, month, year, timeh, 'enceinte salon'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+      await db.insert('Blue', newBlueValue(100 + i, i, month, year, timeb, 'enceinte chambre'),  conflictAlgorithm: ConflictAlgorithm.replace);  
+ }
     for (var i = 31; i>=31-nbJour; i--){
       var theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
       var duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
       var step = 5000 + Random().nextInt(5000);
+      timev = Random().nextInt(2)*3600;
+      timeh = Random().nextInt(8)*3600;
+      timeb = Random().nextInt(8)*3600;
       await db.insert('HomeTime', newHometime(day + i, i, month-1, year, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
       await db.insert('Sleep', newSleep(day + i, i, month-1, year, duration),  conflictAlgorithm: ConflictAlgorithm.replace); 
       await db.insert('Steps', newValue(day + i, step, i, month-1, year, 12, 0),  conflictAlgorithm: ConflictAlgorithm.replace);  
+      await db.insert('Blue', newBlueValue(day+i, i, month, year, timev, 'voiture'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+      await db.insert('Blue', newBlueValue(50 + day + i, i, month, year, timeh, 'enceinte salon'),  conflictAlgorithm: ConflictAlgorithm.replace); 
+      await db.insert('Blue', newBlueValue(100 + day + i, i, month, year, timeb, 'enceinte chambre'),  conflictAlgorithm: ConflictAlgorithm.replace); 
 
     }
   });

@@ -65,7 +65,15 @@ class BMGState extends State<BMG> {
   void initState() {
     configBlue = false;
     super.initState();
+     const fiveSec = const Duration(seconds: 2);
+    new Timer.periodic(fiveSec, (Timer t) {
+      setup();
+    });
     setupList();
+    setup();
+   
+  }
+  void setup(){
     setupListDay();
     setupListWeek();
     setupListMonths();
@@ -110,6 +118,10 @@ class BMGState extends State<BMG> {
     print(formattedTime);
     return formattedTime;
   }
+  void dispose(){
+    super.dispose();
+    
+  }
 
   String today() {
     var now = new DateTime.now();
@@ -121,9 +133,11 @@ class BMGState extends State<BMG> {
   void setupConfig() async {
     var _object = await dataBase.fetchAllConfigBlue();
     print(_object);
-    setState(() {
+    if(this.mounted){
+      setState(() {
       object = _object;
     });
+    }
   }
 
   void setupList() async {
@@ -143,11 +157,13 @@ class BMGState extends State<BMG> {
 
     var _bluedaythird = await dataBase.getBlueDay(
         (todayYear()), (todayMonths()), (todayDay()), object[2].name);
-    setState(() {
+    if(this.mounted){
+      setState(() {
       bluedaythird = _bluedaythird;
       bluedaysecond = _bluedaysecond;
       bluedayfirst = _bluedayfirst;
     });
+    }
   }
 
   void setupListWeek() async {
@@ -157,12 +173,15 @@ class BMGState extends State<BMG> {
         (todayYear()), (todayMonths()), (todayDay()), object[1].name);
     var _blueweekthird = await dataBase.getBlueWeek(
         (todayYear()), (todayMonths()), (todayDay()), object[2].name);
+    if (this.mounted){
+ 
 
     setState(() {
       blueweekthird = _blueweekthird;
       blueweeksecond = _blueweeksecond;
       blueweekfirst = _blueweekfirst;
     });
+    }
   }
 
   void setupListMonths() async {
@@ -172,12 +191,13 @@ class BMGState extends State<BMG> {
         await dataBase.getBlueMonths((todayYear()), object[1].name);
     var _bluemonthsthird =
         await dataBase.getBlueMonths((todayYear()), object[2].name);
-
+    if(this.mounted){
     setState(() {
       bluemonthsthird = _bluemonthsthird;
       bluemonthssecond = _bluemonthssecond;
       bluemonthsfirst = _bluemonthsfirst;
     });
+    }
   }
 
   void setupListYear() async {
@@ -187,12 +207,13 @@ class BMGState extends State<BMG> {
         await dataBase.getBlueYear((todayYear()), object[1].name);
     var _blueyearthird =
         await dataBase.getBlueYear((todayYear()), object[2].name);
-
+    if(this.mounted){
     setState(() {
       blueyearthird = _blueyearthird;
       blueyearsecond = _blueyearsecond;
       blueyearfirst = _blueyearfirst;
     });
+    }
   }
 
   Widget build(BuildContext context) {
