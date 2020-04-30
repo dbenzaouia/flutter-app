@@ -21,6 +21,7 @@ class ConfigState extends State<Configuration> {
 
   bool _configurationDone;
   bool configNotLoad;
+  bool isSwitched = true;
   int hometime;
   int sleeptime;
   int pedometre;
@@ -64,21 +65,38 @@ class ConfigState extends State<Configuration> {
       bluetooth = _config.bluetooth;
       wifiname = _config.wifiname;
       wifiIP = _config.wifiIP;
-      hometime == 1 ? _sentence1 = 'Hometime enabled' : _sentence1 = 'Hometime disabled';
-      sleeptime == 1 ? _sentence2 = 'Sleeptime enabled' : _sentence2 = 'Sleeptime disabled';
-      pedometre == 1 ? _sentence3 = 'Pedometre enabled' : _sentence3 = 'Pedometre disabled';
-      location == 1 ? _sentence4 = 'Location enabled' : _sentence4 = 'Location disabled';
-      bluetooth == 1 ? _sentence5 = 'Bluetooth enabled' : _sentence5 = 'Bluetooth disabled';
+      hometime == 1
+          ? _sentence1 = 'Hometime enabled'
+          : _sentence1 = 'Hometime disabled';
+      sleeptime == 1
+          ? _sentence2 = 'Sleeptime enabled'
+          : _sentence2 = 'Sleeptime disabled';
+      pedometre == 1
+          ? _sentence3 = 'Pedometre enabled'
+          : _sentence3 = 'Pedometre disabled';
+      location == 1
+          ? _sentence4 = 'Location enabled'
+          : _sentence4 = 'Location disabled';
+      bluetooth == 1
+          ? _sentence5 = 'Bluetooth enabled'
+          : _sentence5 = 'Bluetooth disabled';
       configNotLoad = false;
     });
+  }
+
+  int toInt(bool val) {
+    if (val == true) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     if (configNotLoad) {
       loadConfig();
-      return 
-      Scaffold(
+      return Scaffold(
         body: SingleChildScrollView(
           //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
           child: new Column(
@@ -94,12 +112,12 @@ class ConfigState extends State<Configuration> {
                   ),
                 ),
               ),
+              CircularProgressIndicator(),
             ],
           ),
         ),
       );
-    } 
-    else {
+    } else {
       if (_configurationDone) {
         Config config = Config(
             id: 1,
@@ -115,93 +133,134 @@ class ConfigState extends State<Configuration> {
           _configurationDone = false;
         });
       }
-        // Build a Form widget using the _formKey created above.
+      // Build a Form widget using the _formKey created above.
       return Form(
-          key: _formKey,
-          child: Padding(
-            padding: new EdgeInsets.all(20),
-            child: new Column(
-              children: <Widget>[
-                new ConfigWifi(),
-                new Container(
-                  child: new RaisedButton(
-                      color: hometime == 1 ? Colors.green[200] : Colors.white,
-                      child: new Text(_sentence1),
-                      onPressed: () {
-                        setState(() {
-                          hometime == 1 ? hometime = 0 : hometime = 1;
-                          _sentence1 == 'Hometime enabled'
-                              ? _sentence1 = 'Hometime disabled'
-                              : _sentence1 = 'Hometime enabled';
-                          _configurationDone = true;
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
+        key: _formKey,
+        child: Padding(
+          padding: new EdgeInsets.all(20),
+          child: new Column(
+            children: <Widget>[
+              // new ConfigWifi(),
+
+              Card(
+                child: ListTile(
+                  title: Text('HomeTime'),
+                  subtitle: Text(
+                    'it involves more settings',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  trailing: Switch(
+                    value: hometime == 1,
+                    onChanged: (value) {
+                      setState(() {
+                        hometime = toInt(value);
+                        _configurationDone = true;
+                      });
+                      if (value) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: Text('HomeTime'),
+                            content: Text('In order to activate HomeTime service, please complete Wifi settings'),
+                            actions: [
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ConfigWifi()),
+                                  );
+                                },
+                                child: Text('Go to Wifi settings'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    activeTrackColor: Colors.indigoAccent[300],
+                    activeColor: Colors.indigoAccent,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ConfigWifi()),
+                    );
+                  },
                 ),
-                new Container(
-                  child: new RaisedButton(
-                      color: sleeptime == 1 ? Colors.green[200] : Colors.white,
-                      child: new Text(_sentence2),
-                      onPressed: () {
-                        setState(() {
-                          sleeptime == 1 ? sleeptime = 0 : sleeptime = 1;
-                          _sentence2 == 'Sleeptime enabled'
-                              ? _sentence2 = 'Sleeptime disabled'
-                              : _sentence2 = 'Sleeptime enabled';
-                          _configurationDone = true;
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
+              ),
+
+              Card(
+                child: ListTile(
+                  title: Text('Pedometre'),
+                  trailing: Switch(
+                    value: pedometre == 1,
+                    onChanged: (value) {
+                      setState(() {
+                        pedometre = toInt(value);
+                        _configurationDone = true;
+                      });
+                    },
+                    activeTrackColor: Colors.indigoAccent[300],
+                    activeColor: Colors.indigoAccent,
+                  ),
                 ),
-                new Container(
-                  child: new RaisedButton(
-                      color: pedometre == 1 ? Colors.green[200] : Colors.white,
-                      child: new Text(_sentence3),
-                      onPressed: () {
-                        setState(() {
-                          pedometre == 1 ? pedometre = 0 : pedometre = 1;
-                          _sentence3 == 'Pedometre enabled'
-                              ? _sentence3 = 'Pedometre disabled'
-                              : _sentence3 = 'Pedometre enabled';
-                          _configurationDone = true;
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
+              ),
+
+              Card(
+                child: ListTile(
+                  title: Text('SleepTime'),
+                  trailing: Switch(
+                    value: sleeptime == 1,
+                    onChanged: (value) {
+                      setState(() {
+                        sleeptime = toInt(value);
+                        _configurationDone = true;
+                      });
+                    },
+                    activeTrackColor: Colors.indigoAccent[300],
+                    activeColor: Colors.indigoAccent,
+                  ),
                 ),
-                new Container(
-                  child: new RaisedButton(
-                      color: location == 1 ? Colors.green[200] : Colors.white,
-                      child: new Text(_sentence4),
-                      onPressed: () {
-                        setState(() {
-                          location == 1 ? location = 0 : location = 1;
-                          _sentence4 == 'Location enabled'
-                              ? _sentence4 = 'Location disabled'
-                              : _sentence4 = 'Location enabled';
-                          _configurationDone = true;
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
+              ),
+
+              Card(
+                child: ListTile(
+                  title: Text('Location'),
+                  trailing: Switch(
+                    value: location == 1,
+                    onChanged: (value) {
+                      setState(() {
+                        location = toInt(value);
+                        _configurationDone = true;
+                      });
+                    },
+                    activeTrackColor: Colors.indigoAccent[300],
+                    activeColor: Colors.indigoAccent,
+                  ),
                 ),
-                new Container(
-                  child: new RaisedButton(
-                      color: bluetooth == 1 ? Colors.green[200] : Colors.white,
-                      child: new Text(_sentence5),
-                      onPressed: () {
-                        setState(() {
-                          bluetooth == 1 ? bluetooth = 0 : bluetooth = 1;
-                          _sentence5 == 'Bluetooth enabled'
-                              ? _sentence5 = 'Bluetooth disabled'
-                              : _sentence5 = 'Bluetooth enabled';
-                          _configurationDone = true;
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
+              ),
+
+              Card(
+                child: ListTile(
+                  title: Text('Bluetooth'),
+                  trailing: Switch(
+                    value: bluetooth == 1,
+                    onChanged: (value) {
+                      setState(() {
+                        bluetooth = toInt(value);
+                        _configurationDone = true;
+                      });
+                    },
+                    activeTrackColor: Colors.indigoAccent[300],
+                    activeColor: Colors.indigoAccent,
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      }
+        ),
+      );
     }
+  }
 }

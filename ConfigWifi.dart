@@ -63,11 +63,21 @@ class ConfigWifiState extends State<ConfigWifi> {
       bluetooth = _config.bluetooth;
       wifiname = _config.wifiname;
       wifiIP = _config.wifiIP;
-      hometime == 1 ? _sentence1 = 'Hometime enabled' : _sentence1 = 'Hometime disabled';
-      sleeptime == 1 ? _sentence2 = 'Sleeptime enabled' : _sentence2 = 'Sleeptime disabled';
-      pedometre == 1 ? _sentence3 = 'Pedometre enabled' : _sentence3 = 'Pedometre disabled';
-      location == 1 ? _sentence4 = 'Location enabled' : _sentence4 = 'Location disabled';
-      bluetooth == 1 ? _sentence5 = 'Bluetooth enabled' : _sentence5 = 'Bluetooth disabled';
+      hometime == 1
+          ? _sentence1 = 'Hometime enabled'
+          : _sentence1 = 'Hometime disabled';
+      sleeptime == 1
+          ? _sentence2 = 'Sleeptime enabled'
+          : _sentence2 = 'Sleeptime disabled';
+      pedometre == 1
+          ? _sentence3 = 'Pedometre enabled'
+          : _sentence3 = 'Pedometre disabled';
+      location == 1
+          ? _sentence4 = 'Location enabled'
+          : _sentence4 = 'Location disabled';
+      bluetooth == 1
+          ? _sentence5 = 'Bluetooth enabled'
+          : _sentence5 = 'Bluetooth disabled';
       configNotLoad = false;
     });
   }
@@ -76,8 +86,10 @@ class ConfigWifiState extends State<ConfigWifi> {
   Widget build(BuildContext context) {
     if (configNotLoad) {
       loadConfig();
-      return 
-      Scaffold(
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Wifi setting"),
+        ),
         body: SingleChildScrollView(
           //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),
           child: new Column(
@@ -93,12 +105,12 @@ class ConfigWifiState extends State<ConfigWifi> {
                   ),
                 ),
               ),
+              CircularProgressIndicator(),
             ],
           ),
         ),
       );
-    } 
-    else {
+    } else {
       if (_configurationDone) {
         Config config = Config(
             id: 1,
@@ -114,53 +126,105 @@ class ConfigWifiState extends State<ConfigWifi> {
           _configurationDone = false;
         });
       }
-        // Build a Form widget using the _formKey created above.
-      return Form(
-          key: _formKey,
-          child: Padding(
-            padding: new EdgeInsets.all(20),
-            child: new Column(
-              children: <Widget>[
-                new TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    wifiname = value;
-                    return null;
-                  },
-                  decoration: new InputDecoration(
-                      hintText: 'examplebox', labelText: 'Wifi name'),
+      // Build a Form widget using the _formKey created above.
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Wifi setting"),
+        ),
+        body: Scaffold(
+          body: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Padding(
+                padding: new EdgeInsets.all(20),
+                child: new Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Please enter the name of your network'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 14.0, top: 8),
+                      child: Card(
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            wifiname = value;
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              isDense: true,
+                              border: OutlineInputBorder(),
+                              hintText: 'examplebox',
+                              labelText: 'Wifi name'),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Please enter your network IP'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 6.0,
+                      ),
+                      child: Card(
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            wifiIP = value;
+                            return null;
+                          },
+                          decoration: new InputDecoration(
+                              isDense: true,
+                              border: OutlineInputBorder(),
+                              hintText: '***.***.***.***',
+                              labelText: 'Wifi IP'),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Builder(
+                        builder: (context) => RaisedButton(
+                            child: new Text('Appliquer'),
+                            color: Colors.indigoAccent[200],
+                            textColor: Colors.white,
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Row(
+                                    children: [
+                                      Icon(Icons.check),
+                                      SizedBox(width: 20,),
+                                      Text('Wifi setting has been updated '),
+                                    ],
+                                  ),
+                                  duration: Duration(seconds: 3),
+                                ));
+                              }
+
+                              setState(() {
+                                // Validate returns true if the form is valid, or false
+                                // otherwise.
+                                if (_formKey.currentState.validate()) {
+                                  _configurationDone = true;
+                                }
+                              });
+                            }),
+                      ),
+                      margin: new EdgeInsets.only(top: 20.0),
+                    ),
+                  ],
                 ),
-                new TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    wifiIP = value;
-                    return null;
-                  },
-                  decoration: new InputDecoration(
-                      hintText: '***.***.***.***', labelText: 'Wifi IP'),
-                ),
-                new Container(
-                  child: new RaisedButton(
-                      child: new Text('Appliquer'),
-                      onPressed: () {
-                        setState(() {
-                          // Validate returns true if the form is valid, or false
-                          // otherwise.
-                          if (_formKey.currentState.validate()) {
-                            _configurationDone = true;
-                          }
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
-                ),
-              ],
+              ),
             ),
           ),
-        );
-      }
+        ),
+      );
     }
+  }
 }
