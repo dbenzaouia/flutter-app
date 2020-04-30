@@ -1,3 +1,5 @@
+import 'package:design/Configuration.dart';
+
 import './ui_view/glass_view.dart';
 import './ui_view/hometime_view.dart';
 import './ui_view/title_view.dart';
@@ -9,6 +11,8 @@ import './ui_view/location_view.dart';
 import './ui_view/blue_view.dart';
 import './ui_view/workout_view.dart';
 import 'package:flutter/material.dart';
+import '../data/database.dart';
+import '../configModel.dart';
 
 class MyDiaryScreen extends StatefulWidget {
   const MyDiaryScreen({Key key, this.animationController}) : super(key: key);
@@ -26,8 +30,21 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   final ScrollController scrollController = ScrollController();
   double topBarOpacity = 0.0;
 
+  DBProvider dbProvider = DBProvider.db;
+  final dataBase = DBProvider();
+  int hometime;
+  int sleeptime;
+  int pedometre;
+  int location;
+  int bluetooth;
+
   @override
   void initState() {
+    hometime = 0;
+    sleeptime = 0;
+    pedometre = 0;
+    location = 0;
+    bluetooth = 0;
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
             parent: widget.animationController,
@@ -59,8 +76,23 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     super.initState();
   }
 
-  void addAllListData() {
+  void loadConfig() async {
+    var _config = await dataBase.getConfig(1);
+    print(_config.hometime);
+    setState(() {
+      hometime = _config.hometime;
+      sleeptime = _config.sleeptime;
+      pedometre = _config.pedometre;
+      location = _config.location;
+      bluetooth = _config.bluetooth;
+    });
+  }
+
+  void addAllListData() async{
+    loadConfig();
     const int count = 9;
+
+    //pedometre canva
 
     listViews.add(
       InkWell(
@@ -74,7 +106,30 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             animationController: widget.animationController,
           ),
           onTap: () {
-            Navigator.pushNamed(context, '/first');
+            if (pedometre == 1) {
+              Navigator.pushNamed(context, '/first');
+            } else {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('Pedometre'),
+                  content: Text(
+                      'In order to activate Pedometre, please activate the service'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Configuration()),
+                        );
+                      },
+                      child: Text('Go to settings'),
+                    ),
+                  ],
+                ),
+              );
+            }
           }),
     );
     listViews.add(
@@ -88,7 +143,30 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             animationController: widget.animationController,
           ),
           onTap: () {
-            Navigator.pushNamed(context, '/first');
+            if (pedometre == 1) {
+              Navigator.pushNamed(context, '/first');
+            } else {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('Pedometre'),
+                  content: Text(
+                      'In order to activate Pedometre, please activate the service'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Configuration()),
+                        );
+                      },
+                      child: Text('Go to settings'),
+                    ),
+                  ],
+                ),
+              );
+            }
           }),
     );
 
@@ -103,68 +181,187 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             animationController: widget.animationController,
           ),
           onTap: () {
-            Navigator.pushNamed(context, '/first');
+            if (pedometre == 1) {
+              Navigator.pushNamed(context, '/first');
+            } else {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('Pedometre'),
+                  content: Text(
+                      'In order to activate Pedometre, please activate the service'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Configuration()),
+                        );
+                      },
+                      child: Text('Go to settings'),
+                    ),
+                  ],
+                ),
+              );
+            }
+          }),
+    );
+
+    //hometime canva
+
+    listViews.add(
+      InkWell(
+          child: TitleView(
+            titleTxt: 'HomeTime',
+            animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                    parent: widget.animationController,
+                    curve: Interval((1 / count) * 0, 1.0,
+                        curve: Curves.fastOutSlowIn))),
+            animationController: widget.animationController,
+          ),
+          onTap: () {
+            if (hometime == 1) {
+              Navigator.pushNamed(context, '/second');
+            } else {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('HomeTime'),
+                  content: Text(
+                      'In order to access data about Hometime, please activate the service'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Configuration()),
+                        );
+                      },
+                      child: Text('Go to settings'),
+                    ),
+                  ],
+                ),
+              );
+            }
+          }),
+    );
+    listViews.add(
+      InkWell(
+          child: HomeTimeView(
+            animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                    parent: widget.animationController,
+                    curve: Interval((1 / count) * 1, 1.0,
+                        curve: Curves.fastOutSlowIn))),
+            animationController: widget.animationController,
+          ),
+          onTap: () {
+            if (hometime == 1) {
+              Navigator.pushNamed(context, '/second');
+            } else {            
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('HomeTime'),
+                  content: Text(
+                      'In order to access data about HomeTime, please activate the service'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Configuration()),
+                        );
+                      },
+                      child: Text('Go to settings'),
+                    ),
+                  ],
+                ),
+              );
+            }
+          }),
+    );
+
+    //sleeptime canva
+
+    listViews.add(
+      InkWell(
+          child: TitleView(
+            titleTxt: 'SleepTime',
+            animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                    parent: widget.animationController,
+                    curve: Interval((1 / count) * 2, 1.0,
+                        curve: Curves.fastOutSlowIn))),
+            animationController: widget.animationController,
+          ),
+          onTap: () {
+            if (pedometre == 1) {
+              Navigator.pushNamed(context, '/third');
+            } else {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('SleepTime'),
+                  content: Text(
+                      'In order to access data about SleepTime, please activate the service'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Configuration()),
+                        );
+                      },
+                      child: Text('Go to settings'),
+                    ),
+                  ],
+                ),
+              );
+            }
           }),
     );
 
     listViews.add(
       InkWell(
-        child:
-      TitleView(
-        titleTxt: 'HomeTime',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-      ),
-      onTap: () {
-            Navigator.pushNamed(context, '/second');
-          }),
-    );
-    listViews.add(
-      InkWell(
-        child:
-      HomeTimeView(
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 1, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-      ),
-      onTap: () {
-            Navigator.pushNamed(context, '/second');
-          }),
-    );
-    listViews.add(
-      InkWell(
-        child:
-      TitleView(
-        titleTxt: 'Sommeil',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 2, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-      ),
-            onTap: () {
-            Navigator.pushNamed(context, '/third');
-          }),
-    );
-
-    listViews.add(
-      InkWell(
-        child:
-      SleepListView(
-        mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
-            CurvedAnimation(
-                parent: widget.animationController,
-                curve: Interval((1 / count) * 3, 1.0,
-                    curve: Curves.fastOutSlowIn))),
-        mainScreenAnimationController: widget.animationController,
-      ),
-      onTap: () {
-            Navigator.pushNamed(context, '/third');
+          child: SleepListView(
+            mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                    parent: widget.animationController,
+                    curve: Interval((1 / count) * 3, 1.0,
+                        curve: Curves.fastOutSlowIn))),
+            mainScreenAnimationController: widget.animationController,
+          ),
+          onTap: () {
+            if (sleeptime == 1) {
+              Navigator.pushNamed(context, '/third');
+            } else {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('SleepTime'),
+                  content: Text(
+                      'In order to access data about SleepTime, please activate the service'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Configuration()),
+                        );
+                      },
+                      child: Text('Go to settings'),
+                    ),
+                  ],
+                ),
+              );
+            }
           }),
     );
 /*
@@ -179,7 +376,6 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
         animationController: widget.animationController,
       ),
     );
-
     listViews.add(
       BodyMeasurementView(
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
@@ -200,6 +396,8 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
           animationController: widget.animationController),
     );
 
+    //location canva
+
     listViews.add(
       InkWell(
           child: LocationView(
@@ -211,9 +409,34 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             animationController: widget.animationController,
           ),
           onTap: () {
-            Navigator.pushNamed(context, '/fourth');
+            if (location == 1) {
+              Navigator.pushNamed(context, '/fourth');
+            } else {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('Location'),
+                  content: Text(
+                      'In order to access data about Location, please activate the service'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Configuration()),
+                        );
+                      },
+                      child: Text('Go to settings'),
+                    ),
+                  ],
+                ),
+              );
+            }
           }),
     );
+
+    //bluetooth canva
 
     listViews.add(
       InkWell(
@@ -226,10 +449,32 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             animationController: widget.animationController,
           ),
           onTap: () {
-            Navigator.pushNamed(context, '/fifth');
+            if (bluetooth == 1) {
+              Navigator.pushNamed(context, '/fifth');
+            } else {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('Bluetooth'),
+                  content: Text(
+                      'In order to access data about Bluetooth, please activate the service'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Configuration()),
+                        );
+                      },
+                      child: Text('Go to settings'),
+                    ),
+                  ],
+                ),
+              );
+            }
           }),
     );
-  
   }
 
   Future<bool> getData() async {
