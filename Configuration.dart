@@ -145,7 +145,26 @@ class ConfigState extends State<Configuration> {
 
               Card(
                 child: ListTile(
-                  title: Text('HomeTime'),
+                  title: Container(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      children: [
+                        Text('HomeTime'),
+                        Text(
+                          _sentence1,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: hometime == 1
+                                ? Colors.indigoAccent[200]
+                                : Colors.grey,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    ),
+                  ),
                   subtitle: Text(
                     'it involves more settings',
                     style: TextStyle(fontSize: 10),
@@ -155,6 +174,9 @@ class ConfigState extends State<Configuration> {
                     onChanged: (value) {
                       setState(() {
                         hometime = toInt(value);
+                        hometime == 1
+                            ? _sentence1 = 'service enabled'
+                            : _sentence1 = 'service disabled';
                         _configurationDone = true;
                       });
                       if (value) {
@@ -189,17 +211,40 @@ class ConfigState extends State<Configuration> {
                       MaterialPageRoute(builder: (context) => ConfigWifi()),
                     );
                   },
+                  isThreeLine: false,
                 ),
               ),
 
               Card(
                 child: ListTile(
-                  title: Text('Pedometre'),
+                  title: Container(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      children: [
+                        Text('Pedometre'),
+                        Text(
+                          _sentence3,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: pedometre == 1
+                                ? Colors.indigoAccent[200]
+                                : Colors.grey,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    ),
+                  ),
                   trailing: Switch(
                     value: pedometre == 1,
                     onChanged: (value) {
                       setState(() {
                         pedometre = toInt(value);
+                        pedometre == 1
+                            ? _sentence3 = 'service enabled'
+                            : _sentence3 = 'service disabled';
                         _configurationDone = true;
                       });
                     },
@@ -211,12 +256,34 @@ class ConfigState extends State<Configuration> {
 
               Card(
                 child: ListTile(
-                  title: Text('SleepTime'),
+                  title: Container(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      children: [
+                        Text('SleepTime'),
+                        Text(
+                          _sentence2,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: sleeptime == 1
+                                ? Colors.indigoAccent[200]
+                                : Colors.grey,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    ),
+                  ),
                   trailing: Switch(
                     value: sleeptime == 1,
                     onChanged: (value) {
                       setState(() {
                         sleeptime = toInt(value);
+                        sleeptime == 1
+                            ? _sentence2 = 'service enabled'
+                            : _sentence2 = 'service disabled';
                         _configurationDone = true;
                       });
                     },
@@ -228,12 +295,34 @@ class ConfigState extends State<Configuration> {
 
               Card(
                 child: ListTile(
-                  title: Text('Location'),
+                  title: Container(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      children: [
+                        Text('Location'),
+                        Text(
+                          _sentence4,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: location == 1
+                                ? Colors.indigoAccent[200]
+                                : Colors.grey,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    ),
+                  ),
                   trailing: Switch(
                     value: location == 1,
                     onChanged: (value) {
                       setState(() {
                         location = toInt(value);
+                        location == 1
+                            ? _sentence4 = 'service enabled'
+                            : _sentence4 = 'service disabled';
                         _configurationDone = true;
                       });
                     },
@@ -245,7 +334,26 @@ class ConfigState extends State<Configuration> {
 
               Card(
                 child: ListTile(
-                  title: Text('Bluetooth'),
+                  title: Container(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      children: [
+                        Text('Bluetooth'),
+                        Text(
+                            _sentence5,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: bluetooth == 1
+                                  ? Colors.indigoAccent[200]
+                                  : Colors.grey,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                      ],
+                    ),
+                  ),
                   subtitle: Text(
                     'it involves more settings',
                     style: TextStyle(fontSize: 10),
@@ -255,6 +363,9 @@ class ConfigState extends State<Configuration> {
                     onChanged: (value) {
                       setState(() {
                         bluetooth = toInt(value);
+                        bluetooth == 1
+                            ? _sentence5 = 'service enabled'
+                            : _sentence5 = 'service disabled';
                         _configurationDone = true;
                       });
                       if (value) {
