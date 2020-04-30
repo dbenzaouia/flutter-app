@@ -10,7 +10,7 @@ import './design/navigation_home_screen.dart';
 import './design/second_app_theme.dart';
 import 'service/pedometre.dart';
 import 'service/sleepTime.dart';
-import 'homeTime.dart';
+import 'service/hometime.dart';
 import 'userLocationMap.dart';
 import 'configModel.dart';
 import 'data/configManager.dart';
@@ -83,12 +83,13 @@ class MyApp extends StatelessWidget {
         // When navigating to the "/" route, build the FirstScreen widget.
         //'/': (context) => MyHomePage(),
         // When navigating to the "/second" route, build the SecondScreen widget.
+        '/fifth': (context) => Fifth(),
+
         '/first': (context) => First(),
         // When navigating to the "/third" route, build the ThirdScreen widget.
         '/second': (context) => Second(),
         '/third': (context) => Third(),
         '/fourth': (context) => Fourth(),
-        '/fifth': (context) => Fifth(),
       },
     );
   }
@@ -421,11 +422,11 @@ class _MainWidgetState extends State<MainWidget> {
               width: MediaQuery.of(context).size.width,
               child: new MytestPage(),
             ),
-            /* SizedBox(
+             SizedBox(
               height: 0,
               width: MediaQuery.of(context).size.width,
               child: new BM(),
-            ), */
+            ), 
             SizedBox(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width + 250,
