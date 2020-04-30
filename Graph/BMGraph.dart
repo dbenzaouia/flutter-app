@@ -65,7 +65,15 @@ class BMGState extends State<BMG> {
   void initState() {
     configBlue = false;
     super.initState();
+     const fiveSec = const Duration(seconds: 1);
+    new Timer.periodic(fiveSec, (Timer t) {
+      setup();
+    });
     setupList();
+    setup();
+   
+  }
+  void setup(){
     setupListDay();
     setupListWeek();
     setupListMonths();
@@ -157,12 +165,15 @@ class BMGState extends State<BMG> {
         (todayYear()), (todayMonths()), (todayDay()), object[1].name);
     var _blueweekthird = await dataBase.getBlueWeek(
         (todayYear()), (todayMonths()), (todayDay()), object[2].name);
+    if (this.mounted){
+ 
 
     setState(() {
       blueweekthird = _blueweekthird;
       blueweeksecond = _blueweeksecond;
       blueweekfirst = _blueweekfirst;
     });
+    }
   }
 
   void setupListMonths() async {
