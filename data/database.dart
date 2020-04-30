@@ -118,7 +118,7 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDBtest1123joa069.db");
+    String path = join(documentsDirectory.path, "TestDBtest1123joa06968.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
           await db.execute('''CREATE TABLE Geoloc(id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, elapsedTime TEXT, elapsedDuration INTEGER, 
@@ -139,38 +139,7 @@ class DBProvider {
                           name TEXT, theTime INTEGER,theDay INTEGER,theMonths INTEGER,theYear INTEGER,theHours TEXT,theMin INTEGER,thePart TEXT)''');
           await db.execute('''CREATE TABLE ConfigBlue (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                           name TEXT,location TEXT)''');
-         await db.insert('Steps', newValue(1,220, 16,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(2,440, 16,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(3,330, 15, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(4,110, 15,4,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(5,50, 8,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(6,68, 9,4,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(7,220, 14,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(8,440, 13,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(9,330, 12, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(10,110, 11,4,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(11,50, 10,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(12,68, 19,4,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(13,220, 7,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(14,440, 6,4,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(15,330, 5, 4,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(16,110, 4,4,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(17,50, 3,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(18,68, 2,4,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(19,220, 1,4,2020,8,40),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(20,440, 13,1,2020,8,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(21,330, 12, 2,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(22,110, 11,3,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(23,50, 10,4,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(24,68, 19,5,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(25,330, 12, 6,2020,8,9),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(26,110, 11,7,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(27,50, 10,8,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(28,68, 19,9,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(29,110, 11,10,2020,9,5),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(30,50, 10,11,2020,9,8),  conflictAlgorithm: ConflictAlgorithm.replace);
-         await db.insert('Steps', newValue(31,68, 19,12,2020,3,50),  conflictAlgorithm: ConflictAlgorithm.replace);
-        print('database created!');
+          print('database created!');
 
     
     var date = new DateTime.now();
@@ -184,59 +153,29 @@ class DBProvider {
     var duration = Random().nextInt(theTime); //valeur entre 0 et theTime en secondes
     await db.insert('HomeTime', newHometime(day, day, month, year, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
     await db.insert('Sleep', newSleep(day, day, month, year, duration),  conflictAlgorithm: ConflictAlgorithm.replace); 
+    
+    for(var i = 6; i<24; i++){
+      var step = Random().nextInt(200);
+      await db.insert('Steps', newValue(100 + i, step, day, month, year, i, 30),  conflictAlgorithm: ConflictAlgorithm.replace);  
+    }
+    
     for (var i = day-1; i >= 1; i--) {
       var theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
       var duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
-      await db.insert('HomeTime', newHometime(i, i, 04, 2020, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
-      await db.insert('Sleep', newSleep(i, i, 04,2020, duration),  conflictAlgorithm: ConflictAlgorithm.replace);  
+      var step = 5000 + Random().nextInt(5000);
+      await db.insert('HomeTime', newHometime(i, i, month, 2020, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert('Sleep', newSleep(i, i, month, 2020, duration),  conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert('Steps', newValue(i, step, i, month, year, 12, 0),  conflictAlgorithm: ConflictAlgorithm.replace);  
     }
     for (var i = 31; i>=31-nbJour; i--){
       var theTime = 16*3600 + Random().nextInt(9)*3600; //valeur entre 16 et 24 en secondes 
       var duration = 4*3600 + Random().nextInt(9)*3600; //valeur entre 4 et 12 en secondes
+      var step = 5000 + Random().nextInt(5000);
       await db.insert('HomeTime', newHometime(day + i, i, month-1, year, theTime),  conflictAlgorithm: ConflictAlgorithm.replace);
       await db.insert('Sleep', newSleep(day + i, i, month-1, year, duration),  conflictAlgorithm: ConflictAlgorithm.replace); 
+      await db.insert('Steps', newValue(day + i, step, i, month-1, year, 12, 0),  conflictAlgorithm: ConflictAlgorithm.replace);  
+
     }
-    
-    
-    /*for (var i = 1; i <= nbJour; i) {
-      for (var j = 0; j<= 24; j++){
-      var nb = 0;
-      if(j<=6){
-        nb = 0;
-      }
-      else if(j==7 || j==10 || j==11 || j==14 || j==15 || j==16){
-        nb = 20 + Random().nextInt(21);
-      }
-      else if (j==8 || j==9 || j==12 || j==13 || j==17 || j==18 || j==19){
-        nb = 300 + Random().nextInt(201);
-      }
-      else if(j==20 || j==21){
-        nb = 100 + Random().nextInt(51);
-      }
-      else {
-        nb = 50 + Random().nextInt(21);
-      }
-      var newSteps = new Steps(
-      id: 1+i*j,
-      numberSteps: nb,
-      theTime: j,
-      theDay: i,
-      theMonths: json["theMonths"],
-      theYear: json["theYear"],
-      theHours: json["theHours"],
-      theMin: json["theMin"],
-      thePart: json["thePart"]
-      duration: 16 + Random().nextInt(8), //valeur entre 16 et 24 
-      theDay: i,
-      theMonths: 4,
-      theYear: 2020,
-      theHours: "20:00",
-      theMin: "20:00",
-      thePart: "AM",
-      );
-      addNewSteps(newSteps);
-      }
-    }*/
   });
 }
 
