@@ -38,95 +38,103 @@ class ConfigBlueState extends State<ConfigBlue> {
     super.initState();
   }
 
+  void loadConfigBlue() async {
+    var _config1 = await dataBase.getConfigBlue(1);
+    var _config2 = await dataBase.getConfigBlue(2);
+    var _config3 = await dataBase.getConfigBlue(3);
+    setState(() {
+      _name1 = _config1.name;
+      _name2 = _config2.name;
+      _name3 = _config3.name;
+      _location1 = _config1.location;
+      _location2 = _config2.location;
+      _location3 = _config3.location;  
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    ConfigBlueModel configBlue1 =
+    loadConfigBlue();
+    if (_configurationDone) {
+      ConfigBlueModel configBlue1 =
         ConfigBlueModel(id: 1, name: _name1, location: _location1);
     ConfigBlueModel configBlue2 =
         ConfigBlueModel(id: 2, name: _name2, location: _location2);
     ConfigBlueModel configBlue3 =
         ConfigBlueModel(id: 3, name: _name3, location: _location3);
-    if (_configurationDone) {
       ConfigBlueManager(dbProvider).updateConfigBlue(configBlue1, 1);
       ConfigBlueManager(dbProvider).updateConfigBlue(configBlue2, 2);
       ConfigBlueManager(dbProvider).updateConfigBlue(configBlue3, 3);
     }
     // Build a Form widget using the _formKey created above.
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Bluetooth setting"),
-      ),
-      body: SingleChildScrollView(
-              child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: new EdgeInsets.all(20),
-            child: new Column(
-              children: <Widget>[
-                new TextFormField(
-                  validator: (value) {
-                    _name1 = value;
-                    return null;
-                  },
-                  decoration: new InputDecoration(labelText: 'Bluetooth name 1'),
-                ),
-                new TextFormField(
-                  validator: (value) {
-                    _location1 = value;
-                    return null;
-                  },
-                  decoration:
-                      new InputDecoration(labelText: 'Bluetooth location 1'),
-                ),
-                new TextFormField(
-                  validator: (value) {
-                    _name2 = value;
-                    return null;
-                  },
-                  decoration: new InputDecoration(labelText: 'Bluetooth name 2'),
-                ),
-                new TextFormField(
-                  validator: (value) {
-                    _location2 = value;
-                    return null;
-                  },
-                  decoration:
-                      new InputDecoration(labelText: 'Bluetooth location 2'),
-                ),
-                new TextFormField(
-                  validator: (value) {
-                    _name3 = value;
-                    return null;
-                  },
-                  decoration: new InputDecoration(labelText: 'Bluetooth name 3'),
-                ),
-                new TextFormField(
-                  validator: (value) {
-                    _location3 = value;
-                    return null;
-                  },
-                  decoration:
-                      new InputDecoration(labelText: 'Bluetooth location 3'),
-                ),
-                new Container(
-                  child: new RaisedButton(
-                      child: new Text('Apply'),
-                      onPressed: () {
-                        setState(() {
-                          // Validate returns true if the form is valid, or false
-                          // otherwise.
-                          if (_formKey.currentState.validate()) {
-                            _configurationDone = true;
-                          }
-                        });
-                      }),
-                  margin: new EdgeInsets.only(top: 20.0),
-                ),
-              ],
+    return SingleChildScrollView(
+      child: Form(
+      key: _formKey,
+      child: Padding(
+        padding: new EdgeInsets.all(20),
+        child: new Column(
+          children: <Widget>[
+            new Text('Here you can associate a bluetooth device with a location to study how many time you spend in your room or your car for example.', 
+            style: TextStyle(color: Colors.deepOrange[300], fontStyle: FontStyle.italic)
+                    ),
+            new TextFormField(
+              validator: (value) {
+                _name1 = value;
+                return null;
+              },
+              decoration: new InputDecoration(labelText:'Name device 1',hintText: _name1),
             ),
-          ),
+            new TextFormField(
+              validator: (value) {
+                _location1 = value;
+                return null;
+              },
+              decoration:
+                  new InputDecoration(labelText:'Location device 1', hintText: _location1),
+            ),
+            new TextFormField(
+              validator: (value) {
+                _name2 = value;
+                return null;
+              },
+              decoration: new InputDecoration(labelText:'Name device 2', hintText: _name2),
+            ),
+            new TextFormField(
+              validator: (value) {
+                _location2 = value;
+                return null;
+              },
+              decoration:
+                  new InputDecoration(labelText:'Location device 2', hintText: _location2),
+            ),
+            new TextFormField(
+              validator: (value) {
+                _name3 = value;
+                return null;
+              },
+              decoration: new InputDecoration(labelText:'Name device 3', hintText: _name3),
+            ),
+            new TextFormField(
+              validator: (value) {
+                _location3 = value;
+                return null;
+              },
+              decoration:
+                  new InputDecoration(labelText: 'Location device 3', hintText: _location3),
+            ),
+            new Container(
+              child: new RaisedButton(
+                  child: new Text('Apply'),
+                  onPressed: () {
+                    setState(() {
+                        _configurationDone = true;
+                    });
+                  }),
+              margin: new EdgeInsets.only(top: 20.0),
+            ),
+          ],
         ),
       ),
-    );
+    ));
   }
-}
+  }
