@@ -19,6 +19,7 @@ class ConfigBlueState extends State<ConfigBlue> {
   final dataBase = DBProvider();
 
   bool _configurationDone;
+  bool _configNotLoad;
   String _name1;
   String _name2;
   String _name3;
@@ -29,6 +30,7 @@ class ConfigBlueState extends State<ConfigBlue> {
   @override
   void initState() {
     _configurationDone = false;
+    _configNotLoad = true;
     _name1 = '';
     _name2 = '';
     _name3 = '';
@@ -38,23 +40,39 @@ class ConfigBlueState extends State<ConfigBlue> {
     super.initState();
   }
 
-  void loadConfigBlue() async {
+  void loadConfigBlue1() async {
     var _config1 = await dataBase.getConfigBlue(1);
-    var _config2 = await dataBase.getConfigBlue(2);
-    var _config3 = await dataBase.getConfigBlue(3);
     setState(() {
       _name1 = _config1.name;
-      _name2 = _config2.name;
-      _name3 = _config3.name;
       _location1 = _config1.location;
+    });
+  }
+
+  void loadConfigBlue2() async {
+    var _config2 = await dataBase.getConfigBlue(2);
+    setState(() {
+      _name2 = _config2.name;
       _location2 = _config2.location;
+    });
+  }
+
+  void loadConfigBlue3() async {
+    var _config3 = await dataBase.getConfigBlue(3);
+    setState(() {
+      _name3 = _config3.name;
       _location3 = _config3.location;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    loadConfigBlue();
+    if (_configNotLoad){
+      loadConfigBlue1();
+      loadConfigBlue2();
+      loadConfigBlue3();
+      _configNotLoad = false;
+    }
+
     if (_configurationDone) {
       ConfigBlueModel configBlue1 =
           ConfigBlueModel(id: 1, name: _name1, location: _location1);
@@ -65,6 +83,7 @@ class ConfigBlueState extends State<ConfigBlue> {
       ConfigBlueManager(dbProvider).updateConfigBlue(configBlue1, 1);
       ConfigBlueManager(dbProvider).updateConfigBlue(configBlue2, 2);
       ConfigBlueManager(dbProvider).updateConfigBlue(configBlue3, 3);
+      _configurationDone=false;
     }
     // Build a Form widget using the _formKey created above.
     return Scaffold(
@@ -93,10 +112,10 @@ class ConfigBlueState extends State<ConfigBlue> {
                       child: Card(
                         child: TextFormField(
                           validator: (value) {
-                            // if (value.isEmpty) {
-                            //   return 'Please enter some text';
-                            // }
-                            _name1 = value;
+                            if (value.isEmpty==false) {
+                              _name1 = value;
+                            }
+                            
                             return null;
                           },
                           decoration: InputDecoration(
@@ -112,10 +131,10 @@ class ConfigBlueState extends State<ConfigBlue> {
                       child: Card(
                         child: TextFormField(
                           validator: (value) {
-                            // if (value.isEmpty) {
-                            //   return 'Please enter some text';
-                            // }
-                            _name1 = value;
+                            if (value.isEmpty==false) {
+                              _location1 = value;
+                            }
+                            
                             return null;
                           },
                           decoration: InputDecoration(
@@ -135,10 +154,9 @@ class ConfigBlueState extends State<ConfigBlue> {
                       child: Card(
                         child: TextFormField(
                           validator: (value) {
-                            // if (value.isEmpty) {
-                            //   return 'Please enter some text';
-                            // }
-                            _name2 = value;
+                            if (value.isEmpty==false) {
+                              _name2 = value;
+                            }
                             return null;
                           },
                           decoration: InputDecoration(
@@ -154,10 +172,9 @@ class ConfigBlueState extends State<ConfigBlue> {
                       child: Card(
                         child: TextFormField(
                           validator: (value) {
-                            // if (value.isEmpty) {
-                            //   return 'Please enter some text';
-                            // }
-                            _location2 = value;
+                            if (value.isEmpty==false) {
+                              _location2 = value;
+                            }
                             return null;
                           },
                           decoration: InputDecoration(
@@ -177,10 +194,9 @@ class ConfigBlueState extends State<ConfigBlue> {
                       child: Card(
                         child: TextFormField(
                           validator: (value) {
-                            // if (value.isEmpty) {
-                            //   return 'Please enter some text';
-                            // }
-                            _name3 = value;
+                            if (value.isEmpty==false) {
+                              _name3 = value;
+                            }
                             return null;
                           },
                           decoration: InputDecoration(
@@ -196,10 +212,9 @@ class ConfigBlueState extends State<ConfigBlue> {
                       child: Card(
                         child: TextFormField(
                           validator: (value) {
-                            // if (value.isEmpty) {
-                            //   return 'Please enter some text';
-                            // }
-                            _location3 = value;
+                            if (value.isEmpty==false) {
+                              _location3 = value;
+                            }
                             return null;
                           },
                           decoration: InputDecoration(
@@ -233,9 +248,9 @@ class ConfigBlueState extends State<ConfigBlue> {
                               setState(() {
                                 // Validate returns true if the form is valid, or false
                                 // otherwise.
-                                // if (_formKey.currentState.validate()) {
+                                if (_formKey.currentState.validate()) {
                                   _configurationDone = true;
-                                // }
+                                }
                               });
                             }),
                       ),
