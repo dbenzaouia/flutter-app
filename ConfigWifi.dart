@@ -190,7 +190,7 @@ class ConfigWifiState extends State<ConfigWifi> {
                     Container(
                       child: Builder(
                         builder: (context) => RaisedButton(
-                            child: new Text('Appliquer'),
+                            child: new Text('Apply'),
                             color: Colors.indigoAccent[200],
                             textColor: Colors.white,
                             onPressed: () {

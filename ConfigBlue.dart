@@ -48,7 +48,7 @@ class ConfigBlueState extends State<ConfigBlue> {
       _name3 = _config3.name;
       _location1 = _config1.location;
       _location2 = _config2.location;
-      _location3 = _config3.location;  
+      _location3 = _config3.location;
     });
   }
 
@@ -57,84 +57,193 @@ class ConfigBlueState extends State<ConfigBlue> {
     loadConfigBlue();
     if (_configurationDone) {
       ConfigBlueModel configBlue1 =
-        ConfigBlueModel(id: 1, name: _name1, location: _location1);
-    ConfigBlueModel configBlue2 =
-        ConfigBlueModel(id: 2, name: _name2, location: _location2);
-    ConfigBlueModel configBlue3 =
-        ConfigBlueModel(id: 3, name: _name3, location: _location3);
+          ConfigBlueModel(id: 1, name: _name1, location: _location1);
+      ConfigBlueModel configBlue2 =
+          ConfigBlueModel(id: 2, name: _name2, location: _location2);
+      ConfigBlueModel configBlue3 =
+          ConfigBlueModel(id: 3, name: _name3, location: _location3);
       ConfigBlueManager(dbProvider).updateConfigBlue(configBlue1, 1);
       ConfigBlueManager(dbProvider).updateConfigBlue(configBlue2, 2);
       ConfigBlueManager(dbProvider).updateConfigBlue(configBlue3, 3);
     }
     // Build a Form widget using the _formKey created above.
-    return SingleChildScrollView(
-      child: Form(
+    return Scaffold(
+      appBar: AppBar(
+          title: Text("Bluetooth service settings"),
+        ),
+        body: SingleChildScrollView(
+            child: Form(
       key: _formKey,
       child: Padding(
         padding: new EdgeInsets.all(20),
         child: new Column(
           children: <Widget>[
-            new Text('Here you can associate a bluetooth device with a location to study how many time you spend in your room or your car for example.', 
-            style: TextStyle(color: Colors.deepOrange[300], fontStyle: FontStyle.italic)
+            new Text(
+                'Here you can associate a bluetooth device with a location to study how many time you spend in your room or your car for example.',
+                style: TextStyle(
+                    color: Colors.deepOrange[300],
+                    fontStyle: FontStyle.italic)),
+            new Text(''),
+            Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Please enter the name and the location of your bluetooth device 1'),
                     ),
-            new TextFormField(
-              validator: (value) {
-                _name1 = value;
-                return null;
-              },
-              decoration: new InputDecoration(labelText:'Name device 1',hintText: _name1),
-            ),
-            new TextFormField(
-              validator: (value) {
-                _location1 = value;
-                return null;
-              },
-              decoration:
-                  new InputDecoration(labelText:'Location device 1', hintText: _location1),
-            ),
-            new TextFormField(
-              validator: (value) {
-                _name2 = value;
-                return null;
-              },
-              decoration: new InputDecoration(labelText:'Name device 2', hintText: _name2),
-            ),
-            new TextFormField(
-              validator: (value) {
-                _location2 = value;
-                return null;
-              },
-              decoration:
-                  new InputDecoration(labelText:'Location device 2', hintText: _location2),
-            ),
-            new TextFormField(
-              validator: (value) {
-                _name3 = value;
-                return null;
-              },
-              decoration: new InputDecoration(labelText:'Name device 3', hintText: _name3),
-            ),
-            new TextFormField(
-              validator: (value) {
-                _location3 = value;
-                return null;
-              },
-              decoration:
-                  new InputDecoration(labelText: 'Location device 3', hintText: _location3),
-            ),
-            new Container(
-              child: new RaisedButton(
-                  child: new Text('Apply'),
-                  onPressed: () {
-                    setState(() {
-                        _configurationDone = true;
-                    });
-                  }),
-              margin: new EdgeInsets.only(top: 20.0),
-            ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 14.0, top: 8),
+                      child: Card(
+                        child: TextFormField(
+                          validator: (value) {
+                            // if (value.isEmpty) {
+                            //   return 'Please enter some text';
+                            // }
+                            _name1 = value;
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              isDense: true,
+                              border: OutlineInputBorder(),
+                              hintText: _name1,
+                              labelText: 'Name device 1'),
+                        ),
+                      ),
+                    ),
+            Padding(
+                      padding: const EdgeInsets.only(bottom: 14.0, top: 8),
+                      child: Card(
+                        child: TextFormField(
+                          validator: (value) {
+                            // if (value.isEmpty) {
+                            //   return 'Please enter some text';
+                            // }
+                            _name1 = value;
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              isDense: true,
+                              border: OutlineInputBorder(),
+                              hintText: _location1,
+                              labelText: 'Location device 1'),
+                        ),
+                      ),
+                    ),
+            Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Please enter the name and the location of your bluetooth device 2'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 14.0, top: 8),
+                      child: Card(
+                        child: TextFormField(
+                          validator: (value) {
+                            // if (value.isEmpty) {
+                            //   return 'Please enter some text';
+                            // }
+                            _name2 = value;
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              isDense: true,
+                              border: OutlineInputBorder(),
+                              hintText: _name2,
+                              labelText: 'Name device 2'),
+                        ),
+                      ),
+                    ),
+            Padding(
+                      padding: const EdgeInsets.only(bottom: 14.0, top: 8),
+                      child: Card(
+                        child: TextFormField(
+                          validator: (value) {
+                            // if (value.isEmpty) {
+                            //   return 'Please enter some text';
+                            // }
+                            _location2 = value;
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              isDense: true,
+                              border: OutlineInputBorder(),
+                              hintText: _location2,
+                              labelText: 'Location device 2'),
+                        ),
+                      ),
+                    ),
+            Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Please enter the name and the location of your bluetooth device 3'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 14.0, top: 8),
+                      child: Card(
+                        child: TextFormField(
+                          validator: (value) {
+                            // if (value.isEmpty) {
+                            //   return 'Please enter some text';
+                            // }
+                            _name3 = value;
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              isDense: true,
+                              border: OutlineInputBorder(),
+                              hintText: _name3,
+                              labelText: 'Name device 3'),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 14.0, top: 8),
+                      child: Card(
+                        child: TextFormField(
+                          validator: (value) {
+                            // if (value.isEmpty) {
+                            //   return 'Please enter some text';
+                            // }
+                            _location3 = value;
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              isDense: true,
+                              border: OutlineInputBorder(),
+                              hintText: _location3,
+                              labelText: 'Location device 3'),
+                        ),
+                      ),
+                    ),
+            Container(
+                      child: Builder(
+                        builder: (context) => RaisedButton(
+                            child: new Text('Apply'),
+                            color: Colors.indigoAccent[200],
+                            textColor: Colors.white,
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Row(
+                                    children: [
+                                      Icon(Icons.check),
+                                      SizedBox(width: 20,),
+                                      Text('Bluetooth setting has been updated '),
+                                    ],
+                                  ),
+                                  duration: Duration(seconds: 3),
+                                ));
+                              }
+
+                              setState(() {
+                                // Validate returns true if the form is valid, or false
+                                // otherwise.
+                                // if (_formKey.currentState.validate()) {
+                                  _configurationDone = true;
+                                // }
+                              });
+                            }),
+                      ),
+                      margin: new EdgeInsets.only(top: 20.0),
+                    ),
           ],
         ),
       ),
-    ));
+    )));
   }
-  }
+}
