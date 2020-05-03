@@ -192,6 +192,15 @@ static ConfigBlueModel make(String nameblue){
     new Timer.periodic(fiveSec, (Timer t) {
       liste();
     });
+    const onehour = const Duration(seconds: 60*5);
+    new Timer.periodic(onehour, (Timer t) {
+      if(timeToDisplay>0){
+      countTheTimeBlue;
+      resetStepCounter();
+      _save("unkown");
+      swatch.stop();
+      }
+    });
   
 
 
@@ -254,6 +263,7 @@ void liste() async{
 }
   
   void chrono(){
+    print("debut bluetooth");
     setupConfig();
     count=0;
     if(devices.length>0 && value=="unkown" ){

@@ -123,6 +123,7 @@ class HTState extends State<HT> {
 
     });
     swatch.reset();
+    swatch.stop();
     timeToDisplay = 0;
   }
   void test() {
@@ -173,6 +174,20 @@ class HTState extends State<HT> {
     _changed = true;
     super.initState();
     initConnectivity();
+     const onehour = const Duration(seconds: 60*5);
+    new Timer.periodic(onehour, (Timer t) {
+      if(timeToDisplay>0){
+      print(timeToDisplay);
+      day=todayDay();
+      months=todayMonths();
+      year=todayYear();
+      hours=todayHours();
+      min=todayMin();
+      part=today();
+      countTheHomeTimes;
+      resetTimeCounter;
+      }
+    });
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
         setupList();

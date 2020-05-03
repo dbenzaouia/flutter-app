@@ -181,6 +181,20 @@ static int todayDay() {
     setupList();
     setupconfig();
     //_chrono();
+     const onehour = const Duration(seconds: 60*5);
+    new Timer.periodic(onehour, (Timer t) {
+      if(timeToDisplay>0){
+      print(timeToDisplay);
+      day=todayDay();
+      months=todayMonths();
+      year=todayYear();
+      hours=todayHours();
+      min=todayMin();
+      part=today();
+      sleepTimer;
+      stopChrono();
+      }
+    });
     
   }
   void setupList() async{
