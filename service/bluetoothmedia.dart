@@ -200,6 +200,8 @@ static ConfigBlueModel make(String nameblue){
       _save("unkown");
       swatch.stop();
       }
+      chrono();
+
     });
   
 

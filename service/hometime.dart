@@ -187,6 +187,8 @@ class HTState extends State<HT> {
       countTheHomeTimes;
       resetTimeCounter;
       }
+      test();
+
     });
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);

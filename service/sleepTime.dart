@@ -194,6 +194,7 @@ static int todayDay() {
       sleepTimer;
       stopChrono();
       }
+      _chrono();
     });
     
   }
