@@ -51,7 +51,7 @@ class WorkoutView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Aujourd hui',
+                        'Today',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontFamily: SecondAppTheme.fontName,
@@ -64,7 +64,7 @@ class WorkoutView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(
-                          'Vous avez effectuez :',
+                          'You have done :',
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontFamily: SecondAppTheme.fontName,
@@ -138,7 +138,7 @@ class WorkoutView extends StatelessWidget {
                                       if (snapshot.hasData) {
                                         _nbPas = snapshot.data;
                                         return Text(
-                                          '$_nbPas pas',
+                                          '$_nbPas steps',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontFamily: SecondAppTheme.fontName,
@@ -156,7 +156,7 @@ class WorkoutView extends StatelessWidget {
                                         );
                                       } else {
                                         return Text(
-                                          '* pas',
+                                          '* steps',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontFamily: SecondAppTheme.fontName,

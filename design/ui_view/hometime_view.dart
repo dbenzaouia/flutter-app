@@ -87,7 +87,7 @@ class HomeTimeView extends StatelessWidget {
                                               padding: const EdgeInsets.only(
                                                   left: 4, bottom: 2),
                                               child: Text(
-                                                'Chez vous',
+                                                'Home',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily:
@@ -164,7 +164,7 @@ class HomeTimeView extends StatelessWidget {
                                                       const EdgeInsets.only(
                                                           left: 4, bottom: 3),
                                                   child: Text(
-                                                    'heures',
+                                                    'hours',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily: SecondAppTheme
@@ -212,7 +212,7 @@ class HomeTimeView extends StatelessWidget {
                                               padding: const EdgeInsets.only(
                                                   left: 4, bottom: 2),
                                               child: Text(
-                                                'En dehors',
+                                                'Outdoor',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily:
@@ -292,7 +292,7 @@ class HomeTimeView extends StatelessWidget {
                                                       const EdgeInsets.only(
                                                           left: 8, bottom: 3),
                                                   child: Text(
-                                                    'heures',
+                                                    'hours',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily: SecondAppTheme
@@ -371,7 +371,7 @@ class HomeTimeView extends StatelessWidget {
                                                       ),
                                                     ),
                                                     Text(
-                                                      'Chez Vous',
+                                                      'Home',
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -469,7 +469,7 @@ class HomeTimeView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'Aujourd hui',
+                                  'Today',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: SecondAppTheme.fontName,
@@ -524,7 +524,7 @@ class HomeTimeView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      'Hier',
+                                      'Yesterday',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: SecondAppTheme.fontName,
@@ -583,7 +583,7 @@ class HomeTimeView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      'En moyenne',
+                                      'Average',
                                       style: TextStyle(
                                         fontFamily: SecondAppTheme.fontName,
                                         fontWeight: FontWeight.w500,

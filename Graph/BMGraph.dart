@@ -282,7 +282,7 @@ class BMGState extends State<BMG> {
             tabs: [
               Tab(
                 child: Text(
-                  'journalier',
+                  'Daily',
                   style: TextStyle(
                     fontSize: 15.0,
                   ),
@@ -290,14 +290,14 @@ class BMGState extends State<BMG> {
               ),
               Tab(
                   child: Text(
-                'hebdomadaire',
+                'Weekly',
                 style: TextStyle(
                   fontSize: 15.0,
                 ),
               )),
               Tab(
                   child: Text(
-                'mensuel',
+                'Monthly',
                 style: TextStyle(
                   fontSize: 15.0,
                 ),

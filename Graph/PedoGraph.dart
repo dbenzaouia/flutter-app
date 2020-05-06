@@ -105,13 +105,13 @@ class PedoGraphState extends State<PedoGraph> {
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-          title: Text("Podometre"),
+          title: Text("Pedometer"),
           bottom: TabBar(
             isScrollable: true,
             tabs: [
               Tab(
                 child: Text(
-                  'journalier',
+                  'Daily',
                   style: TextStyle(
                     fontSize: 15.0,
                   ),
@@ -119,14 +119,14 @@ class PedoGraphState extends State<PedoGraph> {
               ),
               Tab(
                   child: Text(
-                'hebdomadaire',
+                'Weekly',
                 style: TextStyle(
                   fontSize: 15.0,
                 ),
               )),
               Tab(
                   child: Text(
-                'mensuel',
+                'Monthly',
                 style: TextStyle(
                   fontSize: 15.0,
                 ),

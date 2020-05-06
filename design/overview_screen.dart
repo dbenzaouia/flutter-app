@@ -1,4 +1,4 @@
-import 'package:design/Configuration.dart';
+import '../Configuration.dart';
 
 import './ui_view/glass_view.dart';
 import './ui_view/hometime_view.dart';
@@ -115,7 +115,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     listViews.add(
       InkWell(
           child: TitleView(
-            titleTxt: 'Pedomètre',
+            titleTxt: 'Pedometer',
             animation: Tween<double>(begin: 0.0, end: 1.0).animate(
                 CurvedAnimation(
                     parent: widget.animationController,
@@ -130,9 +130,9 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
               showDialog(
                 context: context,
                 builder: (_) => AlertDialog(
-                  title: Text('Pedometre'),
+                  title: Text('Pedometer'),
                   content: Text(
-                      'In order to activate Pedometre, please activate the service'),
+                      'In order to activate Pedometer, please enable the service'),
                   actions: [
                     FlatButton(
                       onPressed: () {
@@ -205,9 +205,9 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
               showDialog(
                 context: context,
                 builder: (_) => AlertDialog(
-                  title: Text('Pedometre'),
+                  title: Text('Pedometer'),
                   content: Text(
-                      'In order to activate Pedometre, please activate the service'),
+                      'In order to activate Pedometer, please enable the service'),
                   actions: [
                     FlatButton(
                       onPressed: () {

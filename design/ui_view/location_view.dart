@@ -72,7 +72,7 @@ class LocationView extends StatelessWidget {
                                         child: Column(
                                           children: <Widget>[
                                             Text(
-                                              "Découvrez les endroits que ",
+                                              "Discover places ",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily:
@@ -85,7 +85,7 @@ class LocationView extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                              "vous avez visité récemment ",
+                                              "you have recently visited",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily:

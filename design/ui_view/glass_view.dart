@@ -50,7 +50,7 @@ class GlassView extends StatelessWidget {
                                 padding: const EdgeInsets.only(
                                     left: 68, bottom: 12, right: 16, top: 12),
                                 child: Text(
-                                  'N oubliez pas de boire 1,5L d eau par jour !',
+                                  'Do not forget to drink 1,5L of water per day !',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontFamily: SecondAppTheme.fontName,

@@ -137,7 +137,7 @@ class _FirstState extends State<First> {
       isEnabled();
       return Scaffold(
         appBar: AppBar(
-          title: Text("Podometre"),
+          title: Text("Pedometer"),
         ),
         body: SingleChildScrollView(
           //margin: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 300.0),

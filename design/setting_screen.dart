@@ -21,7 +21,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          "Setting",
+          "Settings",
           style: TextStyle(
             fontSize: 22,
             color: AppTheme.darkText,

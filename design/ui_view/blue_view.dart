@@ -72,7 +72,7 @@ class BlueView extends StatelessWidget {
                                         child: Column(
                                           children: <Widget>[
                                             Text(
-                                              "Découvrez votre consomation ",
+                                              "Discover your usage ",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily:
@@ -85,7 +85,7 @@ class BlueView extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                              "des objets connectés",
+                                              "of connected objects",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily:

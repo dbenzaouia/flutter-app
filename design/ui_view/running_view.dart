@@ -70,7 +70,7 @@ class RunningView extends StatelessWidget {
                                           top: 16,
                                         ),
                                         child: Text(
-                                          "Génial ! Continuez comme ça",
+                                          "Great ! Keep going",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontFamily:
@@ -93,7 +93,7 @@ class RunningView extends StatelessWidget {
                                       right: 16,
                                     ),
                                     child: Text(
-                                      "Vous avez dépassez la durée d'activité\nphysique hebdomadaire recommandée par l'ONU!",
+                                      "You have exceeded the duration of the weekly physical activity recommended by the ONU!",
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         fontFamily: SecondAppTheme.fontName,
