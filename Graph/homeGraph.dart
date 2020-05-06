@@ -123,8 +123,9 @@ class HomeGraphState extends State<HomeGraph> {
         body: TabBarView(
           children: [
             homeDay.hometimeWidgetday(),
-            homeMonth.hometimeWidgetMonth(),
             homeWeek.hometimeWidgetweek(),
+            homeMonth.hometimeWidgetMonth(),
+
           ],
         ),
       ),

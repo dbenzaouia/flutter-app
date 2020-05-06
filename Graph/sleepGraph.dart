@@ -121,8 +121,9 @@ class SleepGraphState extends State<SleepGraph> {
         body: TabBarView(
           children: [
             sleepDay.sleeptimeWidgetday(),
-            sleepMonth.sleeptimeWidgetMonth(),
             sleepWeek.sleeptimeWidgetweek(),
+            sleepMonth.sleeptimeWidgetMonth(),
+
           ],
         ),
       ),

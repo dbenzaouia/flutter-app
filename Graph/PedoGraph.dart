@@ -138,7 +138,7 @@ class PedoGraphState extends State<PedoGraph> {
           children: [
             pd.pedometerWidget(50, series, stepsday),
             pdw.pedometerWidget(50, seriesweek, stepsweek),
-            pdm.pedometerWidget(50, seriesdays, stepsdays),
+            pda.pedometerWidget(50, seriesmonths, stepsmonths),
           ],
         ),
       ),
