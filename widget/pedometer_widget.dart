@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widget/list_widget.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import '../data/database.dart';
 import '../models/ObjectDisplay.dart';
@@ -37,12 +36,7 @@ class PedometerWidget {
                   ),
                 ),
               ), 
-              new RepaintBoundary(
-                child: new SizedBox(
-                height: 192.0,
-                child: BuildStepList().buildStepList(steps),
-               ),
-              ),   
+               
                ]
                   
         ),
@@ -81,12 +75,7 @@ class PedometerWidgetAnnuel {
                   ),
                 ),
               ), 
-              new RepaintBoundary(
-                child: new SizedBox(
-                height: 192.0,
-                child: BuildStepList().buildStepListMonths(steps),
-               ),
-              ),   
+                
                ]       
         ),
       );
@@ -122,12 +111,7 @@ class PedometerWidgetMonths {
                   ),
                 ),
               ), 
-              new RepaintBoundary(
-                child: new SizedBox(
-                height: 192.0,
-                child: BuildStepList().buildStepListDays(steps),
-               ),
-              ),   
+                 
                ]
                   
         ),
@@ -164,12 +148,7 @@ class PedometerWidgetWeek {
                   ),
                 ),
               ), 
-              new RepaintBoundary(
-                child: new SizedBox(
-                height: 192.0,
-                child: BuildStepList().buildStepListWeek(steps),
-               ),
-              ),   
+             
                ]
                   
         ),
