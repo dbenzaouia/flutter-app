@@ -35,7 +35,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       ),
       DrawerList(
         index: DrawerIndex.Config,
-        labelName: 'Setting',
+        labelName: 'Settings',
         icon: Icon(Icons.settings),
       ),
     ];

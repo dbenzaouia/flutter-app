@@ -21,7 +21,7 @@ class HometimeWidget {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Time spend at home today",
+                          "Time spent at home today",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(
@@ -73,7 +73,7 @@ class HometimeWidgetWeek {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Time spend at home last week",
+                          "Time spent at home last week",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(
@@ -124,7 +124,7 @@ class HometimeWidgetMonths {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Time spend at home last month",
+                          "Time spent at home last month",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(

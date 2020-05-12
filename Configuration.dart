@@ -47,7 +47,7 @@ class ConfigState extends State<Configuration> {
     bluetooth = 0;
     _sentence1 = 'Hometime disabled';
     _sentence2 = 'Sleeptime disabled';
-    _sentence3 = 'Pedometre disabled';
+    _sentence3 = 'Pedometer disabled';
     _sentence4 = 'Location disabled';
     _sentence5 = 'Bluetooth disabled';
     wifiname = '';
@@ -73,8 +73,8 @@ class ConfigState extends State<Configuration> {
           ? _sentence2 = 'Sleeptime enabled'
           : _sentence2 = 'Sleeptime disabled';
       pedometre == 1
-          ? _sentence3 = 'Pedometre enabled'
-          : _sentence3 = 'Pedometre disabled';
+          ? _sentence3 = 'Pedometer enabled'
+          : _sentence3 = 'Pedometer disabled';
       location == 1
           ? _sentence4 = 'Location enabled'
           : _sentence4 = 'Location disabled';
@@ -106,7 +106,7 @@ class ConfigState extends State<Configuration> {
               Center(
                 heightFactor: 20,
                 child: Text(
-                  'Chargement configuration',
+                  'Settings loading',
                   style: TextStyle(
                     fontSize: 22.0,
                     fontWeight: FontWeight.w400,
@@ -166,7 +166,7 @@ class ConfigState extends State<Configuration> {
                     ),
                   ),
                   subtitle: Text(
-                    'it involves more settings',
+                    'It involves more settings',
                     style: TextStyle(fontSize: 10),
                   ),
                   trailing: Switch(
@@ -221,7 +221,7 @@ class ConfigState extends State<Configuration> {
                     alignment: Alignment.topLeft,
                     child: Column(
                       children: [
-                        Text('Pedometre'),
+                        Text('Pedometer'),
                         Text(
                           _sentence3,
                           style: TextStyle(
@@ -355,7 +355,7 @@ class ConfigState extends State<Configuration> {
                     ),
                   ),
                   subtitle: Text(
-                    'it involves more settings',
+                    'It involves more settings',
                     style: TextStyle(fontSize: 10),
                   ),
                   trailing: Switch(

@@ -35,7 +35,7 @@ class MealsListData {
 List<MealsListData> tabIconsList = <MealsListData>[
   MealsListData(
     imagePath: 'assets/fitness_app/sleep.png',
-    titleTxt: 'Cette nuit',
+    titleTxt: 'Tonight',
     kacl: 202,
     id: 0,
     startColor: '#FA7D82',
@@ -43,7 +43,7 @@ List<MealsListData> tabIconsList = <MealsListData>[
   ),
   MealsListData(
     imagePath: 'assets/fitness_app/sleep.png',
-    titleTxt: 'Hier',
+    titleTxt: 'Yesterday',
     kacl: 0,
     id: 1,
     startColor: '#738AE6',
@@ -51,7 +51,7 @@ List<MealsListData> tabIconsList = <MealsListData>[
   ),
   MealsListData(
     imagePath: 'assets/fitness_app/sleep.png',
-    titleTxt: 'En moyenne',
+    titleTxt: 'Average',
     kacl: 132,
     id: 2,
     startColor: '#FE95B6',

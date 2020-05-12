@@ -148,9 +148,11 @@ class PedoGraphState extends State<PedoGraph> {
   void setupListDay() async {
     var _stepsday = await dataBase.getStepsDay(int.parse(todayYear()),
         int.parse(todayMonths()), int.parse(todayDay()));
+        if(mounted){
     setState(() {
       stepsday = _stepsday;
     });
+    }
   }
 
   void setupListMonths() async {
@@ -163,9 +165,11 @@ class PedoGraphState extends State<PedoGraph> {
   void setupListDays() async {
     var _stepsdays = await dataBase.getStepsperDay(
         int.parse(todayYear()), int.parse(todayMonths()));
+        if(mounted){
     setState(() {
       stepsdays = _stepsdays;
     });
+        }
   }
 
   void setupListWeek() async {

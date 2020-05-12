@@ -22,7 +22,7 @@ class HSWidgetDay {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Time spend at home and sleeping today",
+                          "Time spent at home and sleeping today",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(
@@ -73,7 +73,7 @@ class HSWidgetWeek {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Time spend at home and sleeping last week",
+                          "Time spent at home and sleeping last week",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(
@@ -125,7 +125,7 @@ class HSWidgetMonths {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Time spend at home and sleeping last month",
+                          "Time spent at home and sleeping last month",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(

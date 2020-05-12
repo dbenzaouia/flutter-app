@@ -179,7 +179,7 @@ class SleepView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      ('test\n'),
+                                      ('you slept...\n'),
                                       style: TextStyle(
                                         fontFamily: SecondAppTheme.fontName,
                                         fontWeight: FontWeight.w500,
@@ -241,7 +241,7 @@ class SleepView extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.only(left: 4, bottom: 3),
                                   child: Text(
-                                    'heures',
+                                    'hours',
                                     style: TextStyle(
                                       fontFamily: SecondAppTheme.fontName,
                                       fontWeight: FontWeight.w500,

@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
     ConfigBlueManager(dbProvider).addNewConfigBlue(configBlue3);
 
     return MaterialApp(
-      title: 'Flutter App',
+      title: 'SuperFlutt',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.indigo,

@@ -21,7 +21,7 @@ class SleeptimeWidget {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Time spend sleeping today",
+                          "Time spent sleeping today",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(
@@ -73,7 +73,7 @@ class SleeptimeWidgetWeek {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Time spend sleeping last week",
+                          "Time spent sleeping last week",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(
@@ -125,7 +125,7 @@ class SleeptimeWidgetMonths {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Time spend sleeping last month",
+                          "Time spent sleeping last month",
                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
                         Container(
